@@ -78,7 +78,6 @@ Supports multiple providers:
 
 - Groq
 - Gemini
-- GitHub Models
 
 Each winning agent generates executable Python code directly from natural language programming tasks.
 
@@ -162,7 +161,7 @@ Implements on-chain exponential moving average updates for:
 - Reputation
 - Capability
 
-Exactly following the equations described in the paper.
+Implements the reputation and capability update equations described in the reference paper.
 
 ---
 
@@ -273,9 +272,9 @@ Each task contains:
 ## Clone Repository
 
 ```bash
-git clone https://github.com/yourusername/decentralized-llm-mas.git
+git clone https://github.com/JayaJagriti/decentralized-llm-mas-framework.git
 
-cd decentralized-llm-mas
+cd decentralized-llm-mas-framework
 ```
 
 ---
@@ -347,37 +346,6 @@ GEMINI_API_KEY=...
 
 ---
 
-# Running the Simulation
-
-```bash
-python run_simulation.py
-```
-
-Every execution creates a new timestamped folder:
-
-```
-runs/
-
-└── run_YYYYMMDD_HHMMSS_provider/
-```
-
-containing:
-
-```
-metrics.json
-
-results.json
-
-dashboard.html
-
-summary.csv
-
-failure_logs/
-
-memory/
-```
-
----
 
 # Evaluation Metrics
 
@@ -459,7 +427,6 @@ Compared with the original paper, this implementation introduces:
 
 - Groq
 - Gemini
-- GitHub Models
 
 ### Blockchain
 
