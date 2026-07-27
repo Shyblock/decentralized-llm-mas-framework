@@ -1,0 +1,41 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 215,
+            "required_tags": [
+                "dynamic_programming",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Update state with maximum possible value"
+        },
+        "L2": {
+            "task_id": 190,
+            "required_tags": [
+                "dynamic_programming",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Apply modulo operation to prevent overflow"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1",
+            "L2"
+        ],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [
+            "L1",
+            "L2"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

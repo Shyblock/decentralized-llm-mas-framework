@@ -1,0 +1,42 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 217,
+            "required_tags": [
+                "dynamic_programming",
+                "lists"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Sort by decreasing order for optimal subproblem overlap"
+        },
+        "L2": {
+            "task_id": 10,
+            "required_tags": [
+                "dynamic_programming",
+                "math"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Verify module imports before using functions"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1",
+            "L2"
+        ],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [
+            "L1"
+        ],
+        "math": [
+            "L2"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

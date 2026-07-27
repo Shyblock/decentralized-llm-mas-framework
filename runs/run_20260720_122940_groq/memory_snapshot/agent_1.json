@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 105,
+            "required_tags": [
+                "graphs",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Breadth-first search is often more suitable for finding all possible solutions"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

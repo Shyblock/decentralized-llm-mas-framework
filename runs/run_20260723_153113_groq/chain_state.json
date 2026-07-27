@@ -1,0 +1,322 @@
+{
+    "1": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.3537,
+            "graphs": 0.2486,
+            "hashmaps": 0.416,
+            "lists": 0.16,
+            "math": 0.5503,
+            "recursion": 0.1109,
+            "searching": 0.5099,
+            "sorting": 0.1773,
+            "strings": 0.1983,
+            "trees": 0.3762
+        },
+        "workload": 0
+    },
+    "2": {
+        "reputation": 0.9132,
+        "capabilities": {
+            "dynamic_programming": 0.9218,
+            "graphs": 0.8144,
+            "hashmaps": 0.9152,
+            "lists": 0.916,
+            "math": 0.9073,
+            "recursion": 0.3533,
+            "searching": 0.1328,
+            "sorting": 0.3264,
+            "strings": 0.9188,
+            "trees": 0.2077
+        },
+        "workload": 0
+    },
+    "3": {
+        "reputation": 0.8211,
+        "capabilities": {
+            "dynamic_programming": 0.7766,
+            "graphs": 0.919,
+            "hashmaps": 0.8843,
+            "lists": 0.7805,
+            "math": 0.8244,
+            "recursion": 0.1894,
+            "searching": 0.891,
+            "sorting": 0.6597,
+            "strings": 0.6744,
+            "trees": 0.2835
+        },
+        "workload": 0
+    },
+    "4": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.1004,
+            "graphs": 0.2077,
+            "hashmaps": 0.3096,
+            "lists": 0.0444,
+            "math": 0.1246,
+            "recursion": 0.211,
+            "searching": 0.3582,
+            "sorting": 0.6522,
+            "strings": 0.1623,
+            "trees": 0.0694
+        },
+        "workload": 0
+    },
+    "5": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.0768,
+            "graphs": 0.1744,
+            "hashmaps": 0.5435,
+            "lists": 0.0617,
+            "math": 0.2357,
+            "recursion": 0.3133,
+            "searching": 0.1526,
+            "sorting": 0.3869,
+            "strings": 0.4846,
+            "trees": 0.0959
+        },
+        "workload": 0
+    },
+    "6": {
+        "reputation": 0.6298,
+        "capabilities": {
+            "dynamic_programming": 0.5928,
+            "graphs": 0.2984,
+            "hashmaps": 0.2238,
+            "lists": 0.1643,
+            "math": 0.4614,
+            "recursion": 0.0983,
+            "searching": 0.1792,
+            "sorting": 0.343,
+            "strings": 0.5379,
+            "trees": 0.4433
+        },
+        "workload": 0
+    },
+    "7": {
+        "reputation": 0.5707,
+        "capabilities": {
+            "dynamic_programming": 0.1327,
+            "graphs": 0.7322,
+            "hashmaps": 0.5596,
+            "lists": 0.5077,
+            "math": 0.1136,
+            "recursion": 0.3416,
+            "searching": 0.3659,
+            "sorting": 0.7439,
+            "strings": 0.1318,
+            "trees": 0.1255
+        },
+        "workload": 0
+    },
+    "8": {
+        "reputation": 0.4231,
+        "capabilities": {
+            "dynamic_programming": 0.337,
+            "graphs": 0.4429,
+            "hashmaps": 0.5994,
+            "lists": 0.2615,
+            "math": 0.2491,
+            "recursion": 0.4146,
+            "searching": 0.4595,
+            "sorting": 0.612,
+            "strings": 0.6493,
+            "trees": 0.0675
+        },
+        "workload": 0
+    },
+    "9": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.0468,
+            "graphs": 0.1271,
+            "hashmaps": 0.3266,
+            "lists": 0.1191,
+            "math": 0.1078,
+            "recursion": 0.3246,
+            "searching": 0.2194,
+            "sorting": 0.3048,
+            "strings": 0.4037,
+            "trees": 0.1841
+        },
+        "workload": 0
+    },
+    "10": {
+        "reputation": 0.637,
+        "capabilities": {
+            "dynamic_programming": 0.5025,
+            "graphs": 0.8776,
+            "hashmaps": 0.9053,
+            "lists": 0.7027,
+            "math": 0.1954,
+            "recursion": 0.8802,
+            "searching": 0.6876,
+            "sorting": 0.8988,
+            "strings": 0.209,
+            "trees": 0.1662
+        },
+        "workload": 0
+    },
+    "11": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.2272,
+            "graphs": 0.4759,
+            "hashmaps": 0.1159,
+            "lists": 0.1719,
+            "math": 0.2409,
+            "recursion": 0.1966,
+            "searching": 0.1545,
+            "sorting": 0.3025,
+            "strings": 0.2629,
+            "trees": 0.1784
+        },
+        "workload": 0
+    },
+    "12": {
+        "reputation": 0.5209,
+        "capabilities": {
+            "dynamic_programming": 0.4861,
+            "graphs": 0.7108,
+            "hashmaps": 0.7654,
+            "lists": 0.586,
+            "math": 0.6773,
+            "recursion": 0.6226,
+            "searching": 0.6465,
+            "sorting": 0.8722,
+            "strings": 0.806,
+            "trees": 0.3149
+        },
+        "workload": 0
+    },
+    "13": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.3458,
+            "graphs": 0.5387,
+            "hashmaps": 0.3062,
+            "lists": 0.1456,
+            "math": 0.4519,
+            "recursion": 0.3599,
+            "searching": 0.0619,
+            "sorting": 0.2329,
+            "strings": 0.1921,
+            "trees": 0.5199
+        },
+        "workload": 0
+    },
+    "14": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.2202,
+            "graphs": 0.1377,
+            "hashmaps": 0.472,
+            "lists": 0.1588,
+            "math": 0.0597,
+            "recursion": 0.3408,
+            "searching": 0.3066,
+            "sorting": 0.279,
+            "strings": 0.3288,
+            "trees": 0.4065
+        },
+        "workload": 0
+    },
+    "15": {
+        "reputation": 0.5,
+        "capabilities": {
+            "dynamic_programming": 0.3235,
+            "graphs": 0.1813,
+            "hashmaps": 0.1103,
+            "lists": 0.0626,
+            "math": 0.3894,
+            "recursion": 0.2208,
+            "searching": 0.1706,
+            "sorting": 0.0676,
+            "strings": 0.2064,
+            "trees": 0.3588
+        },
+        "workload": 0
+    },
+    "16": {
+        "reputation": 0.6051,
+        "capabilities": {
+            "dynamic_programming": 0.278,
+            "graphs": 0.1366,
+            "hashmaps": 0.2171,
+            "lists": 0.1364,
+            "math": 0.0637,
+            "recursion": 0.5919,
+            "searching": 0.1674,
+            "sorting": 0.4858,
+            "strings": 0.2231,
+            "trees": 0.7185
+        },
+        "workload": 0
+    },
+    "17": {
+        "reputation": 0.7314,
+        "capabilities": {
+            "dynamic_programming": 0.5546,
+            "graphs": 0.5454,
+            "hashmaps": 0.8613,
+            "lists": 0.5529,
+            "math": 0.913,
+            "recursion": 0.0593,
+            "searching": 0.1537,
+            "sorting": 0.8903,
+            "strings": 0.0493,
+            "trees": 0.1859
+        },
+        "workload": 0
+    },
+    "18": {
+        "reputation": 0.9207,
+        "capabilities": {
+            "dynamic_programming": 0.8342,
+            "graphs": 0.9151,
+            "hashmaps": 0.9168,
+            "lists": 0.6984,
+            "math": 0.9174,
+            "recursion": 0.9206,
+            "searching": 0.0294,
+            "sorting": 0.8158,
+            "strings": 0.9172,
+            "trees": 0.1273
+        },
+        "workload": 0
+    },
+    "19": {
+        "reputation": 0.8491,
+        "capabilities": {
+            "dynamic_programming": 0.8754,
+            "graphs": 0.1352,
+            "hashmaps": 0.1893,
+            "lists": 0.532,
+            "math": 0.6743,
+            "recursion": 0.1714,
+            "searching": 0.3903,
+            "sorting": 0.1388,
+            "strings": 0.4659,
+            "trees": 0.7357
+        },
+        "workload": 0
+    },
+    "20": {
+        "reputation": 0.6259,
+        "capabilities": {
+            "dynamic_programming": 0.3074,
+            "graphs": 0.3117,
+            "hashmaps": 0.1347,
+            "lists": 0.8022,
+            "math": 0.1191,
+            "recursion": 0.2854,
+            "searching": 0.5143,
+            "sorting": 0.1565,
+            "strings": 0.2606,
+            "trees": 0.1398
+        },
+        "workload": 0
+    }
+}

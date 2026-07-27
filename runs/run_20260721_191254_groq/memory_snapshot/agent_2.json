@@ -1,0 +1,33 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 236,
+            "required_tags": [
+                "graphs",
+                "hashmaps",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Always consider the base case in graph traversal"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [
+            "L1"
+        ],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

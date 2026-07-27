@@ -1,0 +1,42 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 105,
+            "required_tags": [
+                "graphs",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use breadth-first search for level-order exploration"
+        },
+        "L2": {
+            "task_id": 198,
+            "required_tags": [
+                "dynamic_programming",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Initialize variables with correct base cases"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L2"
+        ],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L1",
+            "L2"
+        ],
+        "trees": []
+    }
+}

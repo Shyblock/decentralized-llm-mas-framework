@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 195,
+            "required_tags": [
+                "graphs",
+                "lists"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Preserve original order when iterating or sorting"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [],
+        "lists": [
+            "L1"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

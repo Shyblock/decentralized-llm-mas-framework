@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 135,
+            "required_tags": [
+                "graphs",
+                "math"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Avoid dynamic recursion limit changes"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [
+            "L1"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

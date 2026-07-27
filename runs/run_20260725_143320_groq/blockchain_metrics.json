@@ -1,0 +1,10 @@
+{
+    "total_transactions": 2340,
+    "failed_transactions": 0,
+    "total_gas_used": 122948116,
+    "average_gas_per_transaction": 52541.929914529916,
+    "total_events": 3225,
+    "average_confirmation_time": 0.061958246399264415,
+    "transactions_per_round": 46.8,
+    "events_per_round": 64.5
+}

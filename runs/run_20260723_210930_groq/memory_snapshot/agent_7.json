@@ -1,0 +1,56 @@
+{
+    "next_lesson_id": 4,
+    "lessons": {
+        "L1": {
+            "task_id": 46,
+            "required_tags": [
+                "lists",
+                "sorting"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Always return expected data types"
+        },
+        "L2": {
+            "task_id": 192,
+            "required_tags": [
+                "dynamic_programming",
+                "lists"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Initialize dynamic programming tables with extra rows and columns for edge cases"
+        },
+        "L3": {
+            "task_id": 25,
+            "required_tags": [
+                "hashmaps",
+                "lists",
+                "sorting"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Preserve original order when not explicitly required"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L2"
+        ],
+        "graphs": [],
+        "hashmaps": [
+            "L3"
+        ],
+        "lists": [
+            "L1",
+            "L2",
+            "L3"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [
+            "L1",
+            "L3"
+        ],
+        "strings": [],
+        "trees": []
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 179,
+            "required_tags": [
+                "hashmaps",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use max function for interval calculation"
+        },
+        "L2": {
+            "task_id": 45,
+            "required_tags": [
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate input types before processing"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [
+            "L1"
+        ],
+        "lists": [],
+        "math": [
+            "L1"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L2"
+        ],
+        "trees": []
+    }
+}

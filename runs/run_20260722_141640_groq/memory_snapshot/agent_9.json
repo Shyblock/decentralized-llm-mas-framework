@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 133,
+            "required_tags": [
+                "dynamic_programming",
+                "strings"
+            ],
+            "failure_type": "syntax_error",
+            "lesson": "Ensure syntactically valid Python with proper indentation"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1"
+        ],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

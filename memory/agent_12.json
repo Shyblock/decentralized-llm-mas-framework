@@ -1,0 +1,55 @@
+{
+    "next_lesson_id": 4,
+    "lessons": {
+        "L1": {
+            "task_id": 108,
+            "required_tags": [
+                "dynamic_programming",
+                "math"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Import modules before using their functions"
+        },
+        "L2": {
+            "task_id": 50,
+            "required_tags": [
+                "graphs",
+                "recursion"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Import modules before use"
+        },
+        "L3": {
+            "task_id": 133,
+            "required_tags": [
+                "dynamic_programming",
+                "strings"
+            ],
+            "failure_type": "syntax_error",
+            "lesson": "Ensure proper syntax and indentation in generated code"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1",
+            "L3"
+        ],
+        "graphs": [
+            "L2"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [
+            "L1"
+        ],
+        "recursion": [
+            "L2"
+        ],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L3"
+        ],
+        "trees": []
+    }
+}

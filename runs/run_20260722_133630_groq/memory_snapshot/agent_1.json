@@ -1,0 +1,41 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 54,
+            "required_tags": [
+                "graphs",
+                "recursion"
+            ],
+            "failure_type": "syntax_error",
+            "lesson": "Ensure proper syntax and indentation"
+        },
+        "L2": {
+            "task_id": 50,
+            "required_tags": [
+                "graphs",
+                "recursion"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate index ranges in graph representations"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1",
+            "L2"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [
+            "L1",
+            "L2"
+        ],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

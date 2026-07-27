@@ -1,0 +1,79 @@
+{
+    "next_lesson_id": 6,
+    "lessons": {
+        "L1": {
+            "task_id": 41,
+            "required_tags": [
+                "graphs",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate all inputs before processing"
+        },
+        "L2": {
+            "task_id": 114,
+            "required_tags": [
+                "dynamic_programming",
+                "lists"
+            ],
+            "failure_type": "type_error",
+            "lesson": "Validate input data types before processing"
+        },
+        "L3": {
+            "task_id": 218,
+            "required_tags": [
+                "graphs",
+                "searching"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Initialize variables with default values that handle edge cases"
+        },
+        "L4": {
+            "task_id": 179,
+            "required_tags": [
+                "hashmaps",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use max function for final result"
+        },
+        "L5": {
+            "task_id": 164,
+            "required_tags": [
+                "dynamic_programming",
+                "graphs"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Ensure all code paths return a value"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L2",
+            "L5"
+        ],
+        "graphs": [
+            "L1",
+            "L3",
+            "L5"
+        ],
+        "hashmaps": [
+            "L4"
+        ],
+        "lists": [
+            "L2"
+        ],
+        "math": [
+            "L4"
+        ],
+        "recursion": [],
+        "searching": [
+            "L3"
+        ],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

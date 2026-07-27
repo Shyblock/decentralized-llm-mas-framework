@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 3,
+            "required_tags": [
+                "recursion",
+                "sorting"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Define functions before calling them"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [
+            "L1"
+        ],
+        "searching": [],
+        "sorting": [
+            "L1"
+        ],
+        "strings": [],
+        "trees": []
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 105,
+            "required_tags": [
+                "graphs",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate state transitions before exploring new states"
+        },
+        "L2": {
+            "task_id": 219,
+            "required_tags": [
+                "hashmaps",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use established libraries for counting"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [
+            "L2"
+        ],
+        "lists": [],
+        "math": [
+            "L2"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

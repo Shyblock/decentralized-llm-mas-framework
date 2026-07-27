@@ -1,0 +1,1432 @@
+[
+    {
+        "task_id": 192,
+        "description": "Given a binary matrix, return the area of the largest square containing only ones.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    dp = [[0] * cols for _ in range(rows)]\n    max_side = 0\n    for i in range(rows):\n        for j in range(cols):\n            if matrix[i][j] == 1:\n                if i == 0 or j == 0:\n                    dp[i][j] = 1\n                else:\n                    dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]) + 1\n                if dp[i][j] > max_side:\n                    max_side = dp[i][j]\n    return max_side * max_side",
+        "error": "Wrong Answer. Expected=4, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        "1",
+                        "1"
+                    ],
+                    [
+                        "1",
+                        "1"
+                    ]
+                ]
+            ],
+            "expected": 4,
+            "actual": 0
+        },
+        "generic_lesson": "Initialize dynamic programming tables with extra rows and columns for edge cases",
+        "task_specific_lesson": "Increase dp table size by 1 in both dimensions to handle border cases correctly",
+        "retry_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    dp = [[0] * (cols + 1) for _ in range(rows + 1)]\n    max_side = 0\n    for i in range(1, rows + 1):\n        row_vals = matrix[i - 1]\n        for j in range(1, cols + 1):\n            val = row_vals[j - 1]\n            if val == 1 or val == '1':\n                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1\n                if dp[i][j] > max_side:\n                    max_side = dp[i][j]\n    return max_side * max_side",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.19166121482849122,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 169,
+        "description": "Given an array of integers, return the median of the array without fully sorting it.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    def partition(arr, left, right, pivot_index):\n        pivot_value = arr[pivot_index]\n        arr[pivot_index], arr[right] = arr[right], arr[pivot_index]\n        store_index = left\n        for i in range(left, right):\n            if arr[i] < pivot_value:\n                arr[store_index], arr[i] = arr[i], arr[store_index]\n                store_index += 1\n        arr[right], arr[store_index] = arr[store_index], arr[right]\n        return store_index\n\n    def select(arr, k):\n        left, right = 0, len(arr) - 1\n        while True:\n            if left == right:\n                return arr[left]\n            pivot_index = (left + right) // 2\n            pivot_index = partition(arr, left, right, pivot_index)\n            if k == pivot_index:\n                return arr[k]\n            elif k < pivot_index:\n                right = pivot_index - 1\n            else:\n                left = pivot_index + 1\n\n    n = len(nums)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return select(nums[:], n // 2)\n    else:\n        a = select(nums[:], n // 2 - 1)\n        b = select(nums[:], n // 2)\n        return (a + b) / 2.0",
+        "error": "Wrong Answer. Expected=4, Got=3.5. TYPE MISMATCH: Expected int, got float.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    3,
+                    2,
+                    1,
+                    4,
+                    6,
+                    5
+                ]
+            ],
+            "expected": 4,
+            "actual": 3.5
+        },
+        "generic_lesson": "Ensure type consistency in return values",
+        "task_specific_lesson": "Cast the result to int when the length of the array is odd",
+        "retry_code": "def solve(nums):\n    def partition(arr, left, right, pivot_index):\n        pivot_value = arr[pivot_index]\n        arr[pivot_index], arr[right] = arr[right], arr[pivot_index]\n        store_index = left\n        for i in range(left, right):\n            if arr[i] < pivot_value:\n                arr[store_index], arr[i] = arr[i], arr[store_index]\n                store_index += 1\n        arr[right], arr[store_index] = arr[store_index], arr[right]\n        return store_index\n\n    def select(arr, k):\n        left, right = 0, len(arr) - 1\n        while True:\n            if left == right:\n                return arr[left]\n            pivot_index = (left + right) // 2\n            pivot_index = partition(arr, left, right, pivot_index)\n            if k == pivot_index:\n                return arr[k]\n            elif k < pivot_index:\n                right = pivot_index - 1\n            else:\n                left = pivot_index + 1\n\n    n = len(nums)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return int(select(nums[:], n // 2))\n    else:\n        a = select(nums[:], n // 2 - 1)\n        b = select(nums[:], n // 2)\n        return (a + b) / 2.0",
+        "retry_result": {
+            "quality_score": 0.8,
+            "success": false,
+            "delay_ratio": 0.12886924743652345,
+            "reason": "Wrong Answer. Expected=4, Got=3.5. TYPE MISMATCH: Expected int, got float.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        3,
+                        2,
+                        1,
+                        4,
+                        6,
+                        5
+                    ]
+                ],
+                "expected": 4,
+                "actual": 3.5
+            },
+            "pass_count": 4,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 45,
+        "description": "Given a string, return the longest common prefix among all of its words.",
+        "required_tags": [
+            "strings"
+        ],
+        "generated_code": "def solve(words):\n    if not isinstance(words, str):\n        return \"\"\n    word_list = words.split()\n    if not word_list:\n        return \"\"\n    prefix = []\n    for i, ch in enumerate(word_list[0]):\n        for w in word_list[1:]:\n            if i >= len(w) or w[i] != ch:\n                return \"\".join(prefix)\n        prefix.append(ch)\n    return \"\".join(prefix)",
+        "error": "Wrong Answer. Expected=fl, Got=.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    "flower",
+                    "flow",
+                    "flight"
+                ]
+            ],
+            "expected": "fl",
+            "actual": ""
+        },
+        "generic_lesson": "Validate input types before processing",
+        "task_specific_lesson": "Check if input is a list of strings, not a single string",
+        "retry_code": "def solve(words):\n    if not isinstance(words, list):\n        return \"\"\n    for w in words:\n        if not isinstance(w, str):\n            return \"\"\n    if not words:\n        return \"\"\n    prefix = []\n    first = words[0]\n    for i, ch in enumerate(first):\n        for w in words[1:]:\n            if i >= len(w) or w[i] != ch:\n                return \"\".join(prefix)\n        prefix.append(ch)\n    return \"\".join(prefix)",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.15394601821899415,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 212,
+        "description": "Given a directed graph represented by edges, return the minimum number of vertices needed so that every node in the graph is reachable from at least one chosen vertex.",
+        "required_tags": [
+            "graphs"
+        ],
+        "generated_code": "def solve(n, edges):\n    import sys\n    sys.setrecursionlimit(10**7)\n    g = [[] for _ in range(n)]\n    for u, v in edges:\n        g[u].append(v)\n    index = 0\n    indices = [-1] * n\n    lowlink = [0] * n\n    onstack = [False] * n\n    stack = []\n    comp_id = [-1] * n\n    comp_cnt = 0\n\n    def strongconnect(v):\n        nonlocal index, comp_cnt\n        indices[v] = index\n        lowlink[v] = index\n        index += 1\n        stack.append(v)\n        onstack[v] = True\n        for w in g[v]:\n            if indices[w] == -1:\n                strongconnect(w)\n                lowlink[v] = lowlink[v] if lowlink[v] < lowlink[w] else lowlink[w]\n            elif onstack[w]:\n                lowlink[v] = lowlink[v] if lowlink[v] < indices[w] else indices[w]\n        if lowlink[v] == indices[v]:\n            while True:\n                w = stack.pop()\n                onstack[w] = False\n                comp_id[w] = comp_cnt\n                if w == v:\n                    break\n            comp_cnt += 1\n\n    for v in range(n):\n        if indices[v] == -1:\n            strongconnect(v)\n\n    if comp_cnt == 0:\n        return 0\n    indeg = [0] * comp_cnt\n    for u, v in edges:\n        cu = comp_id[u]\n        cv = comp_id[v]\n        if cu != cv:\n            indeg[cv] += 1\n    return sum(1 for d in indeg if d == 0)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'sys' is not defined. Did you forget to import 'sys'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                6,
+                [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        0,
+                        2
+                    ],
+                    [
+                        2,
+                        5
+                    ],
+                    [
+                        3,
+                        4
+                    ],
+                    [
+                        4,
+                        2
+                    ]
+                ]
+            ],
+            "expected": [
+                0,
+                3
+            ],
+            "actual": null
+        },
+        "generic_lesson": "Avoid unnecessary imports and recursion",
+        "task_specific_lesson": "Remove sys import and use reference solution's simpler algorithm",
+        "retry_code": "def solve(n, edges):\n    indeg = [0] * n\n    for u, v in edges:\n        indeg[v] += 1\n    return sum(1 for d in indeg if d == 0)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.1282050132751465,
+            "reason": "Wrong Answer. Expected=[0, 3], Got=2. TYPE MISMATCH: Expected list, got int.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    6,
+                    [
+                        [
+                            0,
+                            1
+                        ],
+                        [
+                            0,
+                            2
+                        ],
+                        [
+                            2,
+                            5
+                        ],
+                        [
+                            3,
+                            4
+                        ],
+                        [
+                            4,
+                            2
+                        ]
+                    ]
+                ],
+                "expected": [
+                    0,
+                    3
+                ],
+                "actual": 2
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 118,
+        "description": "Given a circular ring of characters and a target key, return the minimum number of steps needed to spell the key by rotating the ring.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings"
+        ],
+        "generated_code": "def solve(ring, key):\n    from functools import lru_cache\n    n = len(ring)\n    pos_dict = {}\n    for i, ch in enumerate(ring):\n        pos_dict.setdefault(ch, []).append(i)\n    @lru_cache(None)\n    def dfs(i, cur):\n        if i == len(key):\n            return 0\n        target = key[i]\n        best = float('inf')\n        for j in pos_dict.get(target, []):\n            diff = abs(j - cur)\n            step = min(diff, n - diff) + 1  # rotate + press\n            cand = step + dfs(i + 1, j)\n            if cand < best:\n                best = cand\n        return best\n    return dfs(0, 0)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                "godding",
+                "gd"
+            ],
+            "expected": 4,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Add import statement for lru_cache from functools",
+        "retry_code": "def solve(ring, key):\n    from functools import lru_cache\n    n = len(ring)\n    pos_dict = {}\n    for i, ch in enumerate(ring):\n        pos_dict.setdefault(ch, []).append(i)\n    @lru_cache(None)\n    def dfs(i, cur):\n        if i == len(key):\n            return 0\n        target = key[i]\n        best = float('inf')\n        for j in pos_dict.get(target, []):\n            diff = abs(j - cur)\n            step = min(diff, n - diff) + 1\n            cand = step + dfs(i + 1, j)\n            if cand < best:\n                best = cand\n        return best\n    return dfs(0, 0)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.13615121841430664,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    "godding",
+                    "gd"
+                ],
+                "expected": 4,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 133,
+        "description": "Given a string, return the number of different non-empty palindromic subsequences it contains.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure proper syntax and indentation",
+        "task_specific_lesson": "Define a function with required signature and initialize variables",
+        "retry_code": "def solve(s):\n    n = len(s)\n    if n == 0:\n        return 0\n    # prev occurrence\n    prev = [-1] * n\n    last = {}\n    for i, ch in enumerate(s):\n        prev[i] = last.get(ch, -1)\n        last[ch] = i\n    # next occurrence\n    nxt = [n] * n\n    last.clear()\n    for i in range(n - 1, -1, -1):\n        ch = s[i]\n        nxt[i] = last.get(ch, n)\n        last[ch] = i\n    dp = [[0] * n for _ in range(n)]\n    for i in range(n):\n        dp[i][i] = 1  # single character\n    for length in range(2, n + 1):\n        for i in range(n - length + 1):\n            j = i + length - 1\n            if s[i] != s[j]:\n                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]\n            else:\n                low = i + 1\n                high = j - 1\n                next_i = nxt[i]\n                prev_j = prev[j]\n                if next_i > high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 2\n                elif next_i == prev_j:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 1\n                else:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 - dp[next_i + 1][prev_j - 1]\n    return dp[0][n - 1]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.1188838005065918,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 166,
+        "description": "Given a binary matrix, return the area of the largest rectangle containing only ones.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    heights = [0] * cols\n    max_area = 0\n\n    def largest_rectangle(heights):\n        stack = []\n        max_a = 0\n        for i, h in enumerate(heights + [0]):\n            while stack and heights[stack[-1]] > h:\n                height = heights[stack.pop()]\n                width = i if not stack else i - stack[-1] - 1\n                area = height * width\n                if area > max_a:\n                    max_a = area\n            stack.append(i)\n        return max_a\n\n    for r in range(rows):\n        for c in range(cols):\n            if matrix[r][c] == 1:\n                heights[c] += 1\n            else:\n                heights[c] = 0\n        area = largest_rectangle(heights)\n        if area > max_area:\n            max_area = area\n    return max_area",
+        "error": "Wrong Answer. Expected=4, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        "1",
+                        "1"
+                    ],
+                    [
+                        "1",
+                        "1"
+                    ]
+                ]
+            ],
+            "expected": 4,
+            "actual": 0
+        },
+        "generic_lesson": "Use iterative approaches for dynamic programming problems",
+        "task_specific_lesson": "Pass heights array to largest_rectangle function with an extra 0 at the end",
+        "retry_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    heights = [0] * cols\n    max_area = 0\n\n    def largest_rectangle(heights):\n        stack = []\n        max_a = 0\n        for i, h in enumerate(heights):\n            while stack and heights[stack[-1]] > h:\n                height = heights[stack.pop()]\n                width = i if not stack else i - stack[-1] - 1\n                area = height * width\n                if area > max_a:\n                    max_a = area\n            stack.append(i)\n        return max_a\n\n    for r in range(rows):\n        for c in range(cols):\n            if int(matrix[r][c]) == 1:\n                heights[c] += 1\n            else:\n                heights[c] = 0\n        area = largest_rectangle(heights + [0])\n        if area > max_area:\n            max_area = area\n    return max_area",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.1449197292327881,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 108,
+        "description": "Given a target position, return the minimum number of instructions needed for a race car starting at position 0 with speed 1 to reach the target.",
+        "required_tags": [
+            "dynamic_programming",
+            "math"
+        ],
+        "generated_code": "def solve(target):\n    from functools import lru_cache\n\n    @lru_cache(None)\n    def dp(t):\n        if t == 0:\n            return 0\n        n = (t + 1).bit_length()  # smallest n with 2^n - 1 >= t\n        if (1 << n) - 1 == t:\n            return n\n        # Option 1: overshoot then reverse\n        ans = n + 1 + dp((1 << n) - 1 - t)\n        # Option 2: stop before overshoot, reverse, then adjust\n        for m in range(n - 1):\n            # position after forward (n-1) steps and then m steps backward\n            cur = (1 << (n - 1)) - (1 << m)\n            if cur < t:\n                ans = min(ans, (n - 1) + 1 + m + 1 + dp(t - cur))\n        return ans\n\n    return dp(target)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 3, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                3
+            ],
+            "expected": 2,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Add import statement for lru_cache from functools module",
+        "retry_code": "def solve(target):\n    from functools import lru_cache\n\n    @lru_cache(None)\n    def dp(t):\n        if t == 0:\n            return 0\n        n = t.bit_length()\n        if (1 << n) - 1 == t:\n            return n\n        ans = n + 1 + dp((1 << n) - 1 - t)\n        for m in range(n - 1):\n            cur = (1 << (n - 1)) - (1 << m)\n            if cur < t:\n                ans = min(ans, (n - 1) + 1 + m + 1 + dp(t - cur))\n        return ans\n\n    return dp(target)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.12095293998718262,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 3, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    3
+                ],
+                "expected": 2,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 71,
+        "description": "Given an integer, return its hexadecimal representation using lowercase letters.",
+        "required_tags": [
+            "math",
+            "strings"
+        ],
+        "generated_code": "def solve(num):\n    digits = \"0123456789abcdef\"\n    if num == 0:\n        return \"0\"\n    sign = \"-\" if num < 0 else \"\"\n    n = -num if num < 0 else num\n    res = []\n    while n > 0:\n        res.append(digits[n % 16])\n        n //= 16\n    return sign + \"\".join(reversed(res))",
+        "error": "Wrong Answer. Expected=0, Got=0. TYPE MISMATCH: Expected int, got str.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                0
+            ],
+            "expected": 0,
+            "actual": "0"
+        },
+        "generic_lesson": "Validate output type matches problem requirements",
+        "task_specific_lesson": "Remove sign variable and handle negative numbers by adding 2^32",
+        "retry_code": "def solve(num):\n    digits = \"0123456789abcdef\"\n    if num == 0:\n        return \"0\"\n    n = num + (1 << 32) if num < 0 else num\n    res = []\n    while n > 0:\n        res.append(digits[n % 16])\n        n //= 16\n    return \"\".join(reversed(res))",
+        "retry_result": {
+            "quality_score": 0.4,
+            "success": false,
+            "delay_ratio": 0.13600902557373046,
+            "reason": "Wrong Answer. Expected=0, Got=0. TYPE MISMATCH: Expected int, got str.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    0
+                ],
+                "expected": 0,
+                "actual": "0"
+            },
+            "pass_count": 2,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 186,
+        "description": "Given an array of piles representing stones and an integer k, two players play optimally by taking between 1 and 2k piles from the front. Return the maximum number of stones the first player can obtain.",
+        "required_tags": [
+            "dynamic_programming",
+            "recursion"
+        ],
+        "generated_code": "def solve(piles):\n    n = len(piles)\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n\n    from functools import lru_cache\n\n    @lru_cache(maxsize=None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        if i + 2 * m >= n:\n            return suffix[i]\n        best = 0\n        max_take = 2 * m\n        for x in range(1, max_take + 1):\n            if i + x > n:\n                break\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n\n    return dp(0, 1)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    2,
+                    7,
+                    9,
+                    4,
+                    4
+                ]
+            ],
+            "expected": 10,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Move import statement to the top, before function definition",
+        "retry_code": "def solve(piles):\n    n = len(piles)\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n\n    @lru_cache(maxsize=None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        if i + 2 * m >= n:\n            return suffix[i]\n        best = 0\n        max_take = 2 * m\n        for x in range(1, max_take + 1):\n            if i + x > n:\n                break\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n\n    return dp(0, 1)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.12969183921813965,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        2,
+                        7,
+                        9,
+                        4,
+                        4
+                    ]
+                ],
+                "expected": 10,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 133,
+        "description": "Given a string, return the number of different non-empty palindromic subsequences it contains.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure proper syntax and indentation",
+        "task_specific_lesson": "Define a function with correct parameters and return type",
+        "retry_code": "def solve(s):\n    n = len(s)\n    if n == 0:\n        return 0\n    dp = [[0] * n for _ in range(n)]\n    for i in range(n):\n        dp[i][i] = 1  # single character palindrome\n    for length in range(2, n + 1):\n        for i in range(n - length + 1):\n            j = i + length - 1\n            if s[i] == s[j]:\n                low = i + 1\n                high = j - 1\n                while low <= high and s[low] != s[i]:\n                    low += 1\n                while low <= high and s[high] != s[i]:\n                    high -= 1\n                if low > high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 2\n                elif low == high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 1\n                else:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 - dp[low + 1][high - 1]\n            else:\n                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]\n            if dp[i][j] < 0:\n                dp[i][j] = 0\n    return dp[0][n - 1]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.11940565109252929,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 117,
+        "description": "Given a list of sticker words and a target word, return the minimum number of stickers required to form the target.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings",
+            "hashmaps"
+        ],
+        "generated_code": "def solve(stickers, target):\n    from functools import lru_cache\n\n    # Preprocess stickers into letter count vectors\n    sticker_counts = []\n    for s in stickers:\n        cnt = [0] * 26\n        for ch in s:\n            cnt[ord(ch) - 97] += 1\n        sticker_counts.append(cnt)\n\n    # Target count vector\n    target_cnt = [0] * 26\n    for ch in target:\n        target_cnt[ord(ch) - 97] += 1\n    target_tuple = tuple(target_cnt)\n\n    @lru_cache(None)\n    def dp(rem):\n        # rem is a tuple of remaining letter counts\n        if all(v == 0 for v in rem):\n            return 0\n        # find first non-zero letter index to guide sticker selection\n        for i, v in enumerate(rem):\n            if v > 0:\n                first = i\n                break\n        best = float('inf')\n        for cnt in sticker_counts:\n            if cnt[first] == 0:\n                continue  # this sticker cannot reduce the needed first letter\n            # apply sticker\n            new_rem = list(rem)\n            for i in range(26):\n                if new_rem[i]:\n                    new_rem[i] = max(0, new_rem[i] - cnt[i])\n            new_tuple = tuple(new_rem)\n            sub = dp(new_tuple)\n            if sub != -1:\n                best = min(best, 1 + sub)\n        return -1 if best == float('inf') else best\n\n    return dp(target_tuple)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 13, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    "with",
+                    "example",
+                    "science"
+                ],
+                "thehat"
+            ],
+            "expected": 3,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Add import statement for lru_cache from functools",
+        "retry_code": "def solve(stickers, target):\n    # Preprocess stickers into letter count vectors\n    sticker_counts = []\n    for s in stickers:\n        cnt = [0] * 26\n        for ch in s:\n            cnt[ord(ch) - 97] += 1\n        sticker_counts.append(cnt)\n\n    # Target count vector\n    target_cnt = [0] * 26\n    for ch in target:\n        target_cnt[ord(ch) - 97] += 1\n    target_tuple = tuple(target_cnt)\n\n    @lru_cache(None)\n    def dp(rem):\n        if all(v == 0 for v in rem):\n            return 0\n        for i, v in enumerate(rem):\n            if v > 0:\n                first = i\n                break\n        best = float('inf')\n        for cnt in sticker_counts:\n            if cnt[first] == 0:\n                continue\n            new_rem = list(rem)\n            for i in range(26):\n                new_rem[i] = max(0, new_rem[i] - cnt[i])\n            sub = dp(tuple(new_rem))\n            if sub != -1:\n                best = min(best, 1 + sub)\n        return -1 if best == float('inf') else best\n\n    return dp(target_tuple)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.1222909927368164,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 13, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        "with",
+                        "example",
+                        "science"
+                    ],
+                    "thehat"
+                ],
+                "expected": 3,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 236,
+        "description": "Given a list of words and a starting word, return the minimum number of single-character transformations required to reach every other word, where each intermediate word must exist in the list.",
+        "required_tags": [
+            "graphs",
+            "strings",
+            "hashmaps"
+        ],
+        "generated_code": "def solve(words, start):\n    # Validate inputs\n    if not isinstance(words, list) or not all(isinstance(w, str) for w in words):\n        raise TypeError(\"words must be a list of strings\")\n    if not isinstance(start, str):\n        raise TypeError(\"start must be a string\")\n    if start not in words:\n        # If start not in list, treat as isolated node\n        return -1\n    # All words assumed same length; if not, transformations only possible between equal length words\n    word_len = len(start)\n    # Filter words to those of same length as start (others cannot be reached)\n    filtered = [w for w in words if len(w) == word_len]\n    # Build generic pattern mapping\n    from collections import defaultdict, deque\n    pattern_dict = defaultdict(list)\n    for w in filtered:\n        for i in range(word_len):\n            pattern = w[:i] + '_' + w[i+1:]\n            pattern_dict[pattern].append(w)\n    # BFS\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        cur = q.popleft()\n        cur_dist = dist[cur]\n        for i in range(word_len):\n            pattern = cur[:i] + '_' + cur[i+1:]\n            for neighbor in pattern_dict.get(pattern, []):\n                if neighbor not in dist:\n                    dist[neighbor] = cur_dist + 1\n                    q.append(neighbor)\n    # Determine if all words reachable\n    reachable_words = [w for w in filtered if w != start]\n    if any(w not in dist for w in reachable_words):\n        return -1\n    # Minimum number of transformations required to reach every other word\n    # is the maximum distance among all reachable words\n    return max((dist[w] for w in reachable_words), default=0)",
+        "error": "Wrong Answer. Expected={'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}, Got=-1. TYPE MISMATCH: Expected dict, got int.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    "hot",
+                    "dot",
+                    "dog",
+                    "lot",
+                    "log",
+                    "cog"
+                ],
+                "hit"
+            ],
+            "expected": {
+                "hit": 0,
+                "hot": 1,
+                "dot": 2,
+                "lot": 2,
+                "dog": 3,
+                "log": 3,
+                "cog": 4
+            },
+            "actual": -1
+        },
+        "generic_lesson": "Use consistent data structures for state management",
+        "task_specific_lesson": "Return distance dictionary instead of max distance",
+        "retry_code": "def solve(words, start):\n    # Validate inputs\n    if not isinstance(words, list) or not all(isinstance(w, str) for w in words):\n        raise TypeError(\"words must be a list of strings\")\n    if not isinstance(start, str):\n        raise TypeError(\"start must be a string\")\n    if start not in words:\n        # If start not in list, treat as isolated node\n        return -1\n    # All words assumed same length; if not, transformations only possible between equal length words\n    word_len = len(start)\n    # Filter words to those of same length as start (others cannot be reached)\n    filtered = [w for w in words if len(w) == word_len]\n    # Build generic pattern mapping\n    from collections import defaultdict, deque\n    pattern_dict = defaultdict(list)\n    for w in filtered:\n        for i in range(word_len):\n            pattern = w[:i] + '_' + w[i+1:]\n            pattern_dict[pattern].append(w)\n    # BFS\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        cur = q.popleft()\n        cur_dist = dist[cur]\n        for i in range(word_len):\n            pattern = cur[:i] + '_' + cur[i+1:]\n            for neighbor in pattern_dict.get(pattern, []):\n                if neighbor not in dist:\n                    dist[neighbor] = cur_dist + 1\n                    q.append(neighbor)\n    # Determine if all words reachable\n    reachable_words = [w for w in filtered if w != start]\n    if any(w not in dist for w in reachable_words):\n        return -1\n    # Return distance dictionary\n    return dist",
+        "retry_result": {
+            "quality_score": 0.6,
+            "success": false,
+            "delay_ratio": 0.12739934921264648,
+            "reason": "Wrong Answer. Expected={'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}, Got=-1. TYPE MISMATCH: Expected dict, got int.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        "hot",
+                        "dot",
+                        "dog",
+                        "lot",
+                        "log",
+                        "cog"
+                    ],
+                    "hit"
+                ],
+                "expected": {
+                    "hit": 0,
+                    "hot": 1,
+                    "dot": 2,
+                    "lot": 2,
+                    "dog": 3,
+                    "log": 3,
+                    "cog": 4
+                },
+                "actual": -1
+            },
+            "pass_count": 3,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 236,
+        "description": "Given a list of words and a starting word, return the minimum number of single-character transformations required to reach every other word, where each intermediate word must exist in the list.",
+        "required_tags": [
+            "graphs",
+            "strings",
+            "hashmaps"
+        ],
+        "generated_code": "def solve(words, start):\n    from collections import deque, defaultdict\n\n    # Ensure start is considered even if not in the original list\n    word_set = set(words)\n    word_set.add(start)\n\n    # All words must be of the same length to be transformable\n    L = len(start)\n    same_len_words = [w for w in word_set if len(w) == L]\n\n    # Build pattern to words mapping\n    pattern_dict = defaultdict(list)\n    for w in same_len_words:\n        for i in range(L):\n            pattern = w[:i] + '_' + w[i+1:]\n            pattern_dict[pattern].append(w)\n\n    # BFS to compute shortest distances from start\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        cur = q.popleft()\n        cur_d = dist[cur]\n        for i in range(L):\n            pattern = cur[:i] + '_' + cur[i+1:]\n            for nxt in pattern_dict.get(pattern, []):\n                if nxt not in dist:\n                    dist[nxt] = cur_d + 1\n                    q.append(nxt)\n\n    # Prepare result list in the original order of the input list\n    result = []\n    for w in words:\n        if len(w) != L:\n            result.append(-1)\n        else:\n            result.append(dist.get(w, -1))\n    return result",
+        "error": "Wrong Answer. Expected={'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}, Got=[1, 2, 3, 2, 3, 4]. TYPE MISMATCH: Expected dict, got list.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    "hot",
+                    "dot",
+                    "dog",
+                    "lot",
+                    "log",
+                    "cog"
+                ],
+                "hit"
+            ],
+            "expected": {
+                "hit": 0,
+                "hot": 1,
+                "dot": 2,
+                "lot": 2,
+                "dog": 3,
+                "log": 3,
+                "cog": 4
+            },
+            "actual": [
+                1,
+                2,
+                3,
+                2,
+                3,
+                4
+            ]
+        },
+        "generic_lesson": "Use consistent data structures for output",
+        "task_specific_lesson": "Return a dictionary with word distances instead of a list",
+        "retry_code": "def solve(words, start):\n    from collections import deque, defaultdict\n\n    word_set = set(words)\n    word_set.add(start)\n\n    L = len(start)\n    same_len_words = [w for w in word_set if len(w) == L]\n\n    pattern_dict = defaultdict(list)\n    for w in same_len_words:\n        for i in range(L):\n            pattern = w[:i] + '_' + w[i+1:]\n            pattern_dict[pattern].append(w)\n\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        cur = q.popleft()\n        cur_d = dist[cur]\n        for i in range(L):\n            pattern = cur[:i] + '_' + cur[i+1:]\n            for nxt in pattern_dict.get(pattern, []):\n                if nxt not in dist:\n                    dist[nxt] = cur_d + 1\n                    q.append(nxt)\n\n    result = {}\n    for w in words:\n        if len(w) != L:\n            result[w] = -1\n        else:\n            result[w] = dist.get(w, -1)\n    return result",
+        "retry_result": {
+            "quality_score": 0.6,
+            "success": false,
+            "delay_ratio": 0.11757597923278809,
+            "reason": "Wrong Answer. Expected={'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}, Got={'hot': 1, 'dot': 2, 'dog': 3, 'lot': 2, 'log': 3, 'cog': 4}.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        "hot",
+                        "dot",
+                        "dog",
+                        "lot",
+                        "log",
+                        "cog"
+                    ],
+                    "hit"
+                ],
+                "expected": {
+                    "hit": 0,
+                    "hot": 1,
+                    "dot": 2,
+                    "lot": 2,
+                    "dog": 3,
+                    "log": 3,
+                    "cog": 4
+                },
+                "actual": {
+                    "hot": 1,
+                    "dot": 2,
+                    "dog": 3,
+                    "lot": 2,
+                    "log": 3,
+                    "cog": 4
+                }
+            },
+            "pass_count": 3,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 105,
+        "description": "Given a string containing parentheses and letters, remove the minimum number of invalid parentheses and return all possible valid strings.",
+        "required_tags": [
+            "graphs",
+            "strings"
+        ],
+        "generated_code": "def solve(s):\n    n = len(s)\n    left_rem = right_rem = 0\n    for ch in s:\n        if ch == '(':\n            left_rem += 1\n        elif ch == ')':\n            if left_rem > 0:\n                left_rem -= 1\n            else:\n                right_rem += 1\n\n    result = set()\n    visited = set()\n\n    def dfs(i, lrem, rrem, bal, path):\n        if i == n:\n            if lrem == 0 and rrem == 0 and bal == 0:\n                result.add(''.join(path))\n            return\n        key = (i, lrem, rrem, bal)\n        if key in visited:\n            return\n        visited.add(key)\n        ch = s[i]\n        if ch == '(':\n            if lrem > 0:\n                dfs(i + 1, lrem - 1, rrem, bal, path)\n            path.append(ch)\n            dfs(i + 1, lrem, rrem, bal + 1, path)\n            path.pop()\n        elif ch == ')':\n            if rrem > 0:\n                dfs(i + 1, lrem, rrem - 1, bal, path)\n            if bal > 0:\n                path.append(ch)\n                dfs(i + 1, lrem, rrem, bal - 1, path)\n                path.pop()\n        else:\n            path.append(ch)\n            dfs(i + 1, lrem, rrem, bal, path)\n            path.pop()\n\n    dfs(0, left_rem, right_rem, 0, [])\n    return list(result)",
+        "error": "Wrong Answer. Expected=['(())()', '()()()'], Got=['(())()'].",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                "()())()"
+            ],
+            "expected": [
+                "(())()",
+                "()()()"
+            ],
+            "actual": [
+                "(())()"
+            ]
+        },
+        "generic_lesson": "Use breadth-first search for level-order exploration",
+        "task_specific_lesson": "Remove the found flag to explore all possible valid strings",
+        "retry_code": "def solve(s):\n    n = len(s)\n    left_rem = right_rem = 0\n    for ch in s:\n        if ch == '(':\n            left_rem += 1\n        elif ch == ')':\n            if left_rem > 0:\n                left_rem -= 1\n            else:\n                right_rem += 1\n\n    result = set()\n\n    def dfs(i, lrem, rrem, bal, path):\n        if i == n:\n            if lrem == 0 and rrem == 0 and bal == 0:\n                result.add(''.join(path))\n            return\n        ch = s[i]\n        if ch == '(':\n            if lrem > 0:\n                dfs(i + 1, lrem - 1, rrem, bal, path)\n            path.append(ch)\n            dfs(i + 1, lrem, rrem, bal + 1, path)\n            path.pop()\n        elif ch == ')':\n            if rrem > 0:\n                dfs(i + 1, lrem, rrem - 1, bal, path)\n            if bal > 0:\n                path.append(ch)\n                dfs(i + 1, lrem, rrem, bal - 1, path)\n                path.pop()\n        else:\n            path.append(ch)\n            dfs(i + 1, lrem, rrem, bal, path)\n            path.pop()\n\n    dfs(0, left_rem, right_rem, 0, [])\n    return list(result)",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.1149672031402588,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 202,
+        "description": "Given a matrix of integers, return the elements traversed in diagonal order.",
+        "required_tags": [
+            "lists"
+        ],
+        "generated_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return []\n    m, n = len(matrix), len(matrix[0])\n    result = []\n    row, col = 0, 0\n    up = True\n    for _ in range(m * n):\n        result.append(matrix[row][col])\n        if up:\n            new_row, new_col = row - 1, col + 1\n            if new_col >= n:\n                row += 1\n                up = False\n            elif new_row < 0:\n                row = 0\n                up = False\n            else:\n                row, col = new_row, new_col\n                continue\n        else:\n            new_row, new_col = row + 1, col - 1\n            if new_row >= m:\n                col += 1\n                up = True\n            elif new_col < 0:\n                col = 0\n                up = True\n            else:\n                row, col = new_row, new_col\n                continue\n        col = col if up else col\n    return result",
+        "error": "Wrong Answer. Expected=[1, 2, 4, 7, 5, 3, 6, 8, 9], Got=[1, 1, 1, 1, 1, 1, 1, 1, 1].",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        1,
+                        2,
+                        3
+                    ],
+                    [
+                        4,
+                        5,
+                        6
+                    ],
+                    [
+                        7,
+                        8,
+                        9
+                    ]
+                ]
+            ],
+            "expected": [
+                1,
+                2,
+                4,
+                7,
+                5,
+                3,
+                6,
+                8,
+                9
+            ],
+            "actual": [
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1,
+                1
+            ]
+        },
+        "generic_lesson": "Use iteration bounds based on problem constraints",
+        "task_specific_lesson": "Change loop to iterate over diagonals, not all elements",
+        "retry_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return []\n    m, n = len(matrix), len(matrix[0])\n    result = []\n    for d in range(m + n - 1):\n        intermediate = []\n        r = 0 if d < n else d - n + 1\n        c = d if d < n else n - 1\n        while r < m and c >= 0:\n            intermediate.append(matrix[r][c])\n            r += 1\n            c -= 1\n        if d % 2 == 0:\n            result.extend(intermediate[::-1])\n        else:\n            result.extend(intermediate)\n    return result",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.11861600875854492,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 144,
+        "description": "Given a string and a dictionary of words, return the minimum number of extra characters left over after partitioning the string into dictionary words.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings"
+        ],
+        "generated_code": "def solve(s, dictionary):\n    class TrieNode:\n        __slots__ = ('children', 'is_word')\n        def __init__(self):\n            self.children = {}\n            self.is_word = False\n    root = TrieNode()\n    for word in dictionary:\n        node = root\n        for ch in word:\n            if ch not in node.children:\n                node.children[ch] = TrieNode()\n            node = node.children[ch]\n        node.is_word = True\n    n = len(s)\n    INF = n + 1\n    dp = [INF] * (n + 1)\n    dp[0] = 0\n    for i in range(n):\n        # treat s[i] as extra character\n        if dp[i] + 1 < dp[i + 1]:\n            dp[i + 1] = dp[i] + 1\n        node = root\n        j = i\n        while j < n and s[j] in node.children:\n            node = node.children[s[j]]\n            j += 1\n            if node.is_word and dp[i] < dp[j]:\n                dp[j] = dp[i]\n    return dp[n]",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 3, in solve\nNameError: __build_class__ not found\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                "leetscode",
+                [
+                    "leet",
+                    "code",
+                    "leetcode"
+                ]
+            ],
+            "expected": 1,
+            "actual": null
+        },
+        "generic_lesson": "Validate data structure initialization",
+        "task_specific_lesson": "Initialize dp array with correct base case and update dp values correctly",
+        "retry_code": "def solve(s, dictionary):\n    class TrieNode:\n        __slots__ = ('children', 'is_word')\n        def __init__(self):\n            self.children = {}\n            self.is_word = False\n    root = TrieNode()\n    for word in dictionary:\n        node = root\n        for ch in word:\n            if ch not in node.children:\n                node.children[ch] = TrieNode()\n            node = node.children[ch]\n        node.is_word = True\n    n = len(s)\n    INF = n + 1\n    dp = [INF] * (n + 1)\n    dp[0] = 0\n    for i in range(n):\n        if dp[i] == INF:\n            continue\n        # treat s[i] as extra character\n        if dp[i] + 1 < dp[i + 1]:\n            dp[i + 1] = dp[i] + 1\n        node = root\n        j = i\n        while j < n and s[j] in node.children:\n            node = node.children[s[j]]\n            j += 1\n            if node.is_word and dp[i] < dp[j]:\n                dp[j] = dp[i]\n    return dp[n]",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.11722640991210938,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 3, in solve\nNameError: __build_class__ not found\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    "leetscode",
+                    [
+                        "leet",
+                        "code",
+                        "leetcode"
+                    ]
+                ],
+                "expected": 1,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 166,
+        "description": "Given a binary matrix, return the area of the largest rectangle containing only ones.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    heights = [0] * cols\n    max_area = 0\n\n    def largest_rectangle(heights):\n        stack = []\n        max_a = 0\n        for i, h in enumerate(heights + [0]):\n            while stack and heights[stack[-1]] > h:\n                height = heights[stack.pop()]\n                width = i if not stack else i - stack[-1] - 1\n                area = height * width\n                if area > max_a:\n                    max_a = area\n            stack.append(i)\n        return max_a\n\n    for r in range(rows):\n        for c in range(cols):\n            if matrix[r][c] == 1:\n                heights[c] += 1\n            else:\n                heights[c] = 0\n        area = largest_rectangle(heights)\n        if area > max_area:\n            max_area = area\n    return max_area",
+        "error": "Wrong Answer. Expected=4, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        "1",
+                        "1"
+                    ],
+                    [
+                        "1",
+                        "1"
+                    ]
+                ]
+            ],
+            "expected": 4,
+            "actual": 0
+        },
+        "generic_lesson": "Validate iteration boundaries",
+        "task_specific_lesson": "Pass heights array to largest_rectangle function with an extra 0 at the end",
+        "retry_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    heights = [0] * cols\n    max_area = 0\n\n    def largest_rectangle(heights_with_sentinel):\n        stack = []\n        max_a = 0\n        for i, h in enumerate(heights_with_sentinel):\n            while stack and heights_with_sentinel[stack[-1]] > h:\n                height = heights_with_sentinel[stack.pop()]\n                width = i if not stack else i - stack[-1] - 1\n                area = height * width\n                if area > max_a:\n                    max_a = area\n            stack.append(i)\n        return max_a\n\n    for r in range(rows):\n        for c in range(cols):\n            if matrix[r][c] == 1:\n                heights[c] += 1\n            else:\n                heights[c] = 0\n        area = largest_rectangle(heights + [0])\n        if area > max_area:\n            max_area = area\n    return max_area",
+        "retry_result": {
+            "quality_score": 0.8,
+            "success": false,
+            "delay_ratio": 0.12590336799621582,
+            "reason": "Wrong Answer. Expected=4, Got=0.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        [
+                            "1",
+                            "1"
+                        ],
+                        [
+                            "1",
+                            "1"
+                        ]
+                    ]
+                ],
+                "expected": 4,
+                "actual": 0
+            },
+            "pass_count": 4,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 223,
+        "description": "Given an integer array, return the minimum length of a contiguous subarray whose bitwise OR is at least k.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": "def solve(nums, k):\n    n = len(nums)\n    if n == 0:\n        return 0\n    if k == 0:\n        return 1\n    max_val = k\n    for v in nums:\n        if v > max_val:\n            max_val = v\n    max_bit = max_val.bit_length()\n    if max_bit == 0:\n        max_bit = 1\n    counts = [0] * max_bit\n    cur_or = 0\n    ans = n + 1\n    l = 0\n    for r in range(n):\n        x = nums[r]\n        b = 0\n        while x:\n            if x & 1:\n                if counts[b] == 0:\n                    cur_or |= (1 << b)\n                counts[b] += 1\n            x >>= 1\n            b += 1\n        while l <= r and cur_or >= k:\n            length = r - l + 1\n            if length < ans:\n                ans = length\n            y = nums[l]\n            b = 0\n            while y:\n                if y & 1:\n                    counts[b] -= 1\n                    if counts[b] == 0:\n                        cur_or &= ~(1 << b)\n                y >>= 1\n                b += 1\n            l += 1\n    return ans if ans <= n else 0",
+        "error": "Wrong Answer. Expected=-1, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [],
+                1
+            ],
+            "expected": -1,
+            "actual": 0
+        },
+        "generic_lesson": "Handle edge cases explicitly",
+        "task_specific_lesson": "Check for empty input array and return -1 when no subarray meets the condition",
+        "retry_code": "def solve(nums, k):\n    n = len(nums)\n    if n == 0:\n        return -1\n    if k == 0:\n        return 1\n    max_val = k\n    for v in nums:\n        if v > max_val:\n            max_val = v\n    max_bit = max_val.bit_length()\n    if max_bit == 0:\n        max_bit = 1\n    counts = [0] * max_bit\n    cur_or = 0\n    ans = n + 1\n    l = 0\n    for r in range(n):\n        x = nums[r]\n        b = 0\n        while x:\n            if x & 1:\n                if counts[b] == 0:\n                    cur_or |= (1 << b)\n                counts[b] += 1\n            x >>= 1\n            b += 1\n        while l <= r and cur_or >= k:\n            length = r - l + 1\n            if length < ans:\n                ans = length\n            y = nums[l]\n            b = 0\n            while y:\n                if y & 1:\n                    counts[b] -= 1\n                    if counts[b] == 0:\n                        cur_or &= ~(1 << b)\n                y >>= 1\n                b += 1\n            l += 1\n    return ans if ans <= n else -1",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.12225680351257324,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 208,
+        "description": "Given a positive integer, return the complement of its binary representation, ignoring leading zeros.",
+        "required_tags": [
+            "math"
+        ],
+        "generated_code": "def solve(num):\n    if num == 0:\n        return 1\n    mask = (1 << num.bit_length()) - 1\n    return mask ^ num",
+        "error": "Wrong Answer. Expected=0, Got=1.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                0
+            ],
+            "expected": 0,
+            "actual": 1
+        },
+        "generic_lesson": "Handle edge cases explicitly",
+        "task_specific_lesson": "Change if num == 0 to return 0, not 1",
+        "retry_code": "def solve(num):\n    if num == 0:\n        return 0\n    mask = (1 << num.bit_length()) - 1\n    return mask ^ num",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.13305678367614746,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 145,
+        "description": "Given a matrix of integers, return the length of the longest strictly increasing path.",
+        "required_tags": [
+            "dynamic_programming",
+            "graphs",
+            "recursion"
+        ],
+        "generated_code": "def solve(matrix):\n    import sys\n    sys.setrecursionlimit(10**6)\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    memo = [[0] * cols for _ in range(rows)]\n    directions = [(1,0), (-1,0), (0,1), (0,-1)]\n    def dfs(r, c):\n        if memo[r][c]:\n            return memo[r][c]\n        best = 1\n        cur = matrix[r][c]\n        for dr, dc in directions:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < rows and 0 <= nc < cols and matrix[nr][nc] > cur:\n                length = 1 + dfs(nr, nc)\n                if length > best:\n                    best = length\n        memo[r][c] = best\n        return best\n    result = 0\n    for i in range(rows):\n        for j in range(cols):\n            path_len = dfs(i, j)\n            if path_len > result:\n                result = path_len\n    return result",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'sys' is not defined. Did you forget to import 'sys'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        9,
+                        9,
+                        4
+                    ],
+                    [
+                        6,
+                        6,
+                        8
+                    ],
+                    [
+                        2,
+                        1,
+                        1
+                    ]
+                ]
+            ],
+            "expected": 4,
+            "actual": null
+        },
+        "generic_lesson": "Import modules at the top level",
+        "task_specific_lesson": "Move import sys to the top of the file and remove sys.setrecursionlimit",
+        "retry_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    memo = [[0] * cols for _ in range(rows)]\n    directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]\n    def dfs(r, c):\n        if memo[r][c]:\n            return memo[r][c]\n        best = 1\n        cur = matrix[r][c]\n        for dr, dc in directions:\n            nr, nc = r + dr, c + dc\n            if 0 <= nr < rows and 0 <= nc < cols and matrix[nr][nc] > cur:\n                length = 1 + dfs(nr, nc)\n                if length > best:\n                    best = length\n        memo[r][c] = best\n        return best\n    result = 0\n    for i in range(rows):\n        for j in range(cols):\n            path_len = dfs(i, j)\n            if path_len > result:\n                result = path_len\n    return result",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.12099237442016601,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 143,
+        "description": "Given a string representing a board and a string representing balls in hand, return the minimum number of balls needed to clear the board in a Zuma game.",
+        "required_tags": [
+            "recursion",
+            "hashmaps",
+            "strings"
+        ],
+        "generated_code": "def solve(board, hand):\n    from functools import lru_cache\n\n    # Count balls in hand\n    hand_counts = [0] * 26\n    for ch in hand:\n        hand_counts[ord(ch) - 97] += 1\n    hand_counts = tuple(hand_counts)\n\n    def reduce_board(s):\n        changed = True\n        while changed:\n            changed = False\n            i = 0\n            n = len(s)\n            new_s = []\n            while i < n:\n                j = i\n                while j < n and s[j] == s[i]:\n                    j += 1\n                if j - i >= 3:\n                    changed = True\n                else:\n                    new_s.append(s[i:j])\n                i = j\n            s = ''.join(new_s)\n        return s\n\n    @lru_cache(None)\n    def dfs(cur_board, cur_hand):\n        cur_board = reduce_board(cur_board)\n        if not cur_board:\n            return 0\n        # if no balls left in hand, impossible\n        if all(c == 0 for c in cur_hand):\n            return float('inf')\n        best = float('inf')\n        n = len(cur_board)\n        i = 0\n        while i < n:\n            j = i\n            while j < n and cur_board[j] == cur_board[i]:\n                j += 1\n            color_idx = ord(cur_board[i]) - 97\n            need = 3 - (j - i)  # need balls to eliminate this group\n            if need <= cur_hand[color_idx]:\n                # use need balls\n                new_hand = list(cur_hand)\n                new_hand[color_idx] -= need\n                new_board = cur_board[:i] + cur_board[j:]\n                res = dfs(new_board, tuple(new_hand))\n                if res != float('inf'):\n                    best = min(best, need + res)\n            i = j\n        return best\n\n    ans = dfs(board, hand_counts)\n    return -1 if ans == float('inf') else ans",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 4, in solve\nIndexError: list index out of range\n",
+        "failure_type": "index_error",
+        "failed_test_case": {
+            "input": [
+                "WRRBBW",
+                "RB"
+            ],
+            "expected": -1,
+            "actual": null
+        },
+        "generic_lesson": "Validate index bounds before accessing lists",
+        "task_specific_lesson": "Check if color_idx is within range of hand_counts before accessing it",
+        "retry_code": "def solve(board, hand):\n    from functools import lru_cache\n\n    hand_counts = [0] * 26\n    for ch in hand:\n        idx = ord(ch) - 97\n        if 0 <= idx < 26:\n            hand_counts[idx] += 1\n    hand_counts = tuple(hand_counts)\n\n    def reduce_board(s):\n        changed = True\n        while changed:\n            changed = False\n            i = 0\n            n = len(s)\n            new_s = []\n            while i < n:\n                j = i\n                while j < n and s[j] == s[i]:\n                    j += 1\n                if j - i >= 3:\n                    changed = True\n                else:\n                    new_s.append(s[i:j])\n                i = j\n            s = ''.join(new_s)\n        return s\n\n    @lru_cache(None)\n    def dfs(cur_board, cur_hand):\n        cur_board = reduce_board(cur_board)\n        if not cur_board:\n            return 0\n        if all(c == 0 for c in cur_hand):\n            return float('inf')\n        best = float('inf')\n        n = len(cur_board)\n        i = 0\n        while i < n:\n            j = i\n            while j < n and cur_board[j] == cur_board[i]:\n                j += 1\n            color_idx = ord(cur_board[i]) - 97\n            if 0 <= color_idx < len(cur_hand):\n                need = 3 - (j - i)\n                if need <= cur_hand[color_idx]:\n                    new_hand = list(cur_hand)\n                    new_hand[color_idx] -= need\n                    new_board = cur_board[:i] + cur_board[j:]\n                    res = dfs(new_board, tuple(new_hand))\n                    if res != float('inf'):\n                        best = min(best, need + res)\n            i = j\n        return best\n\n    ans = dfs(board, hand_counts)\n    return -1 if ans == float('inf') else ans",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.11962862014770508,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 28, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    "WRRBBW",
+                    "RB"
+                ],
+                "expected": -1,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 111,
+        "description": "Given a binary grid containing exactly two islands, return the minimum number of water cells that must be flipped to connect the islands.",
+        "required_tags": [
+            "graphs",
+            "lists"
+        ],
+        "generated_code": "def solve(grid):\n    from collections import deque\n    n = len(grid)\n    m = len(grid[0]) if n else 0\n    visited = [[False] * m for _ in range(n)]\n    dirs = [(1,0),(-1,0),(0,1),(0,-1)]\n    q = deque()\n    found = False\n    for i in range(n):\n        if found:\n            break\n        for j in range(m):\n            if grid[i][j] == 1:\n                stack = [(i, j)]\n                visited[i][j] = True\n                while stack:\n                    x, y = stack.pop()\n                    q.append((x, y))\n                    for dx, dy in dirs:\n                        nx, ny = x + dx, y + dy\n                        if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny] and grid[nx][ny] == 1:\n                            visited[nx][ny] = True\n                            stack.append((nx, ny))\n                found = True\n                break\n    steps = 0\n    while q:\n        for _ in range(len(q)):\n            x, y = q.popleft()\n            for dx, dy in dirs:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny]:\n                    if grid[nx][ny] == 1:\n                        return steps\n                    visited[nx][ny] = True\n                    q.append((nx, ny))\n        steps += 1\n    return -1",
+        "error": "Wrong Answer. Expected=None, Got=-1. TYPE MISMATCH: Expected NoneType, got int.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        2,
+                        2
+                    ],
+                    [
+                        2,
+                        2
+                    ]
+                ]
+            ],
+            "expected": null,
+            "actual": -1
+        },
+        "generic_lesson": "Validate input before processing",
+        "task_specific_lesson": "Check for empty grid or no islands before starting BFS",
+        "retry_code": "def solve(grid):\n    from collections import deque\n    if not grid or not grid[0]:\n        return -1\n    n = len(grid)\n    m = len(grid[0])\n    # Check for at least one island cell\n    has_island = any(cell == 1 for row in grid for cell in row)\n    if not has_island:\n        return -1\n    visited = [[False] * m for _ in range(n)]\n    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]\n    q = deque()\n    found = False\n    for i in range(n):\n        if found:\n            break\n        for j in range(m):\n            if grid[i][j] == 1:\n                stack = [(i, j)]\n                visited[i][j] = True\n                while stack:\n                    x, y = stack.pop()\n                    q.append((x, y))\n                    for dx, dy in dirs:\n                        nx, ny = x + dx, y + dy\n                        if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny] and grid[nx][ny] == 1:\n                            visited[nx][ny] = True\n                            stack.append((nx, ny))\n                found = True\n                break\n    steps = 0\n    while q:\n        for _ in range(len(q)):\n            x, y = q.popleft()\n            for dx, dy in dirs:\n                nx, ny = x + dx, y + dy\n                if 0 <= nx < n and 0 <= ny < m and not visited[nx][ny]:\n                    if grid[nx][ny] == 1:\n                        return steps\n                    visited[nx][ny] = True\n                    q.append((nx, ny))\n        steps += 1\n    return -1",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.11864805221557617,
+            "reason": "Wrong Answer. Expected=None, Got=-1. TYPE MISMATCH: Expected NoneType, got int.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        [
+                            2,
+                            2
+                        ],
+                        [
+                            2,
+                            2
+                        ]
+                    ]
+                ],
+                "expected": null,
+                "actual": -1
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 133,
+        "description": "Given a string, return the number of different non-empty palindromic subsequences it contains.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure proper syntax and indentation",
+        "task_specific_lesson": "Define a function with correct parameters and return type",
+        "retry_code": "def solve(s):\n    n = len(s)\n    if n == 0:\n        return 0\n    dp = [[0] * n for _ in range(n)]\n    for i in range(n):\n        dp[i][i] = 1\n    for length in range(2, n + 1):\n        for i in range(n - length + 1):\n            j = i + length - 1\n            if s[i] == s[j]:\n                low, high = i + 1, j - 1\n                while low <= high and s[low] != s[i]:\n                    low += 1\n                while low <= high and s[high] != s[i]:\n                    high -= 1\n                if low > high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 2\n                elif low == high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 1\n                else:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 - dp[low + 1][high - 1]\n            else:\n                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]\n    return dp[0][n - 1]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.12964396476745604,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 25,
+        "description": "Given a list of integers and an integer k, return the k most frequent elements.",
+        "required_tags": [
+            "hashmaps",
+            "sorting",
+            "lists"
+        ],
+        "generated_code": "def solve(nums, k):\n    from collections import Counter\n    freq = Counter(nums)\n    # Sort items by frequency descending, then by element value for deterministic order\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))\n    return [item for item, _ in sorted_items[:k]]",
+        "error": "Wrong Answer (ORDERING ONLY). Output contains the correct elements/groups, but their order does not match. Expected=[4, 1], Got=[1, 4]. Ensure output order follows the original input order of first appearance - do not sort or reorder groups/elements unless the problem explicitly requires it.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    4,
+                    4,
+                    4,
+                    6,
+                    6,
+                    1,
+                    1,
+                    1
+                ],
+                2
+            ],
+            "expected": [
+                4,
+                1
+            ],
+            "actual": [
+                1,
+                4
+            ]
+        },
+        "generic_lesson": "Preserve original order when not explicitly required",
+        "task_specific_lesson": "Use OrderedDict or track first occurrence to maintain original order",
+        "retry_code": "def solve(nums, k):\n    from collections import Counter\n    freq = Counter(nums)\n    first_idx = {}\n    for i, num in enumerate(nums):\n        if num not in first_idx:\n            first_idx[num] = i\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], first_idx[x[0]]))\n    return [item for item, _ in sorted_items[:k]]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.11427702903747558,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 240,
+        "description": "Given a weighted tree, return the maximum sum of edge weights on any simple path.",
+        "required_tags": [
+            "trees",
+            "recursion"
+        ],
+        "generated_code": "def solve(n, edges):\n    import sys\n    sys.setrecursionlimit(10**7)\n    if n <= 1:\n        return 0\n    adj = [[] for _ in range(n)]\n    for u, v, w in edges:\n        adj[u].append((v, w))\n        adj[v].append((u, w))\n    # First DFS to find farthest node from 0\n    def dfs(start):\n        stack = [(start, -1, 0)]\n        far_node = start\n        far_dist = 0\n        while stack:\n            node, parent, dist = stack.pop()\n            if dist > far_dist:\n                far_dist = dist\n                far_node = node\n            for nb, w in adj[node]:\n                if nb != parent:\n                    stack.append((nb, node, dist + w))\n        return far_node, far_dist\n    far_node, _ = dfs(0)\n    _, diameter = dfs(far_node)\n    return diameter",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'sys' is not defined. Did you forget to import 'sys'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                3,
+                [
+                    [
+                        0,
+                        1,
+                        5
+                    ],
+                    [
+                        1,
+                        2,
+                        7
+                    ]
+                ]
+            ],
+            "expected": 12,
+            "actual": null
+        },
+        "generic_lesson": "Validate module imports before use",
+        "task_specific_lesson": "Remove sys import, use reference solution's dfs approach",
+        "retry_code": "def solve(n, edges):\n    if n <= 1:\n        return 0\n    adj = [[] for _ in range(n)]\n    for u, v, w in edges:\n        adj[u].append((v, w))\n        adj[v].append((u, w))\n    def dfs(start):\n        stack = [(start, -1, 0)]\n        far_node = start\n        far_dist = 0\n        while stack:\n            node, parent, dist = stack.pop()\n            if dist > far_dist:\n                far_dist = dist\n                far_node = node\n            for nb, w in adj[node]:\n                if nb != parent:\n                    stack.append((nb, node, dist + w))\n        return far_node, far_dist\n    far_node, _ = dfs(0)\n    _, diameter = dfs(far_node)\n    return diameter",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.12471218109130859,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 114,
+        "description": "Given a list of integers, return the length of the longest wiggle subsequence.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    n = len(nums)\n    if n == 0:\n        return 0\n    up = down = 1\n    for i in range(1, n):\n        if nums[i] > nums[i - 1]:\n            up = down + 1\n        elif nums[i] < nums[i - 1]:\n            down = up + 1\n    return up if up > down else down",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nTypeError: object of type 'NoneType' has no len()\n",
+        "failure_type": "type_error",
+        "failed_test_case": {
+            "input": [
+                null
+            ],
+            "expected": 0,
+            "actual": null
+        },
+        "generic_lesson": "Validate input data types before processing",
+        "task_specific_lesson": "Check for None values in the input list before calculating length",
+        "retry_code": "def solve(nums):\n    if any(x is None for x in nums):\n        return 0\n    n = len(nums)\n    if n == 0:\n        return 0\n    up = down = 1\n    for i in range(1, n):\n        if nums[i] > nums[i - 1]:\n            up = down + 1\n        elif nums[i] < nums[i - 1]:\n            down = up + 1\n    return up if up > down else down",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.12199997901916504,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nTypeError: 'NoneType' object is not iterable\n",
+            "failure_type": "type_error",
+            "failed_test_case": {
+                "input": [
+                    null
+                ],
+                "expected": 0,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 186,
+        "description": "Given an array of piles representing stones and an integer k, two players play optimally by taking between 1 and 2k piles from the front. Return the maximum number of stones the first player can obtain.",
+        "required_tags": [
+            "dynamic_programming",
+            "recursion"
+        ],
+        "generated_code": "def solve(piles):\n    n = len(piles)\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n\n    from functools import lru_cache\n\n    @lru_cache(None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        if i + 2 * m >= n:\n            return suffix[i]\n        best = 0\n        max_take = 2 * m\n        for x in range(1, max_take + 1):\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n\n    return dp(0, 1)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    2,
+                    7,
+                    9,
+                    4,
+                    4
+                ]
+            ],
+            "expected": 10,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Move import statement to the top of the code, before function definition",
+        "retry_code": "def solve(piles):\n    n = len(piles)\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n\n    @lru_cache(None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        if i + 2 * m >= n:\n            return suffix[i]\n        best = 0\n        max_take = 2 * m\n        for x in range(1, max_take + 1):\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n\n    return dp(0, 1)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.12275862693786621,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        2,
+                        7,
+                        9,
+                        4,
+                        4
+                    ]
+                ],
+                "expected": 10,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 247,
+        "description": "Given a string, return the shortest string that contains it as a prefix and is also a palindrome.",
+        "required_tags": [
+            "strings"
+        ],
+        "generated_code": "def solve(s):\n    rev = s[::-1]\n    combined = rev + \"#\" + s\n    n = len(combined)\n    pi = [0] * n\n    for i in range(1, n):\n        j = pi[i - 1]\n        while j > 0 and combined[i] != combined[j]:\n            j = pi[j - 1]\n        if combined[i] == combined[j]:\n            j += 1\n        pi[i] = j\n    L = pi[-1]\n    return s + rev[L:]",
+        "error": "Wrong Answer. Expected=aaacecaaa, Got=aacecaaacecaa.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                "aacecaaa"
+            ],
+            "expected": "aaacecaaa",
+            "actual": "aacecaaacecaa"
+        },
+        "generic_lesson": "Prepend instead of append when building palindromes",
+        "task_specific_lesson": "Change return statement to rev[:len(s) - L] + s",
+        "retry_code": "def solve(s):\n    rev = s[::-1]\n    combined = rev + \"#\" + s\n    n = len(combined)\n    pi = [0] * n\n    for i in range(1, n):\n        j = pi[i - 1]\n        while j > 0 and combined[i] != combined[j]:\n            j = pi[j - 1]\n        if combined[i] == combined[j]:\n            j += 1\n        pi[i] = j\n    L = pi[-1]\n    return rev[:len(s) - L] + s",
+        "retry_result": {
+            "quality_score": 0.6,
+            "success": false,
+            "delay_ratio": 0.11756181716918945,
+            "reason": "Wrong Answer. Expected=aaacecaaa, Got=aaaceaacecaaa.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    "aacecaaa"
+                ],
+                "expected": "aaacecaaa",
+                "actual": "aaaceaacecaaa"
+            },
+            "pass_count": 3,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 223,
+        "description": "Given an integer array, return the minimum length of a contiguous subarray whose bitwise OR is at least k.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": "def solve(nums, k):\n    n = len(nums)\n    if n == 0:\n        return 0\n    if k == 0:\n        return 1\n    max_bit = max(k.bit_length(), max((num.bit_length() for num in nums), default=0))\n    if max_bit == 0:\n        max_bit = 1\n    cnt = [0] * max_bit\n    cur_or = 0\n    ans = n + 1\n    l = 0\n    for r in range(n):\n        x = nums[r]\n        for b in range(max_bit):\n            if (x >> b) & 1:\n                if cnt[b] == 0:\n                    cur_or |= (1 << b)\n                cnt[b] += 1\n        while cur_or >= k and l <= r:\n            length = r - l + 1\n            if length < ans:\n                ans = length\n            y = nums[l]\n            for b in range(max_bit):\n                if (y >> b) & 1:\n                    cnt[b] -= 1\n                    if cnt[b] == 0:\n                        cur_or &= ~(1 << b)\n            l += 1\n    return ans if ans != n + 1 else 0",
+        "error": "Wrong Answer. Expected=-1, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [],
+                1
+            ],
+            "expected": -1,
+            "actual": 0
+        },
+        "generic_lesson": "Handle edge cases explicitly",
+        "task_specific_lesson": "Check for empty input array and return -1 when no subarray meets the condition",
+        "retry_code": "def solve(nums, k):\n    n = len(nums)\n    if n == 0:\n        return -1\n    if k == 0:\n        return 1\n    max_bit = max(k.bit_length(), max((num.bit_length() for num in nums), default=0))\n    if max_bit == 0:\n        max_bit = 1\n    cnt = [0] * max_bit\n    cur_or = 0\n    ans = n + 1\n    l = 0\n    for r in range(n):\n        x = nums[r]\n        for b in range(max_bit):\n            if (x >> b) & 1:\n                if cnt[b] == 0:\n                    cur_or |= (1 << b)\n                cnt[b] += 1\n        while cur_or >= k and l <= r:\n            length = r - l + 1\n            if length < ans:\n                ans = length\n            y = nums[l]\n            for b in range(max_bit):\n                if (y >> b) & 1:\n                    cnt[b] -= 1\n                    if cnt[b] == 0:\n                        cur_or &= ~(1 << b)\n            l += 1\n    return ans if ans != n + 1 else -1",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.11923346519470215,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 3,
+        "description": "Given a list of integers, return the list sorted in ascending order using the merge sort algorithm.",
+        "required_tags": [
+            "sorting",
+            "recursion"
+        ],
+        "generated_code": "def solve(nums):\n    return merge_sort(nums)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'merge_sort' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    5,
+                    2,
+                    3,
+                    1
+                ]
+            ],
+            "expected": [
+                1,
+                2,
+                3,
+                5
+            ],
+            "actual": null
+        },
+        "generic_lesson": "Define functions before calling them",
+        "task_specific_lesson": "Implement the merge sort algorithm instead of calling an undefined function",
+        "retry_code": "def solve(nums):\n    def merge_sort(arr):\n        n = len(arr)\n        if n <= 1:\n            return arr[:]\n        mid = n // 2\n        left = merge_sort(arr[:mid])\n        right = merge_sort(arr[mid:])\n        return merge(left, right)\n\n    def merge(left, right):\n        i = j = 0\n        merged = []\n        while i < len(left) and j < len(right):\n            if left[i] <= right[j]:\n                merged.append(left[i])\n                i += 1\n            else:\n                merged.append(right[j])\n                j += 1\n        if i < len(left):\n            merged.extend(left[i:])\n        if j < len(right):\n            merged.extend(right[j:])\n        return merged\n\n    return merge_sort(nums)",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.13225083351135253,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 50,
+        "description": "Given an undirected graph represented as an edge list, return the number of connected components.",
+        "required_tags": [
+            "graphs",
+            "recursion"
+        ],
+        "generated_code": "def solve(n, edges):\n    adj = {i: [] for i in range(1, n + 1)}\n    for u, v in edges:\n        if u not in adj:\n            adj[u] = []\n        if v not in adj:\n            adj[v] = []\n        adj[u].append(v)\n        adj[v].append(u)\n    visited = set()\n    def dfs(u):\n        visited.add(u)\n        for w in adj.get(u, []):\n            if w not in visited:\n                dfs(w)\n    count = 0\n    for node in range(1, n + 1):\n        if node not in visited:\n            dfs(node)\n            count += 1\n    return count",
+        "error": "Wrong Answer. Expected=2, Got=3.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                5,
+                [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        2
+                    ],
+                    [
+                        3,
+                        4
+                    ]
+                ]
+            ],
+            "expected": 2,
+            "actual": 3
+        },
+        "generic_lesson": "Validate index ranges in graph representations",
+        "task_specific_lesson": "Change node range to 0-based indexing by replacing range(1, n + 1) with range(n)",
+        "retry_code": "def solve(n, edges):\n    adj = {i: [] for i in range(n)}\n    for u, v in edges:\n        if u not in adj:\n            adj[u] = []\n        if v not in adj:\n            adj[v] = []\n        adj[u].append(v)\n        adj[v].append(u)\n    visited = set()\n    def dfs(u):\n        visited.add(u)\n        for w in adj.get(u, []):\n            if w not in visited:\n                dfs(w)\n    count = 0\n    for node in range(n):\n        if node not in visited:\n            dfs(node)\n            count += 1\n    return count",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.14038538932800293,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    }
+]

@@ -1,0 +1,51 @@
+{
+    "next_lesson_id": 4,
+    "lessons": {
+        "L1": {
+            "task_id": 244,
+            "required_tags": [
+                "graphs",
+                "recursion"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Handle base cases explicitly"
+        },
+        "L2": {
+            "task_id": 121,
+            "required_tags": [
+                "graphs",
+                "recursion"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Avoid unnecessary imports and ensure correct state updates"
+        },
+        "L3": {
+            "task_id": 247,
+            "required_tags": [
+                "strings"
+            ],
+            "failure_type": "syntax_error",
+            "lesson": "Ensure syntactically valid Python with proper indentation"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1",
+            "L2"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [
+            "L1",
+            "L2"
+        ],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L3"
+        ],
+        "trees": []
+    }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "llm-mas-blockchain",
+  "version": "1.0.0",
+  "description": "Blockchain enforcement layer for the decentralized LLM multi-agent simulation (AgentRegistry, TaskManager, IncentiveContract).",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.js --network ganache"
+  },
+  "devDependencies": {
+    "hardhat": "^2.22.17",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5"
+  }
+}

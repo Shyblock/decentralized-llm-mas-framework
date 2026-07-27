@@ -1,0 +1,69 @@
+{
+    "next_lesson_id": 5,
+    "lessons": {
+        "L1": {
+            "task_id": 218,
+            "required_tags": [
+                "graphs",
+                "searching"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Handle edge cases explicitly"
+        },
+        "L2": {
+            "task_id": 236,
+            "required_tags": [
+                "graphs",
+                "hashmaps",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Return all computed values, not just the maximum."
+        },
+        "L3": {
+            "task_id": 45,
+            "required_tags": [
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate input type before processing"
+        },
+        "L4": {
+            "task_id": 25,
+            "required_tags": [
+                "hashmaps",
+                "lists",
+                "sorting"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Preserve original order when not explicitly required"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1",
+            "L2"
+        ],
+        "hashmaps": [
+            "L2",
+            "L4"
+        ],
+        "lists": [
+            "L4"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [
+            "L1"
+        ],
+        "sorting": [
+            "L4"
+        ],
+        "strings": [
+            "L2",
+            "L3"
+        ],
+        "trees": []
+    }
+}

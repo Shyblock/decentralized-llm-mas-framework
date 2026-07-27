@@ -1,0 +1,1138 @@
+[
+    {
+        "task_id": 196,
+        "description": "Given a list of non-negative integers, arrange them so that they form the smallest possible concatenated number.",
+        "required_tags": [
+            "sorting",
+            "strings"
+        ],
+        "generated_code": "def solve(nums):\n    from functools import cmp_to_key\n    strs = [str(x) for x in nums]\n    def cmp(a, b):\n        if a + b < b + a:\n            return -1\n        if a + b > b + a:\n            return 1\n        return 0\n    strs.sort(key=cmp_to_key(cmp))\n    res = ''.join(strs).lstrip('0')\n    return res if res else '0'",
+        "error": "Wrong Answer. Expected=102, Got=102. TYPE MISMATCH: Expected int, got str.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    10,
+                    2
+                ]
+            ],
+            "expected": 102,
+            "actual": "102"
+        },
+        "generic_lesson": "Ensure output type matches problem requirements",
+        "task_specific_lesson": "Change return type to int by adding int() around return expression",
+        "retry_code": "def solve(nums):\n    from functools import cmp_to_key\n    strs = [str(x) for x in nums]\n    def cmp(a, b):\n        if a + b < b + a:\n            return -1\n        if a + b > b + a:\n            return 1\n        return 0\n    strs.sort(key=cmp_to_key(cmp))\n    res = ''.join(strs).lstrip('0')\n    if not res:\n        res = '0'\n    return int(res)",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.3154327869415283,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 236,
+        "description": "Given a list of words and a starting word, return the minimum number of single-character transformations required to reach every other word, where each intermediate word must exist in the list.",
+        "required_tags": [
+            "graphs",
+            "strings",
+            "hashmaps"
+        ],
+        "generated_code": "def solve(words, start):\n    from collections import deque\n    word_set = set(words)\n    word_set.add(start)\n    L = len(start)\n    visited = {start: 0}\n    q = deque([start])\n    while q:\n        w = q.popleft()\n        d = visited[w]\n        w_list = list(w)\n        for i in range(L):\n            original_char = w_list[i]\n            for c in 'abcdefghijklmnopqrstuvwxyz':\n                if c == original_char:\n                    continue\n                w_list[i] = c\n                nxt = ''.join(w_list)\n                if nxt in word_set and nxt not in visited:\n                    visited[nxt] = d + 1\n                    q.append(nxt)\n            w_list[i] = original_char\n    # Check reachability of all words (excluding start)\n    max_dist = 0\n    for w in word_set:\n        if w == start:\n            continue\n        if w not in visited:\n            return -1\n        if visited[w] > max_dist:\n            max_dist = visited[w]\n    return max_dist",
+        "error": "Wrong Answer. Expected={'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}, Got=4. TYPE MISMATCH: Expected dict, got int.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    "hot",
+                    "dot",
+                    "dog",
+                    "lot",
+                    "log",
+                    "cog"
+                ],
+                "hit"
+            ],
+            "expected": {
+                "hit": 0,
+                "hot": 1,
+                "dot": 2,
+                "lot": 2,
+                "dog": 3,
+                "log": 3,
+                "cog": 4
+            },
+            "actual": 4
+        },
+        "generic_lesson": "Use appropriate data structures for problem requirements",
+        "task_specific_lesson": "Return the entire distance dictionary instead of just the maximum distance",
+        "retry_code": "def solve(words, start):\n    from collections import deque\n    word_set = set(words)\n    word_set.add(start)\n    L = len(start)\n    visited = {start: 0}\n    q = deque([start])\n    while q:\n        w = q.popleft()\n        d = visited[w]\n        w_list = list(w)\n        for i in range(L):\n            original_char = w_list[i]\n            for c in 'abcdefghijklmnopqrstuvwxyz':\n                if c == original_char:\n                    continue\n                w_list[i] = c\n                nxt = ''.join(w_list)\n                if nxt in word_set and nxt not in visited:\n                    visited[nxt] = d + 1\n                    q.append(nxt)\n            w_list[i] = original_char\n    result = {}\n    for w in words:\n        result[w] = visited.get(w, -1)\n    result[start] = 0\n    return result",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.18740224838256836,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 25,
+        "description": "Given a list of integers and an integer k, return the k most frequent elements.",
+        "required_tags": [
+            "hashmaps",
+            "sorting",
+            "lists"
+        ],
+        "generated_code": "def solve(nums, k):\n    from collections import Counter\n    freq = Counter(nums)\n    # Sort items by frequency descending, then by element value for deterministic output\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))\n    return [item for item, _ in sorted_items[:k]]",
+        "error": "Wrong Answer (ORDERING ONLY). Output contains the correct elements/groups, but their order does not match. Expected=[4, 1], Got=[1, 4]. Ensure output order follows the original input order of first appearance - do not sort or reorder groups/elements unless the problem explicitly requires it.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    4,
+                    4,
+                    4,
+                    6,
+                    6,
+                    1,
+                    1,
+                    1
+                ],
+                2
+            ],
+            "expected": [
+                4,
+                1
+            ],
+            "actual": [
+                1,
+                4
+            ]
+        },
+        "generic_lesson": "Preserve original order when not explicitly required to sort",
+        "task_specific_lesson": "Use OrderedDict to maintain insertion order or iterate through original list to maintain order of first appearance",
+        "retry_code": "def solve(nums, k):\n    from collections import Counter, OrderedDict\n    freq = Counter(nums)\n    unique = list(OrderedDict.fromkeys(nums))\n    sorted_unique = sorted(unique, key=lambda x: -freq[x])\n    return sorted_unique[:k]",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.24324240684509277,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 3, in solve\nNameError: name 'OrderedDict' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        1,
+                        1,
+                        1,
+                        2,
+                        2,
+                        3
+                    ],
+                    2
+                ],
+                "expected": [
+                    1,
+                    2
+                ],
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 105,
+        "description": "Given a string containing parentheses and letters, remove the minimum number of invalid parentheses and return all possible valid strings.",
+        "required_tags": [
+            "graphs",
+            "strings"
+        ],
+        "generated_code": "def solve(s):\n    left_rem = right_rem = 0\n    for ch in s:\n        if ch == '(':\n            left_rem += 1\n        elif ch == ')':\n            if left_rem > 0:\n                left_rem -= 1\n            else:\n                right_rem += 1\n    res = set()\n    visited = set()\n    n = len(s)\n    def dfs(i, lrem, rrem, bal, path):\n        if i == n:\n            if lrem == 0 and rrem == 0 and bal == 0:\n                res.add(''.join(path))\n            return\n        key = (i, lrem, rrem, bal)\n        if key in visited:\n            return\n        visited.add(key)\n        ch = s[i]\n        if ch == '(':\n            if lrem > 0:\n                dfs(i + 1, lrem - 1, rrem, bal, path)\n            path.append(ch)\n            dfs(i + 1, lrem, rrem, bal + 1, path)\n            path.pop()\n        elif ch == ')':\n            if rrem > 0:\n                dfs(i + 1, lrem, rrem - 1, bal, path)\n            if bal > 0:\n                path.append(ch)\n                dfs(i + 1, lrem, rrem, bal - 1, path)\n                path.pop()\n        else:\n            path.append(ch)\n            dfs(i + 1, lrem, rrem, bal, path)\n            path.pop()\n    dfs(0, left_rem, right_rem, 0, [])\n    return list(res)",
+        "error": "Wrong Answer. Expected=['(())()', '()()()'], Got=['(())()'].",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                "()())()"
+            ],
+            "expected": [
+                "(())()",
+                "()()()"
+            ],
+            "actual": [
+                "(())()"
+            ]
+        },
+        "generic_lesson": "Use breadth-first search for level-order exploration",
+        "task_specific_lesson": "Remove the initial count of left and right parentheses",
+        "retry_code": null,
+        "retry_result": null
+    },
+    {
+        "task_id": 114,
+        "description": "Given a list of integers, return the length of the longest wiggle subsequence.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    n = len(nums)\n    if n == 0:\n        return 0\n    up = 1\n    down = 1\n    for i in range(1, n):\n        if nums[i] > nums[i - 1]:\n            up = down + 1\n        elif nums[i] < nums[i - 1]:\n            down = up + 1\n    return max(up, down)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nTypeError: object of type 'NoneType' has no len()\n",
+        "failure_type": "type_error",
+        "failed_test_case": {
+            "input": [
+                null
+            ],
+            "expected": 0,
+            "actual": null
+        },
+        "generic_lesson": "Validate input data types before processing",
+        "task_specific_lesson": "Add a check to handle None values in the input list",
+        "retry_code": "def solve(nums):\n    if not nums:\n        return 0\n    filtered = [x for x in nums if x is not None]\n    n = len(filtered)\n    if n == 0:\n        return 0\n    up = 1\n    down = 1\n    for i in range(1, n):\n        if filtered[i] > filtered[i - 1]:\n            up = down + 1\n        elif filtered[i] < filtered[i - 1]:\n            down = up + 1\n    return max(up, down)",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.23587241172790527,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 165,
+        "description": "Given a list of jobs where each job has a duration and an integer k representing workers, return the minimum possible maximum working time assigned to any worker.",
+        "required_tags": [
+            "recursion",
+            "searching"
+        ],
+        "generated_code": "def solve(jobs, k):\n    import sys\n    sys.setrecursionlimit(1000000)\n    if not jobs:\n        return 0\n    n = len(jobs)\n    if k >= n:\n        return max(jobs)\n    jobs.sort(reverse=True)\n    low, high = max(jobs), sum(jobs)\n\n    def can_fit(limit):\n        loads = [0] * k\n        memo = {}\n\n        def dfs(idx):\n            if idx == n:\n                return True\n            key = tuple(sorted(loads))\n            if (idx, key) in memo:\n                return False\n            job = jobs[idx]\n            for i in range(k):\n                if loads[i] + job <= limit:\n                    loads[i] += job\n                    if dfs(idx + 1):\n                        return True\n                    loads[i] -= job\n                if loads[i] == 0:\n                    break\n            memo[(idx, key)] = False\n            return False\n\n        return dfs(0)\n\n    while low < high:\n        mid = (low + high) // 2\n        if can_fit(mid):\n            high = mid\n        else:\n            low = mid + 1\n    return low",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'sys' is not defined. Did you forget to import 'sys'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    3,
+                    3,
+                    2
+                ],
+                3
+            ],
+            "expected": 3,
+            "actual": null
+        },
+        "generic_lesson": "Avoid unnecessary imports",
+        "task_specific_lesson": "Remove sys import and setrecursionlimit call",
+        "retry_code": "def solve(jobs, k):\n    if not jobs:\n        return 0\n    n = len(jobs)\n    if k >= n:\n        return max(jobs)\n    jobs.sort(reverse=True)\n    low, high = max(jobs), sum(jobs)\n\n    def can_fit(limit):\n        # each state: (idx, loads list)\n        from collections import deque\n        start_loads = [0] * k\n        stack = [(0, start_loads)]\n        visited = set()\n        while stack:\n            idx, loads = stack.pop()\n            if idx == n:\n                return True\n            key = (idx, tuple(sorted(loads)))\n            if key in visited:\n                continue\n            visited.add(key)\n            job = jobs[idx]",
+        "retry_result": {
+            "quality_score": 0.4,
+            "success": false,
+            "delay_ratio": 0.23881278038024903,
+            "reason": "Wrong Answer. Expected=11, Got=None. TYPE MISMATCH: Expected int, got NoneType.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        8,
+                        7,
+                        4,
+                        2,
+                        1
+                    ],
+                    2
+                ],
+                "expected": 11,
+                "actual": null
+            },
+            "pass_count": 2,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 213,
+        "description": "Given an integer array, return the number of ways to split it into three contiguous non-empty subarrays such that the sums are non-decreasing.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    n = len(nums)\n    if n < 3:\n        return 0\n    prefix = [0] * (n + 1)\n    for i, v in enumerate(nums, 1):\n        prefix[i] = prefix[i - 1] + v\n    total = prefix[n]\n    from bisect import bisect_left, bisect_right, insort\n    vals = []\n    ans = 0\n    # iterate i from n-2 down to 1\n    for i in range(n - 2, 0, -1):\n        # add prefix sum for index i+1 as potential j\n        insort(vals, prefix[i + 1])\n        L = 2 * prefix[i]\n        U = (total + prefix[i]) // 2\n        left = bisect_left(vals, L)\n        right = bisect_right(vals, U)\n        ans += max(0, right - left)\n    return ans",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 12, in solve\nNameError: name 'insort' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    1,
+                    1,
+                    1
+                ]
+            ],
+            "expected": 1,
+            "actual": null
+        },
+        "generic_lesson": "Verify imported functions are correctly used",
+        "task_specific_lesson": "Replace insort with bisect.insort to fix the name error",
+        "retry_code": "def solve(nums):\n    n = len(nums)\n    if n < 3:\n        return 0\n    prefix = [0] * (n + 1)\n    for i, v in enumerate(nums, 1):\n        prefix[i] = prefix[i - 1] + v\n    total = prefix[n]\n    import bisect\n    vals = []\n    ans = 0\n    for i in range(n - 2, 0, -1):\n        bisect.insort(vals, prefix[i + 1])\n        L = 2 * prefix[i]\n        U = (total + prefix[i]) // 2\n        left = bisect.bisect_left(vals, L)\n        right = bisect.bisect_right(vals, U)\n        ans += max(0, right - left)\n    return ans",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.28633556365966795,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 218,
+        "description": "Given a graph where each node has at most one outgoing edge, return the length of the longest cycle in the graph.",
+        "required_tags": [
+            "graphs",
+            "searching"
+        ],
+        "generated_code": "def solve(edges):\n    n = len(edges)\n    visited = [0] * n  # 0 = unvisited, 1 = visiting, 2 = done\n    depth = [0] * n\n    max_len = 0\n\n    for i in range(n):\n        if visited[i] != 0:\n            continue\n        cur = i\n        step = 0\n        while cur != -1 and visited[cur] == 0:\n            visited[cur] = 1\n            depth[cur] = step\n            step += 1\n            cur = edges[cur]\n        if cur != -1 and visited[cur] == 1:\n            cycle_len = step - depth[cur]\n            if cycle_len > max_len:\n                max_len = cycle_len\n        # mark the traversed nodes as done\n        cur = i\n        while cur != -1 and visited[cur] == 1:\n            visited[cur] = 2\n            cur = edges[cur]\n    return max_len",
+        "error": "Wrong Answer. Expected=-1, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    2,
+                    -1,
+                    3,
+                    1
+                ]
+            ],
+            "expected": -1,
+            "actual": 0
+        },
+        "generic_lesson": "Handle edge cases explicitly",
+        "task_specific_lesson": "Return -1 when no cycle is found, add condition to check if max_len remains 0",
+        "retry_code": "def solve(edges):\n    n = len(edges)\n    visited = [0] * n  # 0 = unvisited, 1 = visiting, 2 = done\n    depth = [0] * n\n    max_len = 0\n\n    for i in range(n):\n        if visited[i] != 0:\n            continue\n        cur = i\n        step = 0\n        while cur != -1 and visited[cur] == 0:\n            visited[cur] = 1\n            depth[cur] = step\n            step += 1\n            cur = edges[cur]\n        if cur != -1 and visited[cur] == 1:\n            cycle_len = step - depth[cur]\n            if cycle_len > max_len:\n                max_len = cycle_len\n        cur = i\n        while cur != -1 and visited[cur] == 1:\n            visited[cur] = 2\n            cur = edges[cur]\n    return max_len if max_len > 0 else -1",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.23661255836486816,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 233,
+        "description": "Given a list of integers, return the intersection of two arrays containing only distinct values.",
+        "required_tags": [
+            "hashmaps",
+            "lists"
+        ],
+        "generated_code": "def solve(nums1, nums2):\n    set2 = set(nums2)\n    result = []\n    seen = set()\n    for x in nums1:\n        if x in set2 and x not in seen:\n            result.append(x)\n            seen.add(x)\n    return result",
+        "error": "Wrong Answer (ORDERING ONLY). Output contains the correct elements/groups, but their order does not match. Expected=[9, 4], Got=[4, 9]. Ensure output order follows the original input order of first appearance - do not sort or reorder groups/elements unless the problem explicitly requires it.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    4,
+                    9,
+                    5
+                ],
+                [
+                    9,
+                    4,
+                    9,
+                    8,
+                    4
+                ]
+            ],
+            "expected": [
+                9,
+                4
+            ],
+            "actual": [
+                4,
+                9
+            ]
+        },
+        "generic_lesson": "Preserve original order when iterating through data structures",
+        "task_specific_lesson": "Use dict to store elements from nums2 as keys and their first occurrence index in nums1, then sort result by index",
+        "retry_code": "def solve(nums1, nums2):\n    set2 = set(nums2)\n    index_map = {}\n    for i, x in enumerate(nums1):\n        if x in set2 and x not in index_map:\n            index_map[x] = i\n    result = [k for k, _ in sorted(index_map.items(), key=lambda item: item[1])]\n    return result",
+        "retry_result": {
+            "quality_score": 0.8,
+            "success": false,
+            "delay_ratio": 0.24258480072021485,
+            "reason": "Wrong Answer (ORDERING ONLY). Output contains the correct elements/groups, but their order does not match. Expected=[9, 4], Got=[4, 9]. Ensure output order follows the original input order of first appearance - do not sort or reorder groups/elements unless the problem explicitly requires it.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        4,
+                        9,
+                        5
+                    ],
+                    [
+                        9,
+                        4,
+                        9,
+                        8,
+                        4
+                    ]
+                ],
+                "expected": [
+                    9,
+                    4
+                ],
+                "actual": [
+                    4,
+                    9
+                ]
+            },
+            "pass_count": 4,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 219,
+        "description": "Given an array of integers, return the number of tuples (a, b, c, d) such that a * b = c * d using distinct indices.",
+        "required_tags": [
+            "hashmaps",
+            "math"
+        ],
+        "generated_code": "def solve(nums):\n    prod_counts = {}\n    n = len(nums)\n    for i in range(n):\n        a = nums[i]\n        for j in range(i + 1, n):\n            p = a * nums[j]\n            prod_counts[p] = prod_counts.get",
+        "error": "Wrong Answer. Expected=8, Got=None. TYPE MISMATCH: Expected int, got NoneType.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    2,
+                    3,
+                    4,
+                    6
+                ]
+            ],
+            "expected": 8,
+            "actual": null
+        },
+        "generic_lesson": "Initialize variables before use",
+        "task_specific_lesson": "Change prod_counts[p] = prod_counts.get to prod_counts[p] = prod_counts.get(p, 0) + 1",
+        "retry_code": null,
+        "retry_result": null
+    },
+    {
+        "task_id": 46,
+        "description": "Given a list of integers containing only 0, 1, and 2, sort the list in-place.",
+        "required_tags": [
+            "sorting",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    low = 0\n    mid = 0\n    high = len(nums) - 1\n    while mid <= high:\n        if nums[mid] == 0:\n            nums[low], nums[mid] = nums[mid], nums[low]\n            low += 1\n            mid += 1\n        elif nums[mid] == 1:\n            mid += 1\n        else:  # nums[mid] == 2\n            nums[mid], nums[high] = nums[high], nums[mid]\n            high -= 1\n    return None",
+        "error": "Wrong Answer. Expected=[0, 0, 1, 1, 2, 2], Got=None. TYPE MISMATCH: Expected list, got NoneType.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    0,
+                    0,
+                    1,
+                    1,
+                    2,
+                    2
+                ]
+            ],
+            "expected": [
+                0,
+                0,
+                1,
+                1,
+                2,
+                2
+            ],
+            "actual": null
+        },
+        "generic_lesson": "Always return expected data types",
+        "task_specific_lesson": "Change return None to return nums",
+        "retry_code": "def solve(nums):\n    low = 0\n    mid = 0\n    high = len(nums) - 1\n    while mid <= high:\n        if nums[mid] == 0:\n            nums[low], nums[mid] = nums[mid], nums[low]\n            low += 1\n            mid += 1\n        elif nums[mid] == 1:\n            mid += 1\n        else:\n            nums[mid], nums[high] = nums[high], nums[mid]\n            high -= 1\n    return nums",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.2689469814300537,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 50,
+        "description": "Given an undirected graph represented as an edge list, return the number of connected components.",
+        "required_tags": [
+            "graphs",
+            "recursion"
+        ],
+        "generated_code": "def solve(n, edges):\n    import sys\n    sys.setrecursionlimit(10**6)\n    adj = [[] for _ in range(n)]\n    for u, v in edges:\n        if 0 <= u < n and 0 <= v < n:\n            adj[u].append(v)\n            adj[v].append(u)\n    visited = [False] * n\n    def dfs(u):\n        visited[u] = True\n        for w in adj[u]:\n            if not visited[w]:\n                dfs(w)\n    components = 0\n    for i in range(n):\n        if not visited[i]:\n            components += 1\n            dfs(i)\n    return components",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'sys' is not defined. Did you forget to import 'sys'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                5,
+                [
+                    [
+                        0,
+                        1
+                    ],
+                    [
+                        1,
+                        2
+                    ],
+                    [
+                        3,
+                        4
+                    ]
+                ]
+            ],
+            "expected": 2,
+            "actual": null
+        },
+        "generic_lesson": "Import modules at the top level",
+        "task_specific_lesson": "Remove import sys and sys.setrecursionlimit from the function",
+        "retry_code": "def solve(n, edges):\n    adj = [[] for _ in range(n)]\n    for u, v in edges:\n        if 0 <= u < n and 0 <= v < n:\n            adj[u].append(v)\n            adj[v].append(u)\n    visited = [False] * n\n    components = 0\n    for i in range(n):\n        if not visited[i]:\n            components += 1\n            stack = [i]\n            visited[i] = True\n            while stack:\n                u = stack.pop()\n                for w in adj[u]:\n                    if not visited[w]:\n                        visited[w] = True\n                        stack.append(w)\n    return components",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.29462480545043945,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 192,
+        "description": "Given a binary matrix, return the area of the largest square containing only ones.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    dp = [0] * (cols + 1)\n    max_side = 0\n    prev = 0\n    for i in range(1, rows + 1):\n        for j in range(1, cols + 1):\n            temp = dp[j]\n            if matrix[i - 1][j - 1] == 1:\n                dp[j] = min(dp[j], dp[j - 1], prev) + 1\n                if dp[j] > max_side:\n                    max_side = dp[j]\n            else:\n                dp[j] = 0\n            prev = temp\n        prev = 0\n    return max_side * max_side",
+        "error": "Wrong Answer. Expected=4, Got=0.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    [
+                        "1",
+                        "1"
+                    ],
+                    [
+                        "1",
+                        "1"
+                    ]
+                ]
+            ],
+            "expected": 4,
+            "actual": 0
+        },
+        "generic_lesson": "Initialize 2D arrays for dynamic programming",
+        "task_specific_lesson": "Replace 1D dp array with 2D array to track state correctly",
+        "retry_code": "def solve(matrix):\n    if not matrix or not matrix[0]:\n        return 0\n    rows, cols = len(matrix), len(matrix[0])\n    dp = [[0] * (cols + 1) for _ in range(rows + 1)]\n    max_side = 0\n    for i in range(1, rows + 1):\n        for j in range(1, cols + 1):\n            if matrix[i - 1][j - 1] == 1:\n                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1\n                if dp[i][j] > max_side:\n                    max_side = dp[i][j]\n            else:\n                dp[i][j] = 0\n    return max_side * max_side",
+        "retry_result": {
+            "quality_score": 0.8,
+            "success": false,
+            "delay_ratio": 0.29548964500427244,
+            "reason": "Wrong Answer. Expected=4, Got=0.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    [
+                        [
+                            "1",
+                            "1"
+                        ],
+                        [
+                            "1",
+                            "1"
+                        ]
+                    ]
+                ],
+                "expected": 4,
+                "actual": 0
+            },
+            "pass_count": 4,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 25,
+        "description": "Given a list of integers and an integer k, return the k most frequent elements.",
+        "required_tags": [
+            "hashmaps",
+            "sorting",
+            "lists"
+        ],
+        "generated_code": "def solve(nums, k):\n    from collections import Counter\n    freq = Counter(nums)\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))\n    return [item[0] for item in sorted_items[:k]]",
+        "error": "Wrong Answer (ORDERING ONLY). Output contains the correct elements/groups, but their order does not match. Expected=[4, 1], Got=[1, 4]. Ensure output order follows the original input order of first appearance - do not sort or reorder groups/elements unless the problem explicitly requires it.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    4,
+                    4,
+                    4,
+                    6,
+                    6,
+                    1,
+                    1,
+                    1
+                ],
+                2
+            ],
+            "expected": [
+                4,
+                1
+            ],
+            "actual": [
+                1,
+                4
+            ]
+        },
+        "generic_lesson": "Preserve original order when not explicitly required",
+        "task_specific_lesson": "Use OrderedDict or track first occurrence to maintain original order",
+        "retry_code": "def solve(nums, k):\n    freq = {}\n    first_idx = {}\n    for i, num in enumerate(nums):\n        freq[num] = freq.get(num, 0) + 1\n        if num not in first_idx:\n            first_idx[num] = i\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], first_idx[x[0]]))\n    return [item[0] for item in sorted_items[:k]]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.30988140106201173,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 236,
+        "description": "Given a list of words and a starting word, return the minimum number of single-character transformations required to reach every other word, where each intermediate word must exist in the list.",
+        "required_tags": [
+            "graphs",
+            "strings",
+            "hashmaps"
+        ],
+        "generated_code": "def solve(words, start):\n    from collections import deque, defaultdict\n\n    # Ensure all words are strings\n    words = [str(w) for w in words]\n    word_set = set(words)\n    if start not in word_set:\n        word_set.add(start)\n        words.append(start)\n\n    # All words assumed same length; if not, transformations only possible between equal length words\n    if not words:\n        return 0\n    L = len(start)\n\n    # Build pattern to words mapping\n    pattern_dict = defaultdict(list)\n    for w in word_set:\n        if len(w) != L:\n            continue\n        for i in range(L):\n            pattern = w[:i] + '*' + w[i+1:]\n            pattern_dict[pattern].append(w)\n\n    # BFS\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        cur = q.popleft()\n        cur_dist = dist[cur]\n        for i in range(L):\n            pattern = cur[:i] + '*' + cur[i+1:]\n            for nxt in pattern_dict.get(pattern, []):\n                if nxt not in dist:\n                    dist[nxt] = cur_dist + 1\n                    q.append(nxt)\n\n    # Determine result\n    max_dist = 0\n    for w in word_set:\n        if w == start:\n            continue\n        if w not in dist:\n            return -1\n        if dist[w] > max_dist:\n            max_dist = dist[w]\n    return max_dist",
+        "error": "Wrong Answer. Expected={'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}, Got=4. TYPE MISMATCH: Expected dict, got int.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    "hot",
+                    "dot",
+                    "dog",
+                    "lot",
+                    "log",
+                    "cog"
+                ],
+                "hit"
+            ],
+            "expected": {
+                "hit": 0,
+                "hot": 1,
+                "dot": 2,
+                "lot": 2,
+                "dog": 3,
+                "log": 3,
+                "cog": 4
+            },
+            "actual": 4
+        },
+        "generic_lesson": "Return all computed values, not just the maximum.",
+        "task_specific_lesson": "Change return statement to return the entire 'dist' dictionary.",
+        "retry_code": "def solve(words, start):\n    from collections import deque, defaultdict\n\n    # Ensure all words are strings\n    words = [str(w) for w in words]\n    word_set = set(words)\n    if start not in word_set:\n        word_set.add(start)\n        words.append(start)\n\n    if not words:\n        return {}\n\n    L = len(start)\n\n    # Build pattern to words mapping\n    pattern_dict = defaultdict(list)\n    for w in word_set:\n        if len(w) != L:\n            continue\n        for i in range(L):\n            pattern = w[:i] + '*' + w[i+1:]\n            pattern_dict[pattern].append(w)\n\n    # BFS to compute distances\n    dist = {start: 0}\n    q = deque([start])\n    while q:\n        cur = q.popleft()\n        cur_dist = dist[cur]\n        for i in range(L):\n            pattern = cur[:i] + '*' + cur[i+1:]\n            for nxt in pattern_dict.get(pattern, []):\n                if nxt not in dist:\n                    dist[nxt] = cur_dist + 1\n                    q.append(nxt)\n\n    # Assign -1 to unreachable words\n    for w in word_set:\n        if w not in dist:\n            dist[w] = -1\n\n    return dist",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.3158832550048828,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 186,
+        "description": "Given an array of piles representing stones and an integer k, two players play optimally by taking between 1 and 2k piles from the front. Return the maximum number of stones the first player can obtain.",
+        "required_tags": [
+            "dynamic_programming",
+            "recursion"
+        ],
+        "generated_code": "def solve(piles):\n    n = len(piles)\n    if n == 0:\n        return 0\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n    from functools import lru_cache\n    @lru_cache(None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        max_take = min(2 * m, n - i)\n        best = 0\n        for x in range(1, max_take + 1):\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n    return dp(0, 1)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 9, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    2,
+                    7,
+                    9,
+                    4,
+                    4
+                ]
+            ],
+            "expected": 10,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Move the import statement for lru_cache above its usage",
+        "retry_code": "def solve(piles):\n    from functools import lru_cache\n    n = len(piles)\n    if n == 0:\n        return 0\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n    @lru_cache(None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        max_take = min(2 * m, n - i)\n        best = 0\n        for x in range(1, max_take + 1):\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n    return dp(0, 1)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.3431364059448242,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 9, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        2,
+                        7,
+                        9,
+                        4,
+                        4
+                    ]
+                ],
+                "expected": 10,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 108,
+        "description": "Given a target position, return the minimum number of instructions needed for a race car starting at position 0 with speed 1 to reach the target.",
+        "required_tags": [
+            "dynamic_programming",
+            "math"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure syntactically valid Python with proper indentation",
+        "task_specific_lesson": "Define a function with required parameters and return type",
+        "retry_code": "def solve(target):\n    from functools import lru_cache\n\n    @lru_cache(None)\n    def dp(t):\n        if t == 0:\n            return 0\n        # find smallest n such that 2^n - 1 >= t\n        n = 1\n        while (1 << n) - 1 < t:\n            n += 1\n        if (1 << n) - 1 == t:\n            return n\n        # option 1: overshoot and reverse\n        ans = n + 1 + dp((1 << n) - 1 - t)\n        # option 2: stop before overshoot, reverse, then go forward some\n        for m in range(n - 1):\n            # go forward (n-1) steps, reverse, go back m steps, reverse again\n            distance = (1 << (n - 1)) - 1 - (1 << m) + 1\n            ans = min(ans, (n - 1) + 1 + m + 1 + dp(t - distance))\n        return ans\n\n    return dp(target)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.22967400550842285,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 3, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    3
+                ],
+                "expected": 2,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 119,
+        "description": "Given a list of stone piles and an integer k, return the minimum cost required to merge all piles into one pile by repeatedly merging exactly k consecutive piles.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure proper syntax and indentation",
+        "task_specific_lesson": "Define a function with the required signature and return type",
+        "retry_code": null,
+        "retry_result": null
+    },
+    {
+        "task_id": 169,
+        "description": "Given an array of integers, return the median of the array without fully sorting it.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    import random\n    def select(k):\n        lo, hi = 0, len(nums) - 1\n        while True:\n            if lo == hi:\n                return nums[lo]\n            pivot_index = random.randint(lo, hi)\n            pivot = nums[pivot_index]\n            # move pivot to end\n            nums[pivot_index], nums[hi] = nums[hi], nums[pivot_index]\n            store = lo\n            for i in range(lo, hi):\n                if nums[i] < pivot:\n                    nums[store], nums[i] = nums[i], nums[store]\n                    store += 1\n            # move pivot to its final place\n            nums[store], nums[hi] = nums[hi], nums[store]\n            if k == store:\n                return nums[store]\n            elif k < store:\n                hi = store - 1\n            else:\n                lo = store + 1\n\n    n = len(nums)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return select(n // 2)\n    else:\n        lower = select(n // 2 - 1)\n        upper = select(n // 2)\n        return (lower + upper) / 2.0",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 29, in solve\n  File \"<string>\", line 8, in select\nNameError: name 'random' is not defined. Did you forget to import 'random'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    3,
+                    2,
+                    1,
+                    4,
+                    6,
+                    5
+                ]
+            ],
+            "expected": 4,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using them",
+        "task_specific_lesson": "Move import random statement to the top of the file",
+        "retry_code": "def solve(nums):\n    import random\n    def select(k):\n        lo, hi = 0, len(nums) - 1\n        while True:\n            if lo == hi:\n                return nums[lo]\n            pivot_index = random.randint(lo, hi)\n            pivot = nums[pivot_index]\n            nums[pivot_index], nums[hi] = nums[hi], nums[pivot_index]\n            store = lo\n            for i in range(lo, hi):\n                if nums[i] < pivot:\n                    nums[store], nums[i] = nums[i], nums[store]\n                    store += 1\n            nums[store], nums[hi] = nums[hi], nums[store]\n            if k == store:\n                return nums[store]\n            elif k < store:\n                hi = store - 1\n            else:\n                lo = store + 1\n\n    n = len(nums)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return select(n // 2)\n    lower = select(n // 2 - 1)\n    upper = select(n // 2)\n    return (lower + upper) / 2.0",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.22370142936706544,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 28, in solve\n  File \"<string>\", line 8, in select\nNameError: name 'random' is not defined. Did you forget to import 'random'?\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        3,
+                        2,
+                        1,
+                        4,
+                        6,
+                        5
+                    ]
+                ],
+                "expected": 4,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 45,
+        "description": "Given a string, return the longest common prefix among all of its words.",
+        "required_tags": [
+            "strings"
+        ],
+        "generated_code": "def solve(words):\n    if not isinstance(words, str):\n        return \"\"\n    word_list = words.split()\n    if not word_list:\n        return \"\"\n    prefix = word_list[0]\n    for w in word_list[1:]:\n        while not w.startswith(prefix):\n            prefix = prefix[:-1]\n            if not prefix:\n                return \"\"\n    return prefix",
+        "error": "Wrong Answer. Expected=fl, Got=.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    "flower",
+                    "flow",
+                    "flight"
+                ]
+            ],
+            "expected": "fl",
+            "actual": ""
+        },
+        "generic_lesson": "Validate input type before processing",
+        "task_specific_lesson": "Check if input is a list of strings, not a single string",
+        "retry_code": "def solve(words):\n    if not isinstance(words, list) or not all(isinstance(w, str) for w in words):\n        return \"\"\n    if not words:\n        return \"\"\n    prefix = words[0]\n    for w in words[1:]:\n        while not w.startswith(prefix):\n            prefix = prefix[:-1]\n            if not prefix:\n                return \"\"\n    return prefix",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.25510339736938475,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 186,
+        "description": "Given an array of piles representing stones and an integer k, two players play optimally by taking between 1 and 2k piles from the front. Return the maximum number of stones the first player can obtain.",
+        "required_tags": [
+            "dynamic_programming",
+            "recursion"
+        ],
+        "generated_code": "def solve(piles):\n    n = len(piles)\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n\n    from functools import lru_cache\n\n    @lru_cache(None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        if i + 2 * m >= n:\n            return suffix[i]\n        best = 0\n        max_take = 2 * m\n        for x in range(1, max_take + 1):\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n\n    return dp(0, 1)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    2,
+                    7,
+                    9,
+                    4,
+                    4
+                ]
+            ],
+            "expected": 10,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Move the import statement for lru_cache to the top of the code",
+        "retry_code": "def solve(piles):\n    from functools import lru_cache\n    n = len(piles)\n    suffix = [0] * (n + 1)\n    for i in range(n - 1, -1, -1):\n        suffix[i] = suffix[i + 1] + piles[i]\n\n    @lru_cache(None)\n    def dp(i, m):\n        if i >= n:\n            return 0\n        if i + 2 * m >= n:\n            return suffix[i]\n        best = 0\n        max_take = 2 * m\n        for x in range(1, max_take + 1):\n            opponent = dp(i + x, max(m, x))\n            current = suffix[i] - opponent\n            if current > best:\n                best = current\n        return best\n\n    return dp(0, 1)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.26828737258911134,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 7, in solve\nNameError: name 'lru_cache' is not defined\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        2,
+                        7,
+                        9,
+                        4,
+                        4
+                    ]
+                ],
+                "expected": 10,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 25,
+        "description": "Given a list of integers and an integer k, return the k most frequent elements.",
+        "required_tags": [
+            "hashmaps",
+            "sorting",
+            "lists"
+        ],
+        "generated_code": "def solve(nums, k):\n    from collections import Counter\n    freq = Counter(nums)\n    # Sort items by frequency descending, then by element value for deterministic output\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], x[0]))\n    return [item[0] for item in sorted_items[:k]]",
+        "error": "Wrong Answer (ORDERING ONLY). Output contains the correct elements/groups, but their order does not match. Expected=[4, 1], Got=[1, 4]. Ensure output order follows the original input order of first appearance - do not sort or reorder groups/elements unless the problem explicitly requires it.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                [
+                    4,
+                    4,
+                    4,
+                    6,
+                    6,
+                    1,
+                    1,
+                    1
+                ],
+                2
+            ],
+            "expected": [
+                4,
+                1
+            ],
+            "actual": [
+                1,
+                4
+            ]
+        },
+        "generic_lesson": "Preserve original order when not explicitly required",
+        "task_specific_lesson": "Use OrderedDict to maintain insertion order or iterate through original list to find first occurrence of each frequent element",
+        "retry_code": "def solve(nums, k):\n    from collections import Counter\n    freq = Counter(nums)\n    first_occurrence = {}\n    for idx, num in enumerate(nums):\n        if num not in first_occurrence:\n            first_occurrence[num] = idx\n    sorted_items = sorted(freq.items(), key=lambda x: (-x[1], first_occurrence[x[0]]))\n    return [item[0] for item in sorted_items[:k]]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.26504077911376955,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 169,
+        "description": "Given an array of integers, return the median of the array without fully sorting it.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": "def solve(nums):\n    import random\n    def select(arr, k):\n        left, right = 0, len(arr) - 1\n        while True:\n            if left == right:\n                return arr[left]\n            pivot = arr[random.randint(left, right)]\n            i = left\n            lt = left\n            gt = right\n            while i <= gt:\n                if arr[i] < pivot:\n                    arr[lt], arr[i] = arr[i], arr[lt]\n                    lt += 1\n                    i += 1\n                elif arr[i] > pivot:\n                    arr[i], arr[gt] = arr[gt], arr[i]\n                    gt -= 1\n                else:\n                    i += 1\n            if k < lt:\n                right = lt - 1\n            elif k > gt:\n                left = gt + 1\n            else:\n                return arr[k]\n    n = len(nums)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return select(nums[:], n // 2)\n    else:\n        a = select(nums[:], n // 2 - 1)\n        b = select(nums[:], n // 2)\n        return (a + b) / 2.0",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 34, in solve\n  File \"<string>\", line 8, in select\nNameError: name 'random' is not defined. Did you forget to import 'random'?\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    3,
+                    2,
+                    1,
+                    4,
+                    6,
+                    5
+                ]
+            ],
+            "expected": 4,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using them",
+        "task_specific_lesson": "Move import random to the top of the file",
+        "retry_code": "def solve(nums):\n    def select(arr, k):\n        left, right = 0, len(arr) - 1\n        while True:\n            if left == right:\n                return arr[left]\n            pivot = arr[random.randint(left, right)]\n            i = left\n            lt = left\n            gt = right\n            while i <= gt:\n                if arr[i] < pivot:\n                    arr[lt], arr[i] = arr[i], arr[lt]\n                    lt += 1\n                    i += 1\n                elif arr[i] > pivot:\n                    arr[i], arr[gt] = arr[gt], arr[i]\n                    gt -= 1\n                else:\n                    i += 1\n            if k < lt:\n                right = lt - 1\n            elif k > gt:\n                left = gt + 1\n            else:\n                return arr[k]\n    n = len(nums)\n    if n == 0:\n        return None\n    if n % 2 == 1:\n        return select(nums[:], n // 2)\n    else:\n        a = select(nums[:], n // 2 - 1)\n        b = select(nums[:], n // 2)\n        return (a + b) / 2.0",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.232651948928833,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 34, in solve\n  File \"<string>\", line 8, in select\nNameError: name 'random' is not defined. Did you forget to import 'random'?\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        3,
+                        2,
+                        1,
+                        4,
+                        6,
+                        5
+                    ]
+                ],
+                "expected": 4,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 133,
+        "description": "Given a string, return the number of different non-empty palindromic subsequences it contains.",
+        "required_tags": [
+            "dynamic_programming",
+            "strings"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure proper syntax and indentation",
+        "task_specific_lesson": "Define a function with correct parameters and return type",
+        "retry_code": "def solve(s):\n    n = len(s)\n    if n == 0:\n        return 0\n    dp = [[0] * n for _ in range(n)]\n    for i in range(n):\n        dp[i][i] = 1\n    for length in range(2, n + 1):\n        for i in range(n - length + 1):\n            j = i + length - 1\n            if s[i] == s[j]:\n                low = i + 1\n                high = j - 1\n                while low <= high and s[low] != s[i]:\n                    low += 1\n                while low <= high and s[high] != s[i]:\n                    high -= 1\n                if low > high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 2\n                elif low == high:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 + 1\n                else:\n                    dp[i][j] = dp[i + 1][j - 1] * 2 - dp[low + 1][high - 1]\n            else:\n                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]\n    return dp[0][n - 1]",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.27109403610229493,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 110,
+        "description": "Given a list of integers and an integer k, determine whether the list can be partitioned into k subsets with equal sums.",
+        "required_tags": [
+            "dynamic_programming",
+            "lists",
+            "recursion"
+        ],
+        "generated_code": "def solve(nums, k):\n    n = len(nums)\n    if k == 0:\n        return False\n    if k == 1:\n        return True\n    if n < k:\n        return False\n    total = sum(nums)\n    if total % k != 0:\n        return False\n    target = total // k\n    nums.sort(reverse=True)\n    if nums[0] > target:\n        return False\n    full_mask = (1 << n) - 1\n    from functools import lru_cache\n\n    @lru_cache(maxsize=None)\n    def dfs(remaining_groups, start_idx, cur_sum, used_mask):\n        if remaining_groups == 1:\n            return True\n        if cur_sum == target:\n            return dfs(remaining_groups - 1, 0, 0, used_mask)\n        i = start_idx\n        while i < n:\n            if not (used_mask >> i) & 1 and cur_sum + nums[i] <= target:\n                new_mask = used_mask | (1 << i)\n                if dfs(remaining_groups, i + 1, cur_sum + nums[i], new_mask):\n                    return True\n                # prune identical numbers to avoid redundant work\n                while i + 1 < n and nums[i] == nums[i + 1]:\n                    i += 1\n            i += 1\n        return False\n\n    return dfs(k, 0, 0, 0)",
+        "error": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 18, in solve\nNameError: name 'lru_cache' is not defined\n",
+        "failure_type": "name_error",
+        "failed_test_case": {
+            "input": [
+                [
+                    5,
+                    4,
+                    3,
+                    3,
+                    2,
+                    2,
+                    1
+                ],
+                4
+            ],
+            "expected": true,
+            "actual": null
+        },
+        "generic_lesson": "Import modules before using their functions",
+        "task_specific_lesson": "Add import statement for lru_cache from functools module",
+        "retry_code": "def solve(nums, k):\n    from functools import lru_cache\n    import sys\n    sys.setrecursionlimit(1000000)\n    n = len(nums)\n    if k == 0:\n        return False\n    if k == 1:\n        return True\n    if n < k:\n        return False\n    total = sum(nums)\n    if total % k != 0:\n        return False\n    target = total // k\n    nums.sort(reverse=True)\n    if nums and nums[0] > target:\n        return False\n    @lru_cache(maxsize=None)\n    def dfs(remaining_groups, start_idx, cur_sum, used_mask):\n        if remaining_groups == 1:\n            return True\n        if cur_sum == target:\n            return dfs(remaining_groups - 1, 0, 0, used_mask)\n        i = start_idx\n        while i < n:\n            if not (used_mask >> i) & 1 and cur_sum + nums[i] <= target:\n                new_mask = used_mask | (1 << i)\n                if dfs(remaining_groups, i + 1, cur_sum + nums[i], new_mask):\n                    return True\n                while i + 1 < n and nums[i] == nums[i + 1]:\n                    i += 1\n            i += 1\n        return False\n    return dfs(k, 0, 0, 0)",
+        "retry_result": {
+            "quality_score": 0.0,
+            "success": false,
+            "delay_ratio": 0.2582768440246582,
+            "reason": "Traceback (most recent call last):\n  File \"/Users/jayajagriti/Documents/VS CODE/framework/simulation_engine.py\", line 420, in _sandbox_worker\n    result = target_func(*input_data)\n  File \"<string>\", line 2, in solve\nNameError: name 'sys' is not defined. Did you forget to import 'sys'?\n",
+            "failure_type": "name_error",
+            "failed_test_case": {
+                "input": [
+                    [
+                        5,
+                        4,
+                        3,
+                        3,
+                        2,
+                        2,
+                        1
+                    ],
+                    4
+                ],
+                "expected": true,
+                "actual": null
+            },
+            "pass_count": 0,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 190,
+        "description": "Given an integer n, return the number of strings of length n consisting only of vowels and satisfying the allowed transition rules between vowels.",
+        "required_tags": [
+            "dynamic_programming",
+            "math"
+        ],
+        "generated_code": "def solve(n):\n    MOD = 10**9 + 7\n    if n <= 0:\n        return 0\n    a = e = i = o = u = 1\n    for _ in range(2, n + 1):\n        na = (e + u) % MOD\n        ne = (a + i) % MOD\n        ni = (a + e + o + u) % MOD\n        no = i % MOD\n        nu = (i + o) % MOD\n        a, e, i, o, u = na, ne, ni, no, nu\n    return (a + e + i + o + u) % MOD",
+        "error": "Wrong Answer. Expected=10, Got=11.",
+        "failure_type": "wrong_answer",
+        "failed_test_case": {
+            "input": [
+                2
+            ],
+            "expected": 10,
+            "actual": 11
+        },
+        "generic_lesson": "Validate iteration ranges in dynamic programming",
+        "task_specific_lesson": "Change the loop range to start from 1, not 2, to correctly calculate the number of strings",
+        "retry_code": "def solve(n):\n    MOD = 10**9 + 7\n    if n <= 0:\n        return 0\n    a = e = i = o = u = 1\n    for _ in range(1, n):\n        na = (e + u) % MOD\n        ne = (a + i) % MOD\n        ni = (a + e + o + u) % MOD\n        no = i % MOD\n        nu = (i + o) % MOD\n        a, e, i, o, u = na, ne, ni, no, nu\n    return (a + e + i + o + u) % MOD",
+        "retry_result": {
+            "quality_score": 0.2,
+            "success": false,
+            "delay_ratio": 0.2696633815765381,
+            "reason": "Wrong Answer. Expected=10, Got=11.",
+            "failure_type": "wrong_answer",
+            "failed_test_case": {
+                "input": [
+                    2
+                ],
+                "expected": 10,
+                "actual": 11
+            },
+            "pass_count": 1,
+            "total_count": 5
+        }
+    },
+    {
+        "task_id": 213,
+        "description": "Given an integer array, return the number of ways to split it into three contiguous non-empty subarrays such that the sums are non-decreasing.",
+        "required_tags": [
+            "searching",
+            "lists"
+        ],
+        "generated_code": null,
+        "error": "Failed to generate syntactically valid Python",
+        "failure_type": "syntax_error",
+        "failed_test_case": null,
+        "generic_lesson": "Ensure proper syntax and indentation",
+        "task_specific_lesson": "Define a function with the required signature and initialize variables before use",
+        "retry_code": "def solve(nums):\n    n = len(nums)\n    if n < 3:\n        return 0\n    pref = [0] * (n + 1)\n    for i in range(n):\n        pref[i + 1] = pref[i] + nums[i]\n    total = pref[n]\n    count = 0\n    for i in range(1, n - 1):\n        left = pref[i]\n        for j in range(i + 1, n):\n            middle = pref[j] - pref[i]\n            right = total - pref[j]\n            if left <= middle <= right:\n                count += 1\n    return count",
+        "retry_result": {
+            "quality_score": 1.0,
+            "success": true,
+            "delay_ratio": 0.21938915252685548,
+            "reason": "Passed all deterministic checks.",
+            "failure_type": null,
+            "failed_test_case": null,
+            "pass_count": 5,
+            "total_count": 5
+        }
+    }
+]

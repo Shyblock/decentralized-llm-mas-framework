@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 165,
+            "required_tags": [
+                "recursion",
+                "searching"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Avoid unnecessary imports and ensure proper module usage"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [
+            "L1"
+        ],
+        "searching": [
+            "L1"
+        ],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

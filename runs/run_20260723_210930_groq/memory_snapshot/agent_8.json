@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 196,
+            "required_tags": [
+                "sorting",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Ensure output type matches problem requirements"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [
+            "L1"
+        ],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

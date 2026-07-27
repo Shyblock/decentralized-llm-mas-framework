@@ -1,0 +1,58 @@
+{
+    "next_lesson_id": 5,
+    "lessons": {
+        "L1": {
+            "task_id": 45,
+            "required_tags": [
+                "strings"
+            ],
+            "failure_type": "attribute_error",
+            "lesson": "Validate input type before applying string operations"
+        },
+        "L2": {
+            "task_id": 228,
+            "required_tags": [
+                "hashmaps",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use max function for handling edge cases"
+        },
+        "L3": {
+            "task_id": 45,
+            "required_tags": [
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate input types before processing"
+        },
+        "L4": {
+            "task_id": 208,
+            "required_tags": [
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Handle edge cases explicitly"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [
+            "L2"
+        ],
+        "lists": [],
+        "math": [
+            "L2",
+            "L4"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L1",
+            "L3"
+        ],
+        "trees": []
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 215,
+            "required_tags": [
+                "dynamic_programming",
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Update state in-place, avoiding redundant copies"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1"
+        ],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [
+            "L1"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

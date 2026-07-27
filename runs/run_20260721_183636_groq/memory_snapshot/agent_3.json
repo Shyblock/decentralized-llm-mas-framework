@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 114,
+            "required_tags": [
+                "dynamic_programming",
+                "lists"
+            ],
+            "failure_type": "type_error",
+            "lesson": "Validate input data types before processing"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1"
+        ],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [
+            "L1"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

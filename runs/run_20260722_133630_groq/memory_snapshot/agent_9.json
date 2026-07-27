@@ -1,0 +1,55 @@
+{
+    "next_lesson_id": 4,
+    "lessons": {
+        "L1": {
+            "task_id": 3,
+            "required_tags": [
+                "recursion",
+                "sorting"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Define functions before calling them"
+        },
+        "L2": {
+            "task_id": 143,
+            "required_tags": [
+                "hashmaps",
+                "recursion",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Consider all possible insertions in recursive search"
+        },
+        "L3": {
+            "task_id": 202,
+            "required_tags": [
+                "lists"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use iteration bounds based on problem constraints"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [
+            "L2"
+        ],
+        "lists": [
+            "L3"
+        ],
+        "math": [],
+        "recursion": [
+            "L1",
+            "L2"
+        ],
+        "searching": [],
+        "sorting": [
+            "L1"
+        ],
+        "strings": [
+            "L2"
+        ],
+        "trees": []
+    }
+}

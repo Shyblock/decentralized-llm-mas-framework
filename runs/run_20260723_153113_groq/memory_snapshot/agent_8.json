@@ -1,0 +1,45 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 196,
+            "required_tags": [
+                "sorting",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Ensure output type matches problem requirements"
+        },
+        "L2": {
+            "task_id": 236,
+            "required_tags": [
+                "graphs",
+                "hashmaps",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use appropriate data structures for problem requirements"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L2"
+        ],
+        "hashmaps": [
+            "L2"
+        ],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [
+            "L1"
+        ],
+        "strings": [
+            "L1",
+            "L2"
+        ],
+        "trees": []
+    }
+}

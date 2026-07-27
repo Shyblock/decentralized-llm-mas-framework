@@ -1,0 +1,45 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 236,
+            "required_tags": [
+                "graphs",
+                "hashmaps",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate output against expected format"
+        },
+        "L2": {
+            "task_id": 218,
+            "required_tags": [
+                "graphs",
+                "searching"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Initialize max values to negative infinity or minimum possible value"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1",
+            "L2"
+        ],
+        "hashmaps": [
+            "L1"
+        ],
+        "lists": [],
+        "math": [],
+        "recursion": [],
+        "searching": [
+            "L2"
+        ],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

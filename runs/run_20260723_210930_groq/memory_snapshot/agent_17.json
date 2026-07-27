@@ -1,0 +1,30 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 46,
+            "required_tags": [
+                "lists",
+                "sorting"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Always return expected data types"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [
+            "L1"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [
+            "L1"
+        ],
+        "strings": [],
+        "trees": []
+    }
+}

@@ -1,0 +1,43 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 218,
+            "required_tags": [
+                "graphs",
+                "searching"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Initialize variables to handle edge cases"
+        },
+        "L2": {
+            "task_id": 240,
+            "required_tags": [
+                "recursion",
+                "trees"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Ensure all imports are properly handled"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [],
+        "lists": [],
+        "math": [],
+        "recursion": [
+            "L2"
+        ],
+        "searching": [
+            "L1"
+        ],
+        "sorting": [],
+        "strings": [],
+        "trees": [
+            "L2"
+        ]
+    }
+}

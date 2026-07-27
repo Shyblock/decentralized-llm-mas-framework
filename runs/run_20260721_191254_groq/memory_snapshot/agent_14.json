@@ -1,0 +1,48 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 236,
+            "required_tags": [
+                "graphs",
+                "hashmaps",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate output against all inputs, not just successful transformations"
+        },
+        "L2": {
+            "task_id": 25,
+            "required_tags": [
+                "hashmaps",
+                "lists",
+                "sorting"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Preserve original order when not explicitly required to sort"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [
+            "L1",
+            "L2"
+        ],
+        "lists": [
+            "L2"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [
+            "L2"
+        ],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

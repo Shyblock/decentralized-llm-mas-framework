@@ -1,0 +1,5519 @@
+[!] Groq key 1 exhausted. Switching to next key...
+[+] Now using Groq key 2
+================================================================================
+def solve(words):
+    if not words:
+        return []
+    n = len(words[0])
+    prefix_map = {}
+    for w in words:
+        for i in range(n + 1):
+            prefix = w[:i]
+            prefix_map.setdefault(prefix, []).append(w)
+    result = []
+
+    def backtrack(step, path):
+        if step == n:
+            result.append(path[:])
+            return
+        prefix = ''.join((word[step] for word in path))
+        for cand in prefix_map.get(prefix, []):
+            path.append(cand)
+            backtrack(step + 1, path)
+            path.pop()
+    for w in words:
+        backtrack(1, [w])
+    return result
+================================================================================
+================================================================================
+def solve(n):
+    if n < 2:
+        return 0
+    is_prime = bytearray(b'\x01') * (n + 1)
+    is_prime[0] = is_prime[1] = 0
+    limit = int(n ** 0.5) + 1
+    for i in range(2, limit):
+        if is_prime[i]:
+            step = i
+            start = i * i
+            is_prime[start:n + 1:step] = b'\x00' * ((n - start) // step + 1)
+    total = 0
+    for i in range(2, n + 1):
+        if is_prime[i]:
+            total += i
+    return total
+================================================================================
+================================================================================
+def solve(a, b):
+    n, m = (len(a), len(b))
+    if n == 0 or m == 0:
+        return 0
+    prev = [0] * (m + 1)
+    cur = [0] * (m + 1)
+    for i in range(1, n + 1):
+        ai = a[i - 1]
+        for j in range(1, m + 1):
+            if ai == b[j - 1]:
+                cur[j] = prev[j - 1] + 1
+            else:
+                cur[j] = cur[j - 1] if cur[j - 1] > prev[j] else prev[j]
+        prev, cur = (cur, prev)
+    return prev[m]
+================================================================================
+================================================================================
+def solve(grid):
+    if not grid or not grid[0]:
+        return 0
+    rows, cols = (len(grid), len(grid[0]))
+    dp = [0] * cols
+    for i in range(rows):
+        for j in range(cols):
+            if i == 0 and j == 0:
+                dp[j] = grid[i][j]
+            elif i == 0:
+                dp[j] = dp[j - 1] + grid[i][j]
+            elif j == 0:
+                dp[j] = dp[j] + grid[i][j]
+            else:
+                dp[j] = min(dp[j], dp[j - 1]) + grid[i][j]
+    return dp[-1]
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return 0
+    prefix = [0] * (n + 1)
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + nums[i]
+    left = [-1] * n
+    stack = []
+    for i in range(n):
+        while stack and nums[stack[-1]] >= nums[i]:
+            stack.pop()
+        left[i] = stack[-1] if stack else -1
+        stack.append(i)
+    right = [n] * n
+    stack = []
+    for i in range(n - 1, -1, -1):
+        while stack and nums[stack[-1]] > nums[i]:
+            stack.pop()
+        right[i] = stack[-1] if stack else n
+        stack.append(i)
+    max_product = -10 ** 30
+    for i in range(n):
+        total = prefix[right[i]] - prefix[left[i] + 1]
+        product = nums[i] * total
+        if product > max_product:
+            max_product = product
+    return max_product
+================================================================================
+================================================================================
+def solve(heights):
+    if not heights or not heights[0]:
+        return []
+    m, n = (len(heights), len(heights[0]))
+
+    def bfs(starts):
+        visited = [[False] * n for _ in range(m)]
+        q = deque(starts)
+        for i, j in starts:
+            visited[i][j] = True
+        while q:
+            i, j = q.popleft()
+            h = heights[i][j]
+            for di, dj in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                ni, nj = (i + di, j + dj)
+                if 0 <= ni < m and 0 <= nj < n and (not visited[ni][nj]) and (heights[ni][nj] >= h):
+                    visited[ni][nj] = True
+                    q.append((ni, nj))
+        return visited
+    top_left_starts = [(0, j) for j in range(n)] + [(i, 0) for i in range(m)]
+    bottom_right_starts = [(m - 1, j) for j in range(n)] + [(i, n - 1) for i in range(m)]
+    reach_tl = bfs(top_left_starts)
+    reach_br = bfs(bottom_right_starts)
+    result = []
+    for i in range(m):
+        for j in range(n):
+            if reach_tl[i][j] and reach_br[i][j]:
+                result.append([i, j])
+    return result
+================================================================================
+================================================================================
+def solve(n):
+    return n.bit_count()
+================================================================================
+================================================================================
+def solve(nums):
+    strs = [str(x) for x in nums]
+
+    def compare(a, b):
+        if a + b < b + a:
+            return -1
+        elif a + b > b + a:
+            return 1
+        else:
+            return 0
+    strs.sort(key=cmp_to_key(compare))
+    result = ''.join(strs).lstrip('0')
+    return result if result else '0'
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 102
+TYPE     : <class 'int'>
+RESULT   : '102'
+TYPE     : <class 'str'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(nums):
+    strs = [str(x) for x in nums]
+
+    def compare(a, b):
+        if a + b < b + a:
+            return -1
+        elif a + b > b + a:
+            return 1
+        else:
+            return 0
+    strs.sort(key=cmp_to_key(compare))
+    result = ''.join(strs).lstrip('0')
+    if not result:
+        result = '0'
+    return int(result)
+================================================================================
+          sorting: 0.272 -> 0.546
+          strings: 0.302 -> 0.564
+================================================================================
+def solve(a, b):
+    a = abs(a)
+    b = abs(b)
+    while b:
+        a, b = (b, a % b)
+    return a
+================================================================================
+================================================================================
+def solve(n):
+
+    def dfs(start, target, path, res):
+        i = start
+        while i * i <= target:
+            if target % i == 0:
+                quotient = target // i
+                path.append(i)
+                res.append(path + [quotient])
+                dfs(i, quotient, path, res)
+                path.pop()
+            i += 1
+    if n <= 1:
+        return []
+    result = []
+    dfs(2, n, [], result)
+    return result
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n < 3:
+        return n
+    lis = [0] * n
+    tails = []
+    for i, x in enumerate(nums):
+        pos = bisect_left(tails, x)
+        if pos == len(tails):
+            tails.append(x)
+        else:
+            tails[pos] = x
+        lis[i] = pos + 1
+    lds = [0] * n
+    tails = []
+    for i in range(n - 1, -1, -1):
+        x = nums[i]
+        pos = bisect_left(tails, x)
+        if pos == len(tails):
+            tails.append(x)
+        else:
+            tails[pos] = x
+        lds[i] = pos + 1
+    max_len = 0
+    for i in range(n):
+        if lis[i] > 1 and lds[i] > 1:
+            cur = lis[i] + lds[i] - 1
+            if cur > max_len:
+                max_len = cur
+    if max_len < 3:
+        return n
+    return n - max_len
+================================================================================
+================================================================================
+def solve(board):
+    target = '123450'
+    start = ''.join((str(num) for row in board for num in row))
+
+    def inversion_count(s):
+        arr = [int(c) for c in s if c != '0']
+        inv = 0
+        for i in range(len(arr)):
+            for j in range(i + 1, len(arr)):
+                if arr[i] > arr[j]:
+                    inv += 1
+        return inv
+    if inversion_count(start) % 2 != inversion_count(target) % 2:
+        return -1
+    neighbors = {0: (1, 3), 1: (0, 2, 4), 2: (1, 5), 3: (0, 4), 4: (1, 3, 5), 5: (2, 4)}
+    q = deque()
+    q.append((start, start.index('0'), 0))
+    visited = {start}
+    while q:
+        state, zero_idx, dist = q.popleft()
+        if state == target:
+            return dist
+        for nb in neighbors[zero_idx]:
+            lst = list(state)
+            lst[zero_idx], lst[nb] = (lst[nb], lst[zero_idx])
+            new_state = ''.join(lst)
+            if new_state not in visited:
+                visited.add(new_state)
+                q.append((new_state, nb, dist + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(pattern, s):
+    words = s.split()
+    if len(pattern) != len(words):
+        return False
+    char_to_word = {}
+    word_to_char = {}
+    for c, w in zip(pattern, words):
+        if c in char_to_word:
+            if char_to_word[c] != w:
+                return False
+        else:
+            char_to_word[c] = w
+        if w in word_to_char:
+            if word_to_char[w] != c:
+                return False
+        else:
+            word_to_char[w] = c
+    return True
+================================================================================
+================================================================================
+def solve(n, k):
+
+    def backtrack(start, path):
+        if len(path) == k:
+            result.append(path[:])
+            return
+        for i in range(start, n + 1):
+            path.append(i)
+            backtrack(i + 1, path)
+            path.pop()
+    result = []
+    if k <= n and k >= 0:
+        backtrack(1, [])
+    return result
+================================================================================
+================================================================================
+def solve(routes, source, target):
+    if source == target:
+        return 0
+    stop_to_routes = {}
+    for i, route in enumerate(routes):
+        for stop in route:
+            stop_to_routes.setdefault(stop, set()).add(i)
+    if source not in stop_to_routes or target not in stop_to_routes:
+        return -1
+    visited_routes = set()
+    visited_stops = set([source])
+    q = deque()
+    for r in stop_to_routes[source]:
+        visited_routes.add(r)
+        q.append((r, 1))
+    while q:
+        route_idx, buses = q.popleft()
+        if target in routes[route_idx]:
+            return buses
+        for stop in routes[route_idx]:
+            if stop in visited_stops:
+                continue
+            visited_stops.add(stop)
+            for nxt_route in stop_to_routes.get(stop, []):
+                if nxt_route not in visited_routes:
+                    visited_routes.add(nxt_route)
+                    q.append((nxt_route, buses + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(nums, k):
+    last_index = {}
+    for i, num in enumerate(nums):
+        if num in last_index and i - last_index[num] <= k:
+            return True
+        last_index[num] = i
+    return False
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    next_idx = [n] * n
+    prev_idx = [-1] * n
+    last = {}
+    for i, ch in enumerate(s):
+        prev_idx[i] = last.get(ch, -1)
+        last[ch] = i
+    last.clear()
+    for i in range(n - 1, -1, -1):
+        ch = s[i]
+        next_idx[i] = last.get(ch, n)
+        last[ch] = i
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                inner = dp[i + 1][j - 1] if i + 1 <= j - 1 else 0
+                i1 = next_idx[i]
+                j1 = prev_idx[j]
+                if i1 > j1:
+                    dp[i][j] = inner * 2 + 2
+                elif i1 == j1:
+                    dp[i][j] = inner * 2 + 1
+                else:
+                    sub = dp[i1 + 1][j1 - 1] if i1 + 1 <= j1 - 1 else 0
+                    dp[i][j] = inner * 2 - sub
+            else:
+                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]
+    return dp[0][n - 1]
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    dp0 = 1
+    dp1 = 0
+    if s[0] != '0':
+        dp1 = 1
+    else:
+        dp1 = 0
+    for i in range(2, n + 1):
+        cur = 0
+        if s[i - 1] != '0':
+            cur += dp1
+        two = int(s[i - 2:i])
+        if 10 <= two <= 26:
+            cur += dp0
+        dp0, dp1 = (dp1, cur)
+    return dp1 if n > 1 else dp1
+================================================================================
+================================================================================
+def solve(n):
+    return math.comb(2 * n, n) // (n + 1)
+================================================================================
+================================================================================
+def solve(words, start):
+    L = len(start)
+    same_len_words = [w for w in words if len(w) == L]
+    word_set = set(same_len_words)
+    if start not in word_set:
+        word_set.add(start)
+        same_len_words.append(start)
+    pattern_map = {}
+    for w in word_set:
+        for i in range(L):
+            pat = w[:i] + '_' + w[i + 1:]
+            pattern_map.setdefault(pat, []).append(w)
+    dist = {}
+    q = deque()
+    q.append(start)
+    dist[start] = 0
+    while q:
+        cur = q.popleft()
+        cur_d = dist[cur]
+        for i in range(L):
+            pat = cur[:i] + '_' + cur[i + 1:]
+            for nb in pattern_map.get(pat, []):
+                if nb not in dist:
+                    dist[nb] = cur_d + 1
+                    q.append(nb)
+    result = []
+    for w in words:
+        if len(w) != L:
+            result.append(-1)
+        else:
+            result.append(dist.get(w, -1))
+    return result
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : {'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}
+TYPE     : <class 'dict'>
+RESULT   : [1, 2, 3, 2, 3, 4]
+TYPE     : <class 'list'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(words, start):
+    L = len(start)
+    same_len_words = [w for w in words if len(w) == L]
+    word_set = set(same_len_words)
+    if start not in word_set:
+        word_set.add(start)
+        same_len_words.append(start)
+    pattern_map = {}
+    for w in word_set:
+        for i in range(L):
+            pat = w[:i] + '_' + w[i + 1:]
+            pattern_map.setdefault(pat, []).append(w)
+    dist = {}
+    q = deque([start])
+    dist[start] = 0
+    while q:
+        cur = q.popleft()
+        cur_d = dist[cur]
+        for i in range(L):
+            pat = cur[:i] + '_' + cur[i + 1:]
+            for nb in pattern_map.get(pat, []):
+                if nb not in dist:
+                    dist[nb] = cur_d + 1
+                    q.append(nb)
+    result = {}
+    for w in words:
+        if len(w) != L:
+            result[w] = -1
+        else:
+            result[w] = dist.get(w, -1)
+    return result
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : {'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}
+TYPE     : <class 'dict'>
+RESULT   : {'hot': 1, 'dot': 2, 'dog': 3, 'lot': 2, 'log': 3, 'cog': 4}
+TYPE     : <class 'dict'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(rods):
+    dp = {0: 0}
+    for x in rods:
+        cur = dict(dp)
+        for diff, taller in cur.items():
+            shorter = taller - diff
+            ndiff = diff + x
+            ntaller = taller + x
+            if ntaller > dp.get(ndiff, -1):
+                dp[ndiff] = ntaller
+            ndiff2 = abs(diff - x)
+            if diff >= x:
+                ntaller2 = taller
+            else:
+                ntaller2 = shorter + x
+            if ntaller2 > dp.get(ndiff2, -1):
+                dp[ndiff2] = ntaller2
+    return dp.get(0, 0)
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n < 3:
+        return 0
+    dp = [{} for _ in range(n)]
+    total = 0
+    for i in range(n):
+        for j in range(i):
+            diff = nums[i] - nums[j]
+            cnt = dp[j].get(diff, 0)
+            total += cnt
+            dp[i][diff] = dp[i].get(diff, 0) + cnt + 1
+    return total
+================================================================================
+================================================================================
+def solve(grid):
+    if not grid or not grid[0]:
+        return True
+    n, m = (len(grid), len(grid[0]))
+    colors = set()
+    for row in grid:
+        colors.update(row)
+    bounds = {}
+    INF = 10 ** 9
+    for c in colors:
+        bounds[c] = [INF, -1, INF, -1]
+    for i in range(n):
+        for j in range(m):
+            c = grid[i][j]
+            b = bounds[c]
+            if i < b[0]:
+                b[0] = i
+            if i > b[1]:
+                b[1] = i
+            if j < b[2]:
+                b[2] = j
+            if j > b[3]:
+                b[3] = j
+    adj = {c: set() for c in colors}
+    indeg = {c: 0 for c in colors}
+    for c in colors:
+        min_r, max_r, min_c, max_c = bounds[c]
+        for i in range(min_r, max_r + 1):
+            row = grid[i]
+            for j in range(min_c, max_c + 1):
+                other = row[j]
+                if other != c:
+                    if other not in adj[c]:
+                        adj[c].add(other)
+                        indeg[other] += 1
+    q = deque([c for c in colors if indeg[c] == 0])
+    visited = 0
+    while q:
+        cur = q.popleft()
+        visited += 1
+        for nb in adj[cur]:
+            indeg[nb] -= 1
+            if indeg[nb] == 0:
+                q.append(nb)
+    return visited == len(colors)
+================================================================================
+================================================================================
+def solve(words):
+
+    def can_form(word, word_set):
+        n = len(word)
+        if not word_set:
+            return False
+        dp = [False] * (n + 1)
+        dp[0] = True
+        for i in range(1, n + 1):
+            for j in range(0, i):
+                if dp[j] and word[j:i] in word_set:
+                    dp[i] = True
+                    break
+        return dp[n]
+    sorted_words = sorted(words, key=len)
+    seen = set()
+    result = []
+    for w in sorted_words:
+        if w and can_form(w, seen):
+            result.append(w)
+        seen.add(w)
+    return result
+================================================================================
+================================================================================
+def solve(times, n, k):
+    INF = float('inf')
+    adj = [[] for _ in range(n + 1)]
+    for u, v, w in times:
+        adj[u].append((v, w))
+    dist = [INF] * (n + 1)
+    dist[k] = 0
+    heap = [(0, k)]
+    while heap:
+        d, u = heapq.heappop(heap)
+        if d != dist[u]:
+            continue
+        for v, w in adj[u]:
+            nd = d + w
+            if nd < dist[v]:
+                dist[v] = nd
+                heapq.heappush(heap, (nd, v))
+    max_dist = max(dist[1:])
+    return -1 if max_dist == INF else max_dist
+================================================================================
+================================================================================
+def solve(colors, edges):
+    n = len(colors)
+    color_idx = [ord(c) - 97 if isinstance(c, str) else c for c in colors]
+    adj = [[] for _ in range(n)]
+    indeg = [0] * n
+    for u, v in edges:
+        adj[u].append(v)
+        indeg[v] += 1
+    q = deque([i for i in range(n) if indeg[i] == 0])
+    dp = [[0] * 26 for _ in range(n)]
+    for i in range(n):
+        dp[i][color_idx[i]] = 1
+    visited = 0
+    ans = 0
+    while q:
+        u = q.popleft()
+        visited += 1
+        for c in range(26):
+            if dp[u][c] > ans:
+                ans = dp[u][c]
+        for v in adj[u]:
+            for c in range(26):
+                cand = dp[u][c] + (1 if c == color_idx[v] else 0)
+                if cand > dp[v][c]:
+                    dp[v][c] = cand
+            indeg[v] -= 1
+            if indeg[v] == 0:
+                q.append(v)
+    return -1 if visited != n else ans
+================================================================================
+================================================================================
+def solve(n):
+    s = sorted(str(abs(n)))
+    length = len(s)
+    power = 1
+    while len(str(power)) <= length:
+        if len(str(power)) == length and sorted(str(power)) == s:
+            return True
+        power <<= 1
+    return False
+================================================================================
+================================================================================
+def solve(n):
+    if n == 0:
+        return 0
+
+    def is_sq(x):
+        r = math.isqrt(x)
+        return r * r == x
+    if is_sq(n):
+        return 1
+    limit = math.isqrt(n)
+    for i in range(1, limit + 1):
+        if is_sq(n - i * i):
+            return 2
+    m = n
+    while m % 4 == 0:
+        m //= 4
+    if m % 8 == 7:
+        return 4
+    return 3
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    m = min(nums)
+    return sum(nums) - m * len(nums)
+================================================================================
+================================================================================
+def solve(equations, values, queries):
+    parent = {}
+    weight = {}
+
+    def add(x):
+        if x not in parent:
+            parent[x] = x
+            weight[x] = 1.0
+
+    def find(x):
+        if parent[x] != x:
+            orig_parent = parent[x]
+            root = find(orig_parent)
+            weight[x] *= weight[orig_parent]
+            parent[x] = root
+        return parent[x]
+
+    def union(x, y, value):
+        add(x)
+        add(y)
+        root_x = find(x)
+        root_y = find(y)
+        if root_x == root_y:
+            return
+        ratio = value * weight[y] / weight[x]
+        parent[root_x] = root_y
+        weight[root_x] = ratio
+    for (a, b), v in zip(equations, values):
+        union(a, b, v)
+    result = []
+    for a, b in queries:
+        if a not in parent or b not in parent:
+            result.append(-1.0)
+            continue
+        root_a = find(a)
+        root_b = find(b)
+        if root_a != root_b:
+            result.append(-1.0)
+        else:
+            result.append(weight[a] / weight[b])
+    return result
+================================================================================
+================================================================================
+def solve(nums):
+    low = 0
+    mid = 0
+    high = len(nums) - 1
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = (nums[mid], nums[low])
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:
+            nums[mid], nums[high] = (nums[high], nums[mid])
+            high -= 1
+    return nums
+================================================================================
+================================================================================
+def solve(n):
+
+    def backtrack(path, open_cnt, close_cnt, res):
+        if len(path) == 2 * n:
+            res.append(''.join(path))
+            return
+        if open_cnt < n:
+            path.append('(')
+            backtrack(path, open_cnt + 1, close_cnt, res)
+            path.pop()
+        if close_cnt < open_cnt:
+            path.append(')')
+            backtrack(path, open_cnt, close_cnt + 1, res)
+            path.pop()
+    result = []
+    backtrack([], 0, 0, result)
+    return result
+================================================================================
+================================================================================
+def solve(nums, k):
+    n = len(nums)
+    if n == 0:
+        return []
+    k %= n
+    if k == 0:
+        return nums[:]
+    return nums[-k:] + nums[:-k]
+================================================================================
+================================================================================
+def solve(arr, k):
+    n = len(arr)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        cur_max = 0
+        best = 0
+        for j in range(1, min(k, i) + 1):
+            cur_max = cur_max if cur_max > arr[i - j] else arr[i - j]
+            val = dp[i - j] + cur_max * j
+            if val > best:
+                best = val
+        dp[i] = best
+    return dp[n]
+================================================================================
+================================================================================
+def solve(boxes):
+    n = len(boxes)
+    if n == 0:
+        return 0
+    boxes_sorted = sorted(boxes, key=lambda b: (-b[0], -b[1]))
+    dp = [0] * n
+    max_height = 0
+    for i, (w_i, d_i, h_i) in enumerate(boxes_sorted):
+        best = 0
+        for j in range(i):
+            w_j, d_j, _ = boxes_sorted[j]
+            if w_i < w_j and d_i < d_j:
+                if dp[j] > best:
+                    best = dp[j]
+        dp[i] = h_i + best
+        if dp[i] > max_height:
+            max_height = dp[i]
+    return max_height
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n <= 2:
+        return True
+    inc = True
+    dec = True
+    for i in range(n - 1):
+        if nums[i] < nums[i + 1]:
+            dec = False
+        if nums[i] > nums[i + 1]:
+            inc = False
+        if not inc and (not dec):
+            return False
+    return inc or dec
+================================================================================
+================================================================================
+def solve(dungeon):
+    if not dungeon or not dungeon[0]:
+        return 1
+    m, n = (len(dungeon), len(dungeon[0]))
+    dp = [[0] * n for _ in range(m)]
+    for i in range(m - 1, -1, -1):
+        for j in range(n - 1, -1, -1):
+            if i == m - 1 and j == n - 1:
+                need = 1 - dungeon[i][j]
+            elif i == m - 1:
+                need = dp[i][j + 1] - dungeon[i][j]
+            elif j == n - 1:
+                need = dp[i + 1][j] - dungeon[i][j]
+            else:
+                need = min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
+            dp[i][j] = need if need > 0 else 1
+    return dp[0][0]
+================================================================================
+================================================================================
+def solve(begin, end, words):
+    word_set = set(words)
+    if end not in word_set:
+        return 0
+    if begin == end:
+        return 1
+    L = len(begin)
+    queue = deque()
+    queue.append((begin, 1))
+    visited = set([begin])
+    while queue:
+        current, steps = queue.popleft()
+        for i in range(L):
+            for c in 'abcdefghijklmnopqrstuvwxyz':
+                if c == current[i]:
+                    continue
+                nxt = current[:i] + c + current[i + 1:]
+                if nxt == end:
+                    return steps + 1
+                if nxt in word_set and nxt not in visited:
+                    visited.add(nxt)
+                    queue.append((nxt, steps + 1))
+    return 0
+================================================================================
+================================================================================
+def solve(boxes):
+    if not boxes:
+        return 0
+    boxes = [tuple(b) for b in boxes]
+    boxes.sort(key=lambda x: (x[0], x[1], x[2]))
+    n = len(boxes)
+    dp = [0] * n
+    for i in range(n):
+        w_i, d_i, h_i = boxes[i]
+        dp[i] = h_i
+        for j in range(i):
+            w_j, d_j, h_j = boxes[j]
+            if w_i < w_j and d_i < d_j and (h_i < h_j):
+                if dp[j] + h_i > dp[i]:
+                    dp[i] = dp[j] + h_i
+    return max(dp)
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 14
+TYPE     : <class 'int'>
+RESULT   : 5
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(boxes):
+    if not boxes:
+        return 0
+    boxes = [tuple(b) for b in boxes]
+    boxes.sort(key=lambda x: (x[0], x[1]), reverse=True)
+    n = len(boxes)
+    dp = [0] * n
+    for i in range(n):
+        w_i, d_i, h_i = boxes[i]
+        dp[i] = h_i
+        for j in range(i):
+            w_j, d_j, _ = boxes[j]
+            if w_i < w_j and d_i < d_j:
+                if dp[j] + h_i > dp[i]:
+                    dp[i] = dp[j] + h_i
+    return max(dp)
+================================================================================
+          dynamic_programming: 0.276 -> 0.551
+          lists: 0.243 -> 0.531
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n <= 4:
+        return 0
+    nums.sort()
+    diffs = [nums[-1] - nums[3], nums[-2] - nums[2], nums[-3] - nums[1], nums[-4] - nums[0]]
+    return min(diffs)
+================================================================================
+================================================================================
+def solve(n):
+
+    def fib_pair(k):
+        if k == 0:
+            return (0, 1)
+        else:
+            a, b = fib_pair(k >> 1)
+            c = a * ((b << 1) - a)
+            d = a * a + b * b
+            if k & 1:
+                return (d, c + d)
+            else:
+                return (c, d)
+    return fib_pair(n)[0]
+================================================================================
+================================================================================
+def solve(nums):
+    first = second = float('inf')
+    for x in nums:
+        if x <= first:
+            first = x
+        elif x <= second:
+            second = x
+        else:
+            return True
+    return False
+================================================================================
+================================================================================
+def solve(nums, k):
+    last_index = {}
+    for i, num in enumerate(nums):
+        if num in last_index and i - last_index[num] <= k:
+            return True
+        last_index[num] = i
+    return False
+================================================================================
+================================================================================
+def solve(nums, k):
+    return [item for item, _ in Counter(nums).most_common(k)]
+================================================================================
+================================================================================
+def solve(stickers, target):
+    sticker_counts = [Counter(s) for s in stickers]
+
+    @lru_cache(None)
+    def dp(rem):
+        if not rem:
+            return 0
+        target_cnt = Counter(rem)
+        ans = float('inf')
+        first_char = rem[0]
+        for sc in sticker_counts:
+            if sc[first_char] == 0:
+                continue
+            new_rem_parts = []
+            for ch, cnt in target_cnt.items():
+                remain = cnt - sc.get(ch, 0)
+                if remain > 0:
+                    new_rem_parts.append(ch * remain)
+            new_rem = ''.join(sorted(''.join(new_rem_parts)))
+            if new_rem != rem:
+                sub = dp(new_rem)
+                if sub != -1:
+                    ans = min(ans, 1 + sub)
+        return -1 if ans == float('inf') else ans
+    return dp(''.join(sorted(target)))
+================================================================================
+================================================================================
+def solve(stickers, target):
+    sys.setrecursionlimit(1000000)
+    sticker_counts = [Counter(s) for s in stickers]
+
+    @lru_cache(None)
+    def dp(rem):
+        if not rem:
+            return 0
+        target_cnt = Counter(rem)
+        ans = float('inf')
+        first_char = rem[0]
+        for sc in sticker_counts:
+            if sc[first_char] == 0:
+                continue
+            new_rem_parts = []
+            for ch, cnt in target_cnt.items():
+                remain = cnt - sc.get(ch, 0)
+                if remain > 0:
+                    new_rem_parts.append(ch * remain)
+            new_rem = ''.join(sorted(''.join(new_rem_parts)))
+            if new_rem != rem:
+                sub = dp(new_rem)
+                if sub != -1:
+                    ans = min(ans, 1 + sub)
+        return -1 if ans == float('inf') else ans
+    return dp(''.join(sorted(target)))
+================================================================================
+================================================================================
+def solve(grid):
+    n = len(grid)
+    visited = [[False] * n for _ in range(n)]
+    heap = [(grid[0][0], 0, 0)]
+    visited[0][0] = True
+    while heap:
+        t, x, y = heapq.heappop(heap)
+        if x == n - 1 and y == n - 1:
+            return t
+        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            nx, ny = (x + dx, y + dy)
+            if 0 <= nx < n and 0 <= ny < n and (not visited[nx][ny]):
+                visited[nx][ny] = True
+                heapq.heappush(heap, (max(t, grid[nx][ny]), nx, ny))
+    return -1
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    max_ending = max_sofar = nums[0]
+    for x in nums[1:]:
+        max_ending = x if max_ending < 0 else max_ending + x
+        if max_ending > max_sofar:
+            max_sofar = max_ending
+    return max_sofar
+================================================================================
+================================================================================
+def solve(words):
+    n = len(words)
+    if n < 2:
+        return 0
+    masks = []
+    lengths = []
+    for w in words:
+        mask = 0
+        for ch in set(w):
+            if 'a' <= ch <= 'z':
+                mask |= 1 << ord(ch) - 97
+            elif 'A' <= ch <= 'Z':
+                mask |= 1 << ord(ch) - 65 + 26
+            else:
+                idx = ord(ch) % 64
+                mask |= 1 << 52 + idx
+        masks.append(mask)
+        lengths.append(len(w))
+    max_product = 0
+    for i in range(n):
+        mi = masks[i]
+        li = lengths[i]
+        for j in range(i + 1, n):
+            if mi & masks[j] == 0:
+                prod = li * lengths[j]
+                if prod > max_product:
+                    max_product = prod
+    return max_product
+================================================================================
+================================================================================
+def solve(words, target):
+    MOD = 10 ** 9 + 7
+    if not words or not target:
+        return 0
+    m = len(words[0])
+    n = len(target)
+    if n > m:
+        return 0
+    counts = [[0] * 26 for _ in range(m)]
+    for w in words:
+        for idx, ch in enumerate(w):
+            counts[idx][ord(ch) - 97] += 1
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for col in range(m):
+        cnt_col = counts[col]
+        for i in range(n, 0, -1):
+            char_idx = ord(target[i - 1]) - 97
+            ways = cnt_col[char_idx]
+            if ways:
+                dp[i] = (dp[i] + dp[i - 1] * ways) % MOD
+    return dp[n]
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    left_rem = right_rem = 0
+    for ch in s:
+        if ch == '(':
+            left_rem += 1
+        elif ch == ')':
+            if left_rem > 0:
+                left_rem -= 1
+            else:
+                right_rem += 1
+    result = set()
+    visited = set()
+
+    def dfs(i, lrem, rrem, bal, path):
+        key = (i, lrem, rrem, bal)
+        if key in visited:
+            return
+        visited.add(key)
+        if i == n:
+            if lrem == 0 and rrem == 0 and (bal == 0):
+                result.add(path)
+            return
+        ch = s[i]
+        if ch == '(':
+            if lrem > 0:
+                dfs(i + 1, lrem - 1, rrem, bal, path)
+            dfs(i + 1, lrem, rrem, bal + 1, path + '(')
+        elif ch == ')':
+            if rrem > 0:
+                dfs(i + 1, lrem, rrem - 1, bal, path)
+            if bal > 0:
+                dfs(i + 1, lrem, rrem, bal - 1, path + ')')
+        else:
+            dfs(i + 1, lrem, rrem, bal, path + ch)
+    dfs(0, left_rem, right_rem, 0, '')
+    return list(result)
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : ['(())()', '()()()']
+TYPE     : <class 'list'>
+RESULT   : ['(())()']
+TYPE     : <class 'list'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(s):
+
+    def is_valid(st):
+        bal = 0
+        for ch in st:
+            if ch == '(':
+                bal += 1
+            elif ch == ')':
+                bal -= 1
+                if bal < 0:
+                    return False
+        return bal == 0
+    if s is None:
+        return []
+    visited = set([s])
+    queue = deque([s])
+    results = set()
+    found = False
+    while queue:
+        level_size = len(queue)
+        for _ in range(level_size):
+            cur = queue.popleft()
+            if is_valid(cur):
+                results.add(cur)
+                found = True
+            if found:
+                continue
+            for i, ch in enumerate(cur):
+                if ch not in ('(', ')'):
+                    continue
+                nxt = cur[:i] + cur[i + 1:]
+                if nxt not in visited:
+                    visited.add(nxt)
+                    queue.append(nxt)
+        if found:
+            break
+    return list(results)
+================================================================================
+          graphs: 0.595 -> 0.743
+          strings: 0.393 -> 0.622
+================================================================================
+def solve(rods):
+    dp = {0: 0}
+    for rod in rods:
+        cur = list(dp.items())
+        for diff, common in cur:
+            nd = diff + rod
+            if nd not in dp or dp[nd] < common:
+                dp[nd] = common
+            nd = abs(diff - rod)
+            new_common = common + min(rod, diff)
+            if nd not in dp or dp[nd] < new_common:
+                dp[nd] = new_common
+    return dp.get(0, 0)
+================================================================================
+================================================================================
+def solve(nums):
+    freq = Counter(nums)
+    tails = defaultdict(int)
+    for x in nums:
+        if freq[x] == 0:
+            continue
+        freq[x] -= 1
+        if tails[x - 1] > 0:
+            tails[x - 1] -= 1
+            tails[x] += 1
+        elif freq[x + 1] > 0 and freq[x + 2] > 0:
+            freq[x + 1] -= 1
+            freq[x + 2] -= 1
+            tails[x + 2] += 1
+        else:
+            return False
+    return True
+================================================================================
+================================================================================
+def solve(nums):
+
+    def quicksort(arr):
+        if len(arr) <= 1:
+            return arr
+        pivot = arr[0]
+        less = []
+        equal = []
+        greater = []
+        for x in arr:
+            if x < pivot:
+                less.append(x)
+            elif x == pivot:
+                equal.append(x)
+            else:
+                greater.append(x)
+        return quicksort(less) + equal + quicksort(greater)
+    return quicksort(nums)
+================================================================================
+================================================================================
+def solve(envelopes):
+    if not envelopes:
+        return 0
+    sorted_env = sorted(envelopes, key=lambda x: (x[0], -x[1]))
+    dp = []
+    for w, h in sorted_env:
+        i = bisect.bisect_left(dp, h)
+        if i == len(dp):
+            dp.append(h)
+        else:
+            dp[i] = h
+    return len(dp)
+================================================================================
+================================================================================
+def solve(nums):
+    nums.sort()
+    res = 1
+    for x in nums:
+        if x > res:
+            break
+        res += x
+    return res
+================================================================================
+================================================================================
+def solve(nums):
+    first = second = third = None
+    for x in nums:
+        if x == first or x == second or x == third:
+            continue
+        if first is None or x > first:
+            third = second
+            second = first
+            first = x
+        elif second is None or x > second:
+            third = second
+            second = x
+        elif third is None or x > third:
+            third = x
+    return first if third is None else third
+================================================================================
+================================================================================
+def solve(n):
+    if n <= 1:
+        return 0
+    dp = [0] * (n + 1)
+    dp[1] = 0
+    for i in range(2, n + 1):
+        best = dp[i - 1] + 1
+        if i % 2 == 0:
+            cand = dp[i // 2] + 1
+            if cand < best:
+                best = cand
+        if i % 3 == 0:
+            cand = dp[i // 3] + 1
+            if cand < best:
+                best = cand
+        dp[i] = best
+    return dp[n]
+================================================================================
+================================================================================
+def solve(num):
+    mask = (1 << num.bit_length()) - 1
+    return ~num & mask
+================================================================================
+================================================================================
+def solve(n):
+    return n > 0 and n & n - 1 == 0
+================================================================================
+================================================================================
+def solve(nums):
+    tails = []
+    for x in nums:
+        i = bisect.bisect_left(tails, x)
+        if i == len(tails):
+            tails.append(x)
+        else:
+            tails[i] = x
+    return len(tails)
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return 0
+    up = down = 1
+    for i in range(1, n):
+        if nums[i] > nums[i - 1]:
+            up = down + 1
+        elif nums[i] < nums[i - 1]:
+            down = up + 1
+    return up if up > down else down
+================================================================================
+================================================================================
+def solve(nums):
+    if nums is None:
+        return 0
+    n = len(nums)
+    if n == 0:
+        return 0
+    up = down = 1
+    for i in range(1, n):
+        if nums[i] > nums[i - 1]:
+            up = down + 1
+        elif nums[i] < nums[i - 1]:
+            down = up + 1
+    return up if up > down else down
+================================================================================
+          dynamic_programming: 0.242 -> 0.531
+          lists: 0.209 -> 0.512
+================================================================================
+def solve(dungeon):
+    if not dungeon or not dungeon[0]:
+        return 1
+    m, n = (len(dungeon), len(dungeon[0]))
+    dp = [[0] * n for _ in range(m)]
+    for i in range(m - 1, -1, -1):
+        for j in range(n - 1, -1, -1):
+            if i == m - 1 and j == n - 1:
+                need = 1 - dungeon[i][j]
+            elif i == m - 1:
+                need = dp[i][j + 1] - dungeon[i][j]
+            elif j == n - 1:
+                need = dp[i + 1][j] - dungeon[i][j]
+            else:
+                need = min(dp[i + 1][j], dp[i][j + 1]) - dungeon[i][j]
+            dp[i][j] = need if need > 0 else 1
+    return dp[0][0]
+================================================================================
+================================================================================
+def solve(nums):
+
+    def quicksort(arr):
+        if len(arr) <= 1:
+            return arr
+        pivot = arr[0]
+        less = []
+        equal = []
+        greater = []
+        for x in arr:
+            if x < pivot:
+                less.append(x)
+            elif x == pivot:
+                equal.append(x)
+            else:
+                greater.append(x)
+        return quicksort(less) + equal + quicksort(greater)
+    return quicksort(nums)
+================================================================================
+================================================================================
+def solve(word):
+    if not word:
+        return True
+    if word.isupper() or word.islower():
+        return True
+    if word[0].isupper() and word[1:].islower():
+        return True
+    return False
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return []
+    threshold = n / 3
+    counts = Counter(nums)
+    return [num for num, cnt in counts.items() if cnt > threshold]
+================================================================================
+================================================================================
+def solve(routes, source, target):
+    if source == target:
+        return 0
+    stop_to_routes = {}
+    for i, route in enumerate(routes):
+        for stop in route:
+            stop_to_routes.setdefault(stop, []).append(i)
+    if source not in stop_to_routes or target not in stop_to_routes:
+        return -1
+    visited_routes = set()
+    visited_stops = set([source])
+    q = deque()
+    for r in stop_to_routes[source]:
+        q.append((r, 1))
+        visited_routes.add(r)
+    while q:
+        route_idx, buses = q.popleft()
+        if target in routes[route_idx]:
+            return buses
+        for stop in routes[route_idx]:
+            if stop in visited_stops:
+                continue
+            visited_stops.add(stop)
+            for nxt_route in stop_to_routes.get(stop, []):
+                if nxt_route not in visited_routes:
+                    visited_routes.add(nxt_route)
+                    q.append((nxt_route, buses + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(s, t):
+    n, m = (len(s), len(t))
+    best_len = n + 1
+    best_start = -1
+    start = [-1] * (m + 1)
+    for i in range(n):
+        prev = start[:]
+        start[0] = i
+        for j in range(m, 0, -1):
+            if s[i] == t[j - 1] and prev[j - 1] != -1:
+                start[j] = prev[j - 1]
+        if start[m] != -1:
+            cur_len = i - start[m] + 1
+            if cur_len < best_len:
+                best_len = cur_len
+                best_start = start[m]
+    if best_start == -1:
+        return ''
+    return s[best_start:best_start + best_len]
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 'bcde'
+TYPE     : <class 'str'>
+RESULT   : 'abcde'
+TYPE     : <class 'str'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(nums, k):
+    count = {0: 1}
+    total = 0
+    result = 0
+    for num in nums:
+        total += num
+        result += count.get(total - k, 0)
+        count[total] = count.get(total, 0) + 1
+    return result
+================================================================================
+================================================================================
+def solve(nums):
+    low = 0
+    mid = 0
+    high = len(nums) - 1
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = (nums[mid], nums[low])
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:
+            nums[mid], nums[high] = (nums[high], nums[mid])
+            high -= 1
+    return nums
+================================================================================
+================================================================================
+def solve(triangle):
+    if not triangle:
+        return 0
+    dp = triangle[-1][:]
+    for i in range(len(triangle) - 2, -1, -1):
+        row = triangle[i]
+        for j in range(len(row)):
+            dp[j] = row[j] + (dp[j] if dp[j] < dp[j + 1] else dp[j + 1])
+    return dp[0]
+================================================================================
+================================================================================
+def solve(s, t):
+    m, n = (len(s), len(t))
+    if n == 0:
+        return 1
+    if m == 0:
+        return 0
+    dp = [0] * (n + 1)
+    dp[0] = 1
+    for i in range(m):
+        ch = s[i]
+        for j in range(n, 0, -1):
+            if ch == t[j - 1]:
+                dp[j] += dp[j - 1]
+    return dp[n]
+================================================================================
+================================================================================
+def solve(n, cuts):
+    cuts = sorted(cuts)
+    m = len(cuts) + 2
+    points = [0] + cuts + [n]
+    dp = [[0] * m for _ in range(m)]
+    for length in range(2, m):
+        for i in range(m - length):
+            j = i + length
+            best = float('inf')
+            cost = points[j] - points[i]
+            for k in range(i + 1, j):
+                cur = dp[i][k] + dp[k][j] + cost
+                if cur < best:
+                    best = cur
+            dp[i][j] = 0 if best == float('inf') else best
+    return dp[0][m - 1]
+================================================================================
+================================================================================
+def solve(edges):
+    n = len(edges)
+    visited = [False] * n
+    max_len = 0
+    for i in range(n):
+        if visited[i]:
+            continue
+        cur = i
+        order = {}
+        step = 0
+        while cur != -1 and 0 <= cur < n and (not visited[cur]):
+            visited[cur] = True
+            order[cur] = step
+            step += 1
+            nxt = edges[cur]
+            cur = nxt if 0 <= nxt < n else -1
+        if cur != -1 and cur in order:
+            cycle_len = step - order[cur]
+            if cycle_len > max_len:
+                max_len = cycle_len
+    return max_len
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : -1
+TYPE     : <class 'int'>
+RESULT   : 0
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(edges):
+    n = len(edges)
+    visited = [False] * n
+    max_len = 0
+    for i in range(n):
+        if visited[i]:
+            continue
+        cur = i
+        order = {}
+        step = 0
+        while cur != -1 and 0 <= cur < n and (not visited[cur]):
+            visited[cur] = True
+            order[cur] = step
+            step += 1
+            nxt = edges[cur]
+            cur = nxt if 0 <= nxt < n else -1
+        if cur != -1 and cur in order:
+            cycle_len = step - order[cur]
+            if cycle_len > max_len:
+                max_len = cycle_len
+    return -1 if max_len == 0 else max_len
+================================================================================
+          graphs: 0.637 -> 0.765
+          searching: 0.641 -> 0.767
+================================================================================
+def solve(nums):
+    distinct = set(nums)
+    if not distinct:
+        return None
+    if len(distinct) < 3:
+        return max(distinct)
+    first = second = third = None
+    for x in distinct:
+        if first is None or x > first:
+            third = second
+            second = first
+            first = x
+        elif second is None or x > second:
+            third = second
+            second = x
+        elif third is None or x > third:
+            third = x
+    return third
+================================================================================
+================================================================================
+def solve(a, b):
+    a = abs(a)
+    b = abs(b)
+    while b:
+        a, b = (b, a % b)
+    return a
+================================================================================
+================================================================================
+def solve(board, word):
+    if not board or not board[0]:
+        return not word
+    rows, cols = (len(board), len(board[0]))
+    word_len = len(word)
+
+    def dfs(r, c, idx):
+        if idx == word_len:
+            return True
+        if r < 0 or r >= rows or c < 0 or (c >= cols) or (board[r][c] != word[idx]):
+            return False
+        temp = board[r][c]
+        board[r][c] = None
+        found = dfs(r + 1, c, idx + 1) or dfs(r - 1, c, idx + 1) or dfs(r, c + 1, idx + 1) or dfs(r, c - 1, idx + 1)
+        board[r][c] = temp
+        return found
+    for i in range(rows):
+        for j in range(cols):
+            if board[i][j] == word[0]:
+                if dfs(i, j, 0):
+                    return True
+    return False
+================================================================================
+================================================================================
+def solve(nums1, nums2):
+    set1 = set(nums1)
+    set2 = set(nums2)
+    return list(set1 & set2)
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    dp0, dp1 = (1, 0)
+    for i in range(1, n + 1):
+        cur = 0
+        if s[i - 1] != '0':
+            cur += dp1 if i > 1 else dp0
+        if i >= 2:
+            two = int(s[i - 2:i])
+            if 10 <= two <= 26:
+                cur += dp0
+        dp0, dp1 = (dp1, cur)
+    return dp1
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 2
+TYPE     : <class 'int'>
+RESULT   : 1
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(nums, k):
+    count = 0
+    prefix_counts = {0: 1}
+    current_sum = 0
+    for num in nums:
+        current_sum += num
+        count += prefix_counts.get(current_sum - k, 0)
+        prefix_counts[current_sum] = prefix_counts.get(current_sum, 0) + 1
+    return count
+================================================================================
+================================================================================
+def solve(target):
+    memo = {0: 0}
+
+    def dp(t):
+        if t in memo:
+            return memo[t]
+        n = t.bit_length()
+        if (1 << n) - 1 == t:
+            memo[t] = n
+        else:
+            ans = n + 1 + dp((1 << n) - 1 - t)
+            for m in range(n - 1):
+                forward_m = (1 << m) - 1
+                forward_n1 = (1 << n - 1) - 1
+                remaining = forward_n1 - (t - forward_m)
+                if remaining < 0:
+                    continue
+                cur = m + n + 1 + dp(remaining)
+                if cur < ans:
+                    ans = cur
+            memo[t] = ans
+        return memo[t]
+    return dp(target)
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 7
+TYPE     : <class 'int'>
+RESULT   : 8
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(n, flights, src, dst, k):
+    INF = 10 ** 15
+    if src == dst:
+        return 0
+    prev = [INF] * n
+    prev[src] = 0
+    for _ in range(k + 1):
+        cur = prev[:]
+        for u, v, w in flights:
+            if prev[u] != INF and prev[u] + w < cur[v]:
+                cur[v] = prev[u] + w
+        prev = cur
+    return -1 if prev[dst] == INF else prev[dst]
+================================================================================
+================================================================================
+def solve(nums):
+    prod_counts = {}
+    n = len(nums)
+    for i in range(n):
+        a = nums[i]
+        for j in range(i + 1, n):
+            p = a * nums[j]
+            prod_counts[p] = prod_counts.get(p, 0) + 1
+    total = 0
+    for cnt in prod_counts.values():
+        if cnt > 1:
+            total += cnt * (cnt - 1) * 2
+    return total
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 8
+TYPE     : <class 'int'>
+RESULT   : 4
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(nums):
+    prod_counts = {}
+    n = len(nums)
+    for i in range(n):
+        a = nums[i]
+        for j in range(i + 1, n):
+            p = a * nums[j]
+            prod_counts[p] = prod_counts.get(p, 0) + 1
+    total = 0
+    for cnt in prod_counts.values():
+        if cnt > 1:
+            total += cnt * (cnt - 1) * 4
+    return total
+================================================================================
+          hashmaps: 0.620 -> 0.758
+          math: 0.590 -> 0.740
+================================================================================
+def solve(n):
+    return n > 0 and n & n - 1 == 0
+================================================================================
+================================================================================
+def solve(s):
+    max_len = 0
+    depth_len = {0: 0}
+    for part in s.split('\n'):
+        depth = 0
+        while depth < len(part) and part[depth] == '\t':
+            depth += 1
+        name = part[depth:]
+        if '.' in name:
+            cur_len = depth_len[depth] + len(name)
+            if cur_len > max_len:
+                max_len = cur_len
+        else:
+            depth_len[depth + 1] = depth_len[depth] + len(name) + 1
+    return max_len
+================================================================================
+================================================================================
+def solve(nums, k):
+    count = {0: 1}
+    total = 0
+    result = 0
+    for num in nums:
+        total += num
+        result += count.get(total - k, 0)
+        count[total] = count.get(total, 0) + 1
+    return result
+================================================================================
+================================================================================
+def solve(matrix, target):
+    for row in matrix:
+        lo, hi = (0, len(row) - 1)
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            val = row[mid]
+            if val == target:
+                return True
+            elif val < target:
+                lo = mid + 1
+            else:
+                hi = mid - 1
+    return False
+================================================================================
+================================================================================
+def solve(n, edges, src):
+    MOD = 10 ** 9 + 7
+    adj = [[] for _ in range(n)]
+    for u, v, w in edges:
+        adj[u].append((v, w))
+    INF = 10 ** 18
+    dist = [INF] * n
+    cnt = [0] * n
+    dist[src] = 0
+    cnt[src] = 1
+    heap = [(0, src)]
+    while heap:
+        d, u = heapq.heappop(heap)
+        if d != dist[u]:
+            continue
+        for v, w in adj[u]:
+            nd = d + w
+            if nd < dist[v]:
+                dist[v] = nd
+                cnt[v] = cnt[u]
+                heapq.heappush(heap, (nd, v))
+            elif nd == dist[v]:
+                cnt[v] = (cnt[v] + cnt[u]) % MOD
+    return cnt
+================================================================================
+================================================================================
+def solve(citations):
+    if not citations:
+        return 0
+    sorted_cites = sorted(citations, reverse=True)
+    h = 0
+    for i, c in enumerate(sorted_cites, start=1):
+        if c >= i:
+            h = i
+        else:
+            break
+    return h
+================================================================================
+================================================================================
+def solve(n, dislikes):
+    adj = [[] for _ in range(n + 1)]
+    for u, v in dislikes:
+        if 1 <= u <= n and 1 <= v <= n:
+            adj[u].append(v)
+            adj[v].append(u)
+    color = [0] * (n + 1)
+    for start in range(1, n + 1):
+        if color[start] != 0:
+            continue
+        color[start] = 1
+        q = deque([start])
+        while q:
+            node = q.popleft()
+            for nb in adj[node]:
+                if color[nb] == 0:
+                    color[nb] = -color[node]
+                    q.append(nb)
+                elif color[nb] == color[node]:
+                    return False
+    return True
+================================================================================
+================================================================================
+def solve(nums, k):
+    if k < 0:
+        return False
+    last_index = {}
+    for i, v in enumerate(nums):
+        if v in last_index and i - last_index[v] <= k:
+            return True
+        last_index[v] = i
+    return False
+================================================================================
+================================================================================
+def solve(equations):
+    parent = {}
+    rank = {}
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(x, y):
+        rx, ry = (find(x), find(y))
+        if rx == ry:
+            return
+        if rank[rx] < rank[ry]:
+            parent[rx] = ry
+        elif rank[rx] > rank[ry]:
+            parent[ry] = rx
+        else:
+            parent[ry] = rx
+            rank[rx] += 1
+    for eq in equations:
+        a, op, b = (eq[0], eq[1:3], eq[3])
+        if a not in parent:
+            parent[a] = a
+            rank[a] = 0
+        if b not in parent:
+            parent[b] = b
+            rank[b] = 0
+    for eq in equations:
+        if eq[1] == '=':
+            a, b = (eq[0], eq[3])
+            union(a, b)
+    for eq in equations:
+        if eq[1] == '!':
+            a, b = (eq[0], eq[3])
+            if find(a) == find(b):
+                return False
+    return True
+================================================================================
+================================================================================
+def solve(nums):
+    low = 0
+    mid = 0
+    high = len(nums) - 1
+    while mid <= high:
+        if nums[mid] == 0:
+            nums[low], nums[mid] = (nums[mid], nums[low])
+            low += 1
+            mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:
+            nums[mid], nums[high] = (nums[high], nums[mid])
+            high -= 1
+    return nums
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    dp = [{} for _ in range(n)]
+    total = 0
+    for i in range(n):
+        for j in range(i):
+            diff = nums[i] - nums[j]
+            cnt = dp[j].get(diff, 0)
+            total += cnt
+            dp[i][diff] = dp[i].get(diff, 0) + cnt + 1
+    return total
+================================================================================
+================================================================================
+def solve(board, word):
+    if not board or not board[0]:
+        return False
+    rows, cols = (len(board), len(board[0]))
+    word_len = len(word)
+
+    def dfs(r, c, i):
+        if i == word_len:
+            return True
+        if r < 0 or r >= rows or c < 0 or (c >= cols) or (board[r][c] != word[i]):
+            return False
+        temp = board[r][c]
+        board[r][c] = None
+        found = dfs(r + 1, c, i + 1) or dfs(r - 1, c, i + 1) or dfs(r, c + 1, i + 1) or dfs(r, c - 1, i + 1)
+        board[r][c] = temp
+        return found
+    for i in range(rows):
+        for j in range(cols):
+            if board[i][j] == word[0]:
+                if dfs(i, j, 0):
+                    return True
+    return False
+================================================================================
+================================================================================
+def solve(n, k):
+
+    def backtrack(start, path):
+        if len(path) == k:
+            result.append(path[:])
+            return
+        for i in range(start, n + 1):
+            path.append(i)
+            backtrack(i + 1, path)
+            path.pop()
+    result = []
+    if k <= n and k >= 0:
+        backtrack(1, [])
+    return result
+================================================================================
+================================================================================
+def solve(n):
+
+    def dfs(start, target, path, res):
+        i = start
+        while i * i <= target:
+            if target % i == 0:
+                quotient = target // i
+                path.append(i)
+                res.append(path + [quotient])
+                dfs(i, quotient, path, res)
+                path.pop()
+            i += 1
+    if n <= 3:
+        return []
+    result = []
+    dfs(2, n, [], result)
+    return result
+================================================================================
+================================================================================
+def solve(tasks, n):
+    if not tasks:
+        return 0
+    freq = Counter(tasks)
+    max_freq = max(freq.values())
+    max_count = sum((1 for v in freq.values() if v == max_freq))
+    part_count = max_freq - 1
+    part_length = n + 1
+    empty_slots = part_count * part_length
+    slots_filled_by_max = max_count
+    idle_slots = max(0, empty_slots - (len(tasks) - slots_filled_by_max))
+    return len(tasks) + idle_slots
+================================================================================
+[!] Groq key 2 exhausted. Switching to next key...
+[+] Now using Groq key 3
+================================================================================
+def solve(words):
+    n = len(words)
+    if n < 2:
+        return 0
+    masks = []
+    lengths = []
+    for w in words:
+        mask = 0
+        for ch in w:
+            idx = ord(ch) - 97
+            if 0 <= idx < 26:
+                mask |= 1 << idx
+            else:
+                mask |= 1 << idx + 26 if idx >= 0 else 0
+        masks.append(mask)
+        lengths.append(len(w))
+    max_product = 0
+    for i in range(n):
+        mi = masks[i]
+        li = lengths[i]
+        for j in range(i + 1, n):
+            if mi & masks[j] == 0:
+                prod = li * lengths[j]
+                if prod > max_product:
+                    max_product = prod
+    return max_product
+================================================================================
+================================================================================
+def solve(n, edges):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v)
+        adj[v].append(u)
+    visited = [False] * n
+
+    def dfs(u):
+        visited[u] = True
+        for w in adj[u]:
+            if not visited[w]:
+                dfs(w)
+    components = 0
+    for i in range(n):
+        if not visited[i]:
+            components += 1
+            dfs(i)
+    return components
+================================================================================
+================================================================================
+def solve(vals, edges):
+    n = len(vals)
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        adj[u].append(v)
+        adj[v].append(u)
+    parent = list(range(n))
+    rank = [0] * n
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(x, y):
+        rx, ry = (find(x), find(y))
+        if rx == ry:
+            return
+        if rank[rx] < rank[ry]:
+            parent[rx] = ry
+        elif rank[rx] > rank[ry]:
+            parent[ry] = rx
+        else:
+            parent[ry] = rx
+            rank[rx] += 1
+    val_to_nodes = defaultdict(list)
+    for i, v in enumerate(vals):
+        val_to_nodes[v].append(i)
+    answer = 0
+    for value in sorted(val_to_nodes.keys()):
+        nodes = val_to_nodes[value]
+        for node in nodes:
+            for nb in adj[node]:
+                if vals[nb] <= value:
+                    union(node, nb)
+        comp_count = defaultdict(int)
+        for node in nodes:
+            root = find(node)
+            comp_count[root] += 1
+        for cnt in comp_count.values():
+            answer += cnt * (cnt + 1) // 2
+    return answer
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n < 2:
+        return 0
+    stack = []
+    for i in range(n):
+        if not stack or nums[i] < nums[stack[-1]]:
+            stack.append(i)
+    max_width = 0
+    for j in range(n - 1, -1, -1):
+        while stack and nums[stack[-1]] <= nums[j]:
+            i = stack.pop()
+            width = j - i
+            if width > max_width:
+                max_width = width
+        if not stack:
+            break
+    return max_width
+================================================================================
+================================================================================
+def solve(matrix):
+    if not matrix or not matrix[0]:
+        return []
+    res = []
+    top, bottom = (0, len(matrix) - 1)
+    left, right = (0, len(matrix[0]) - 1)
+    while top <= bottom and left <= right:
+        for col in range(left, right + 1):
+            res.append(matrix[top][col])
+        top += 1
+        for row in range(top, bottom + 1):
+            res.append(matrix[row][right])
+        right -= 1
+        if top <= bottom:
+            for col in range(right, left - 1, -1):
+                res.append(matrix[bottom][col])
+            bottom -= 1
+        if left <= right:
+            for row in range(bottom, top - 1, -1):
+                res.append(matrix[row][left])
+            left += 1
+    return res
+================================================================================
+================================================================================
+def solve(words):
+    groups = {}
+    for w in words:
+        key = ''.join(sorted(w))
+        groups.setdefault(key, []).append(w)
+    return list(groups.values())
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return []
+    threshold = n / 3
+    counts = Counter(nums)
+    return [num for num, cnt in counts.items() if cnt > threshold]
+================================================================================
+================================================================================
+def solve(envelopes):
+    if not envelopes:
+        return 0
+    envelopes.sort(key=lambda x: (x[0], -x[1]))
+    lis = []
+    for _, h in envelopes:
+        idx = bisect_left(lis, h)
+        if idx == len(lis):
+            lis.append(h)
+        else:
+            lis[idx] = h
+    return len(lis)
+================================================================================
+================================================================================
+def solve(n):
+    if not isinstance(n, int):
+        raise TypeError('Input must be an integer')
+    if n < 0:
+        raise ValueError('Input must be non‑negative')
+    if n == 0:
+        return 1
+    if n == 1:
+        return 1
+    if n == 2:
+        return 2
+    dp0, dp1, dp2 = (1, 1, 2)
+    for i in range(3, n + 1):
+        dp3 = 2 * dp2 + dp0
+        dp0, dp1, dp2 = (dp1, dp2, dp3)
+    return dp2
+================================================================================
+================================================================================
+def solve(matrix):
+    if not matrix or not matrix[0]:
+        return 0
+    rows, cols = (len(matrix), len(matrix[0]))
+    dp = [0] * (cols + 1)
+    max_side = 0
+    prev = 0
+    for i in range(1, rows + 1):
+        for j in range(1, cols + 1):
+            temp = dp[j]
+            if matrix[i - 1][j - 1] == 1:
+                dp[j] = min(dp[j], dp[j - 1], prev) + 1
+                if dp[j] > max_side:
+                    max_side = dp[j]
+            else:
+                dp[j] = 0
+            prev = temp
+        prev = 0
+    return max_side * max_side
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 4
+TYPE     : <class 'int'>
+RESULT   : 0
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(matrix):
+    if not matrix or not matrix[0]:
+        return 0
+    rows, cols = (len(matrix), len(matrix[0]))
+    dp = [[0] * (cols + 1) for _ in range(rows + 1)]
+    max_side = 0
+    for i in range(1, rows + 1):
+        for j in range(1, cols + 1):
+            val = matrix[i - 1][j - 1]
+            if val == 1 or val == '1':
+                dp[i][j] = min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]) + 1
+                if dp[i][j] > max_side:
+                    max_side = dp[i][j]
+            else:
+                dp[i][j] = 0
+    return max_side * max_side
+================================================================================
+          dynamic_programming: 0.486 -> 0.672
+          lists: 0.515 -> 0.689
+================================================================================
+def solve(s, t):
+    if len(s) != len(t):
+        return False
+    map_st = {}
+    map_ts = {}
+    for ch_s, ch_t in zip(s, t):
+        if ch_s in map_st:
+            if map_st[ch_s] != ch_t:
+                return False
+        else:
+            map_st[ch_s] = ch_t
+        if ch_t in map_ts:
+            if map_ts[ch_t] != ch_s:
+                return False
+        else:
+            map_ts[ch_t] = ch_s
+    return True
+================================================================================
+================================================================================
+def solve(n):
+    if n <= 1:
+        return 0
+    dp = [0] * (n + 1)
+    dp[1] = 0
+    for i in range(2, n + 1):
+        best = dp[i - 1] + 1
+        if i % 2 == 0:
+            best = best if best < dp[i // 2] + 1 else dp[i // 2] + 1
+        if i % 3 == 0:
+            best = best if best < dp[i // 3] + 1 else dp[i // 3] + 1
+        dp[i] = best
+    return dp[n]
+================================================================================
+================================================================================
+def solve(n, k):
+    max_inv = n * (n - 1) // 2
+    if k > max_inv:
+        return 0
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        new = [0] * (k + 1)
+        window = 0
+        for j in range(k + 1):
+            window += dp[j]
+            if j >= i:
+                window -= dp[j - i]
+            new[j] = window
+        dp = new
+    return dp[k]
+================================================================================
+================================================================================
+def solve(n, edges):
+    sys.setrecursionlimit(10 ** 6)
+    if n == 0:
+        return 0
+    max_label = 0
+    for u, v, _ in edges:
+        if u > max_label:
+            max_label = u
+        if v > max_label:
+            max_label = v
+    size = max(n, max_label + 1)
+    adj = [[] for _ in range(size)]
+    for u, v, w in edges:
+        adj[u].append((v, w))
+        adj[v].append((u, w))
+    start = edges[0][0] if edges else 0
+    max_sum = 0
+
+    def dfs(u, parent):
+        nonlocal max_sum
+        best1 = 0
+        best2 = 0
+        for v, w in adj[u]:
+            if v == parent:
+                continue
+            cur = dfs(v, u) + w
+            if cur > best1:
+                best2 = best1
+                best1 = cur
+            elif cur > best2:
+                best2 = cur
+        if best1 + best2 > max_sum:
+            max_sum = best1 + best2
+        return best1
+    dfs(start, -1)
+    return max_sum
+================================================================================
+================================================================================
+def solve(n, edges):
+    if n == 0 or not edges:
+        return 0
+    max_label = 0
+    for u, v, _ in edges:
+        if u > max_label:
+            max_label = u
+        if v > max_label:
+            max_label = v
+    size = max(n, max_label + 1)
+    adj = [[] for _ in range(size)]
+    for u, v, w in edges:
+        adj[u].append((v, w))
+        adj[v].append((u, w))
+
+    def bfs(start):
+        dist = [-1] * size
+        q = deque([start])
+        dist[start] = 0
+        far_node = start
+        while q:
+            u = q.popleft()
+            for v, w in adj[u]:
+                if dist[v] == -1:
+                    dist[v] = dist[u] + w
+                    q.append(v)
+                    if dist[v] > dist[far_node]:
+                        far_node = v
+        return (far_node, dist[far_node])
+    start_node = edges[0][0]
+    far_node, _ = bfs(start_node)
+    _, max_dist = bfs(far_node)
+    return max_dist
+================================================================================
+          trees: 0.320 -> 0.577
+          recursion: 0.237 -> 0.527
+================================================================================
+def solve(matrix, k):
+    n = len(matrix)
+    if n == 0:
+        return None
+    m = len(matrix[0])
+    low = matrix[0][0]
+    high = matrix[-1][-1]
+
+    def count_le(x):
+        i, j = (n - 1, 0)
+        cnt = 0
+        while i >= 0 and j < m:
+            if matrix[i][j] <= x:
+                cnt += i + 1
+                j += 1
+            else:
+                i -= 1
+        return cnt
+    while low < high:
+        mid = (low + high) // 2
+        if count_le(mid) >= k:
+            high = mid
+        else:
+            low = mid + 1
+    return low
+================================================================================
+================================================================================
+def solve(grid):
+    n = len(grid)
+    INF = 10 ** 9
+    dist = [[INF] * n for _ in range(n)]
+    dist[0][0] = grid[0][0]
+    heap = [(grid[0][0], 0, 0)]
+    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    while heap:
+        cost, x, y = heapq.heappop(heap)
+        if cost != dist[x][y]:
+            continue
+        if x == n - 1 and y == n - 1:
+            return cost
+        for dx, dy in dirs:
+            nx, ny = (x + dx, y + dy)
+            if 0 <= nx < n and 0 <= ny < n:
+                ncost = cost if cost > grid[nx][ny] else grid[nx][ny]
+                if ncost < dist[nx][ny]:
+                    dist[nx][ny] = ncost
+                    heapq.heappush(heap, (ncost, nx, ny))
+    return -1
+================================================================================
+================================================================================
+def solve(s, k):
+    n = len(s)
+    lst = list(s)
+    for start in range(0, n, 2 * k):
+        i = start
+        j = min(start + k - 1, n - 1)
+        while i < j:
+            lst[i], lst[j] = (lst[j], lst[i])
+            i += 1
+            j -= 1
+    return ''.join(lst)
+================================================================================
+================================================================================
+def solve(nums, k):
+    return [item for item, _ in Counter(nums).most_common(k)]
+================================================================================
+================================================================================
+def solve(s):
+
+    def calculate_removals(st):
+        left = right = 0
+        for ch in st:
+            if ch == '(':
+                left += 1
+            elif ch == ')':
+                if left > 0:
+                    left -= 1
+                else:
+                    right += 1
+        return (left, right)
+    left_rem, right_rem = calculate_removals(s)
+    n = len(s)
+    results = set()
+
+    def dfs(index, left_rem, right_rem, balance, path):
+        if index == n:
+            if left_rem == 0 and right_rem == 0 and (balance == 0):
+                results.add(''.join(path))
+            return
+        ch = s[index]
+        if ch == '(':
+            if left_rem > 0:
+                dfs(index + 1, left_rem - 1, right_rem, balance, path)
+            path.append(ch)
+            dfs(index + 1, left_rem, right_rem, balance + 1, path)
+            path.pop()
+        elif ch == ')':
+            if right_rem > 0:
+                dfs(index + 1, left_rem, right_rem - 1, balance, path)
+            if balance > 0:
+                path.append(ch)
+                dfs(index + 1, left_rem, right_rem, balance - 1, path)
+                path.pop()
+        else:
+            path.append(ch)
+            dfs(index + 1, left_rem, right_rem, balance, path)
+            path.pop()
+    dfs(0, left_rem, right_rem, 0, [])
+    return list(results)
+================================================================================
+================================================================================
+def solve(n):
+    if n == 0:
+        return 0
+    cnt = 0
+    while n & 1 == 0:
+        cnt += 1
+        n >>= 1
+    return cnt
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = dp[i][j - 1] + 1
+            for k in range(i, j):
+                if s[k] == s[j]:
+                    left = dp[i][k]
+                    right = dp[k + 1][j - 1] if k + 1 <= j - 1 else 0
+                    if left + right < dp[i][j]:
+                        dp[i][j] = left + right
+    return dp[0][n - 1]
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n <= 4:
+        return 0
+    a = sorted(nums)
+    min_diff = float('inf')
+    for i in range(4):
+        j = 3 - i
+        diff = a[n - 1 - j] - a[i]
+        if diff < min_diff:
+            min_diff = diff
+    return min_diff
+================================================================================
+================================================================================
+def solve(matrix, k):
+    if not matrix or not matrix[0]:
+        return None
+    n, m = (len(matrix), len(matrix[0]))
+    low, high = (matrix[0][0], matrix[-1][-1])
+    while low < high:
+        mid = (low + high) // 2
+        count = 0
+        i, j = (n - 1, 0)
+        while i >= 0 and j < m:
+            if matrix[i][j] <= mid:
+                count += i + 1
+                j += 1
+            else:
+                i -= 1
+        if count < k:
+            low = mid + 1
+        else:
+            high = mid
+    return low
+================================================================================
+================================================================================
+def solve(n):
+    return comb(2 * n, n) // (n + 1)
+================================================================================
+================================================================================
+def solve(n):
+    return math.comb(2 * n, n) // (n + 1)
+================================================================================
+          math: 0.381 -> 0.612
+          dynamic_programming: 0.590 -> 0.738
+================================================================================
+def solve(arr):
+    n = len(arr)
+    if n < 3:
+        return 0
+    max_len = 0
+    i = 1
+    while i < n - 1:
+        if arr[i - 1] < arr[i] > arr[i + 1]:
+            left = i - 1
+            while left > 0 and arr[left - 1] < arr[left]:
+                left -= 1
+            right = i + 1
+            while right < n - 1 and arr[right] > arr[right + 1]:
+                right += 1
+            cur_len = right - left + 1
+            if cur_len > max_len:
+                max_len = cur_len
+            i = right
+        else:
+            i += 1
+    return max_len
+================================================================================
+================================================================================
+def solve(words):
+    word_set = set(words)
+    sorted_words = sorted(words, key=lambda w: (-len(w), w))
+    for w in sorted_words:
+        valid = True
+        for i in range(1, len(w)):
+            if w[:i] not in word_set:
+                valid = False
+                break
+        if valid:
+            return w
+    return ''
+================================================================================
+================================================================================
+def solve(intervals):
+    if not intervals:
+        return 0
+    starts = sorted((i[0] for i in intervals))
+    ends = sorted((i[1] for i in intervals))
+    rooms = 0
+    end_ptr = 0
+    for start in starts:
+        if start < ends[end_ptr]:
+            rooms += 1
+        else:
+            end_ptr += 1
+    return rooms
+================================================================================
+================================================================================
+def solve(nums1, nums2):
+    return list(set(nums1) & set(nums2))
+================================================================================
+================================================================================
+def solve(nums):
+    nums.sort()
+    res = 1
+    for x in nums:
+        if x > res:
+            break
+        res += x
+    return res
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    left_rem = right_rem = 0
+    for ch in s:
+        if ch == '(':
+            left_rem += 1
+        elif ch == ')':
+            if left_rem > 0:
+                left_rem -= 1
+            else:
+                right_rem += 1
+    result = set()
+    visited = set()
+
+    def dfs(i, lrem, rrem, bal, path):
+        if i == n:
+            if lrem == 0 and rrem == 0 and (bal == 0):
+                result.add(''.join(path))
+            return
+        key = (i, lrem, rrem, bal)
+        if key in visited:
+            return
+        visited.add(key)
+        ch = s[i]
+        if ch == '(':
+            if lrem > 0:
+                dfs(i + 1, lrem - 1, rrem, bal, path)
+            path.append(ch)
+            dfs(i + 1, lrem, rrem, bal + 1, path)
+            path.pop()
+        elif ch == ')':
+            if rrem > 0:
+                dfs(i + 1, lrem, rrem - 1, bal, path)
+            if bal > 0:
+                path.append(ch)
+                dfs(i + 1, lrem, rrem, bal - 1, path)
+                path.pop()
+        else:
+            path.append(ch)
+            dfs(i + 1, lrem, rrem, bal, path)
+            path.pop()
+    dfs(0, left_rem, right_rem, 0, [])
+    return list(result)
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : ['(())()', '()()()']
+TYPE     : <class 'list'>
+RESULT   : ['(())()']
+TYPE     : <class 'list'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    left_rem = right_rem = 0
+    for ch in s:
+        if ch == '(':
+            left_rem += 1
+        elif ch == ')':
+            if left_rem > 0:
+                left_rem -= 1
+            else:
+                right_rem += 1
+    result = set()
+
+    def dfs(i, lrem, rrem, bal, path):
+        if i == n:
+            if lrem == 0 and rrem == 0 and (bal == 0):
+                result.add(''.join(path))
+            return
+        ch = s[i]
+        if ch == '(':
+            if lrem > 0:
+                dfs(i + 1, lrem - 1, rrem, bal, path)
+            path.append(ch)
+            dfs(i + 1, lrem, rrem, bal + 1, path)
+            path.pop()
+        elif ch == ')':
+            if rrem > 0:
+                dfs(i + 1, lrem, rrem - 1, bal, path)
+            if bal > 0:
+                path.append(ch)
+                dfs(i + 1, lrem, rrem, bal - 1, path)
+                path.pop()
+        else:
+            path.append(ch)
+            dfs(i + 1, lrem, rrem, bal, path)
+            path.pop()
+    dfs(0, left_rem, right_rem, 0, [])
+    return list(result)
+================================================================================
+          graphs: 0.552 -> 0.716
+          strings: 0.742 -> 0.831
+================================================================================
+def solve(arr):
+    n = len(arr)
+    if n < 2:
+        return n
+    inc = dec = ans = 1
+    for i in range(1, n):
+        if arr[i] > arr[i - 1]:
+            inc = dec + 1
+            dec = 1
+        elif arr[i] < arr[i - 1]:
+            dec = inc + 1
+            inc = 1
+        else:
+            inc = dec = 1
+        if inc > ans:
+            ans = inc
+        if dec > ans:
+            ans = dec
+    return ans
+================================================================================
+================================================================================
+def solve(s):
+    if not s:
+        return 0
+    t = [s[0]]
+    for ch in s[1:]:
+        if ch != t[-1]:
+            t.append(ch)
+    n = len(t)
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            dp[i][j] = dp[i][j - 1] + 1
+            for k in range(i, j):
+                if t[k] == t[j]:
+                    left = dp[i][k]
+                    right = dp[k + 1][j - 1] if k + 1 <= j - 1 else 0
+                    if left + right < dp[i][j]:
+                        dp[i][j] = left + right
+    return dp[0][n - 1]
+================================================================================
+================================================================================
+def solve(intervals):
+    if not intervals:
+        return 0
+    starts = sorted((i[0] for i in intervals))
+    ends = sorted((i[1] for i in intervals))
+    rooms = 0
+    end_ptr = 0
+    for s in starts:
+        if s < ends[end_ptr]:
+            rooms += 1
+        else:
+            end_ptr += 1
+    return rooms
+================================================================================
+================================================================================
+def solve(nums, k):
+    count = 0
+    prefix_counts = {0: 1}
+    current_sum = 0
+    for num in nums:
+        current_sum += num
+        count += prefix_counts.get(current_sum - k, 0)
+        prefix_counts[current_sum] = prefix_counts.get(current_sum, 0) + 1
+    return count
+================================================================================
+================================================================================
+def solve(s1, s2, s3):
+    n, m, k = (len(s1), len(s2), len(s3))
+    if n + m != k:
+        return False
+    dp = [False] * (m + 1)
+    dp[0] = True
+    for j in range(1, m + 1):
+        dp[j] = dp[j - 1] and s2[j - 1] == s3[j - 1]
+    for i in range(1, n + 1):
+        dp[0] = dp[0] and s1[i - 1] == s3[i - 1]
+        for j in range(1, m + 1):
+            dp[j] = dp[j] and s1[i - 1] == s3[i + j - 1] or (dp[j - 1] and s2[j - 1] == s3[i + j - 1])
+    return dp[m]
+================================================================================
+================================================================================
+def solve(nums, target):
+    n = len(nums)
+    if n == 0:
+        return [-1, -1]
+    lo, hi = (0, n - 1)
+    left = -1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if nums[mid] < target:
+            lo = mid + 1
+        else:
+            hi = mid - 1
+    if lo < n and nums[lo] == target:
+        left = lo
+    else:
+        return [-1, -1]
+    lo, hi = (0, n - 1)
+    right = -1
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        if nums[mid] > target:
+            hi = mid - 1
+        else:
+            lo = mid + 1
+    if hi >= 0 and nums[hi] == target:
+        right = hi
+    else:
+        return [-1, -1]
+    return [left, right]
+================================================================================
+================================================================================
+def solve(n):
+    if n < 1:
+        return []
+    result = []
+
+    def dfs(num):
+        result.append(num)
+        for d in range(10):
+            nxt = num * 10 + d
+            if nxt <= n:
+                dfs(nxt)
+    for start in range(1, 10):
+        if start <= n:
+            dfs(start)
+    return result
+================================================================================
+================================================================================
+def solve(word):
+    if not word:
+        return True
+    if word.isupper() or word.islower():
+        return True
+    if word[0].isupper() and word[1:].islower():
+        return True
+    return False
+================================================================================
+================================================================================
+def solve(words, start):
+    words = [str(w) for w in words]
+    start = str(start)
+    if not words:
+        return 0
+    L = len(start)
+    word_set = {w for w in words if len(w) == L}
+    word_set.add(start)
+    pattern_dict = defaultdict(list)
+    for w in word_set:
+        for i in range(L):
+            pattern = w[:i] + '*' + w[i + 1:]
+            pattern_dict[pattern].append(w)
+    dist = {start: 0}
+    q = deque([start])
+    while q:
+        cur = q.popleft()
+        cur_d = dist[cur]
+        for i in range(L):
+            pattern = cur[:i] + '*' + cur[i + 1:]
+            for nei in pattern_dict[pattern]:
+                if nei not in dist:
+                    dist[nei] = cur_d + 1
+                    q.append(nei)
+    max_dist = 0
+    for w in words:
+        if w == start:
+            continue
+        if w not in dist:
+            return -1
+        if dist[w] > max_dist:
+            max_dist = dist[w]
+    return max_dist
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : {'hit': 0, 'hot': 1, 'dot': 2, 'lot': 2, 'dog': 3, 'log': 3, 'cog': 4}
+TYPE     : <class 'dict'>
+RESULT   : 4
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(words, start):
+    words = [str(w) for w in words]
+    start = str(start)
+    if not words:
+        return {}
+    L = len(start)
+    word_set = {w for w in words if len(w) == L}
+    word_set.add(start)
+    pattern_dict = defaultdict(list)
+    for w in word_set:
+        for i in range(L):
+            pattern = w[:i] + '*' + w[i + 1:]
+            pattern_dict[pattern].append(w)
+    dist = {start: 0}
+    q = deque([start])
+    while q:
+        cur = q.popleft()
+        cur_d = dist[cur]
+        for i in range(L):
+            pattern = cur[:i] + '*' + cur[i + 1:]
+            for nei in pattern_dict[pattern]:
+                if nei not in dist:
+                    dist[nei] = cur_d + 1
+                    q.append(nei)
+    return dist
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : {'a': 0}
+TYPE     : <class 'dict'>
+RESULT   : {}
+TYPE     : <class 'dict'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(intervals):
+    if not intervals:
+        return 0
+    sorted_intervals = sorted(intervals, key=lambda x: x[1])
+    count_non_overlap = 0
+    prev_end = None
+    for start, end in sorted_intervals:
+        if prev_end is None or start >= prev_end:
+            count_non_overlap += 1
+            prev_end = end
+    return len(intervals) - count_non_overlap
+================================================================================
+================================================================================
+def solve(n, connections):
+    sys.setrecursionlimit(10 ** 6)
+    adj = [[] for _ in range(n)]
+    for idx, (u, v) in enumerate(connections):
+        adj[u].append((v, idx))
+        adj[v].append((u, idx))
+    disc = [-1] * n
+    low = [0] * n
+    time = 0
+    bridges = []
+
+    def dfs(u, parent_edge):
+        nonlocal time
+        disc[u] = low[u] = time
+        time += 1
+        for v, eid in adj[u]:
+            if eid == parent_edge:
+                continue
+            if disc[v] == -1:
+                dfs(v, eid)
+                low[u] = low[u] if low[u] < low[v] else low[v]
+                if low[v] > disc[u]:
+                    bridges.append([u, v])
+            else:
+                low[u] = low[u] if low[u] < disc[v] else disc[v]
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i, -1)
+    return bridges
+================================================================================
+================================================================================
+def solve(n, connections):
+    adj = [[] for _ in range(n)]
+    for idx, (u, v) in enumerate(connections):
+        adj[u].append((v, idx))
+        adj[v].append((u, idx))
+    disc = [-1] * n
+    low = [0] * n
+    time = 0
+    bridges = []
+
+    def dfs(u, parent_edge):
+        nonlocal time
+        disc[u] = low[u] = time
+        time += 1
+        for v, eid in adj[u]:
+            if eid == parent_edge:
+                continue
+            if disc[v] == -1:
+                dfs(v, eid)
+                low[u] = min(low[u], low[v])
+                if low[v] > disc[u]:
+                    bridges.append([u, v])
+            else:
+                low[u] = min(low[u], disc[v])
+    for i in range(n):
+        if disc[i] == -1:
+            dfs(i, -1)
+    return bridges
+================================================================================
+          graphs: 0.556 -> 0.719
+          recursion: 0.215 -> 0.514
+================================================================================
+def solve(equations, values, queries):
+    parent = {}
+    weight = {}
+
+    def add(x):
+        if x not in parent:
+            parent[x] = x
+            weight[x] = 1.0
+
+    def find(x):
+        if parent[x] != x:
+            orig_parent = parent[x]
+            root = find(orig_parent)
+            weight[x] *= weight[orig_parent]
+            parent[x] = root
+        return parent[x]
+
+    def union(x, y, value):
+        add(x)
+        add(y)
+        root_x = find(x)
+        root_y = find(y)
+        if root_x == root_y:
+            return
+        ratio = weight[y] * value / weight[x]
+        parent[root_x] = root_y
+        weight[root_x] = ratio
+    for (a, b), v in zip(equations, values):
+        union(a, b, v)
+    result = []
+    for a, b in queries:
+        if a not in parent or b not in parent:
+            result.append(-1.0)
+            continue
+        root_a = find(a)
+        root_b = find(b)
+        if root_a != root_b:
+            result.append(-1.0)
+        else:
+            result.append(weight[a] / weight[b])
+    return result
+================================================================================
+================================================================================
+def solve(citations):
+    citations.sort(reverse=True)
+    h = 0
+    for i, c in enumerate(citations, 1):
+        if c >= i:
+            h = i
+        else:
+            break
+    return h
+================================================================================
+================================================================================
+def solve(words):
+    if not words:
+        return []
+    n = len(words[0])
+    prefix_map = {}
+    for w in words:
+        for i in range(n + 1):
+            pref = w[:i]
+            prefix_map.setdefault(pref, []).append(w)
+    results = []
+
+    def backtrack(path):
+        if len(path) == n:
+            results.append(path[:])
+            return
+        idx = len(path)
+        prefix = ''.join((word[idx] for word in path))
+        for candidate in prefix_map.get(prefix, []):
+            path.append(candidate)
+            backtrack(path)
+            path.pop()
+    for w in words:
+        backtrack([w])
+    return results
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n <= 4:
+        return 0
+    nums.sort()
+    diffs = [nums[-1] - nums[3], nums[-2] - nums[2], nums[-3] - nums[1], nums[-4] - nums[0]]
+    return min(diffs)
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    res = [1] * n
+    prefix = 1
+    for i in range(n):
+        res[i] = prefix
+        prefix *= nums[i]
+    suffix = 1
+    for i in range(n - 1, -1, -1):
+        res[i] *= suffix
+        suffix *= nums[i]
+    return res
+================================================================================
+================================================================================
+def solve(arr):
+    count_even = 1
+    count_odd = 0
+    current_parity = 0
+    for num in arr:
+        current_parity ^= num & 1
+        if current_parity == 0:
+            count_even += 1
+        else:
+            count_odd += 1
+    return count_even * count_odd
+================================================================================
+================================================================================
+def solve(n, edges):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        if 0 <= u < n and 0 <= v < n:
+            adj[u].append(v)
+            adj[v].append(u)
+    visited = [False] * n
+
+    def dfs(node):
+        visited[node] = True
+        for nei in adj[node]:
+            if not visited[nei]:
+                dfs(nei)
+    components = 0
+    for i in range(n):
+        if not visited[i]:
+            components += 1
+            dfs(i)
+    return components
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return []
+    threshold = n / 3
+    counts = Counter(nums)
+    return [num for num, cnt in counts.items() if cnt > threshold]
+================================================================================
+================================================================================
+def solve(rods):
+    dp = {0: 0}
+    for r in rods:
+        ndp = dp.copy()
+        for diff, taller in dp.items():
+            nd = diff + r
+            nt = taller + r
+            if nt > ndp.get(nd, -1):
+                ndp[nd] = nt
+            nd = abs(diff - r)
+            nt = taller + max(r - diff, 0)
+            if nt > ndp.get(nd, -1):
+                ndp[nd] = nt
+        dp = ndp
+    return dp.get(0, 0)
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n < 3:
+        return 0
+    dp = [{} for _ in range(n)]
+    total = 0
+    for j in range(n):
+        for i in range(j):
+            diff = nums[j] - nums[i]
+            cnt_i = dp[i].get(diff, 0)
+            total += cnt_i
+            dp[j][diff] = dp[j].get(diff, 0) + cnt_i + 1
+    return total
+================================================================================
+================================================================================
+def solve(candidates, target):
+    candidates = sorted(set(candidates))
+    res = []
+    comb = []
+
+    def backtrack(start, remaining):
+        if remaining == 0:
+            res.append(comb.copy())
+            return
+        if remaining < 0:
+            return
+        for i in range(start, len(candidates)):
+            val = candidates[i]
+            if val > remaining:
+                break
+            comb.append(val)
+            backtrack(i, remaining - val)
+            comb.pop()
+    backtrack(0, target)
+    return res
+================================================================================
+================================================================================
+def solve(words, word1, word2):
+    last1 = last2 = -1
+    min_dist = None
+    for i, w in enumerate(words):
+        if w == word1:
+            last1 = i
+            if last2 != -1:
+                dist = abs(last1 - last2)
+                if min_dist is None or dist < min_dist:
+                    min_dist = dist
+        if w == word2:
+            last2 = i
+            if last1 != -1:
+                dist = abs(last1 - last2)
+                if min_dist is None or dist < min_dist:
+                    min_dist = dist
+    return -1 if min_dist is None else min_dist
+================================================================================
+================================================================================
+def solve(piles):
+    n = len(piles)
+    if n == 0:
+        return 0
+    suffix = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        suffix[i] = suffix[i + 1] + piles[i]
+
+    @lru_cache(maxsize=None)
+    def dp(i, m):
+        if i >= n:
+            return 0
+        if i + 2 * m >= n:
+            return suffix[i]
+        best = 0
+        max_take = 2 * m
+        for x in range(1, max_take + 1):
+            if i + x > n:
+                break
+            opponent = dp(i + x, max(m, x))
+            current = suffix[i] - opponent
+            if current > best:
+                best = current
+        return best
+    return dp(0, 1)
+================================================================================
+================================================================================
+def solve(piles):
+    n = len(piles)
+    if n == 0:
+        return 0
+    suffix = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        suffix[i] = suffix[i + 1] + piles[i]
+
+    @functools.lru_cache(maxsize=None)
+    def dp(i, m):
+        if i >= n:
+            return 0
+        if i + 2 * m >= n:
+            return suffix[i]
+        best = 0
+        max_take = 2 * m
+        for x in range(1, max_take + 1):
+            if i + x > n:
+                break
+            opponent = dp(i + x, max(m, x))
+            current = suffix[i] - opponent
+            if current > best:
+                best = current
+        return best
+    return dp(0, 1)
+================================================================================
+          dynamic_programming: 0.430 -> 0.643
+          recursion: 0.294 -> 0.562
+================================================================================
+def solve(nums):
+    if not nums:
+        return True
+    count = Counter(nums)
+    tails = defaultdict(int)
+    for x in sorted(nums):
+        if count[x] == 0:
+            continue
+        count[x] -= 1
+        if tails[x - 1] > 0:
+            tails[x - 1] -= 1
+            tails[x] += 1
+        elif count.get(x + 1, 0) > 0 and count.get(x + 2, 0) > 0:
+            count[x + 1] -= 1
+            count[x + 2] -= 1
+            tails[x + 2] += 1
+        else:
+            return False
+    return True
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    mn = min(nums)
+    return sum(nums) - mn * len(nums)
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    max_ending = max_sofar = nums[0]
+    min_ending = min_sofar = nums[0]
+    total = nums[0]
+    for x in nums[1:]:
+        total += x
+        max_ending = x if max_ending < 0 else max_ending + x
+        max_sofar = max(max_sofar, max_ending)
+        min_ending = x if min_ending > 0 else min_ending + x
+        min_sofar = min(min_sofar, min_ending)
+    if max_sofar < 0:
+        return max_sofar
+    return max(max_sofar, total - min_sofar)
+================================================================================
+================================================================================
+def solve(n):
+    if n <= 0:
+        return False
+    for p in (2, 3, 5):
+        while n % p == 0:
+            n //= p
+    return n == 1
+================================================================================
+================================================================================
+def solve(points):
+    if not points:
+        return 0
+    intervals = sorted(points, key=lambda x: x[1])
+    arrows = 1
+    current_end = intervals[0][1]
+    for start, end in intervals[1:]:
+        if start > current_end:
+            arrows += 1
+            current_end = end
+    return arrows
+================================================================================
+================================================================================
+def solve(n, edges, t, target):
+    sys.setrecursionlimit(10 ** 6)
+    adj = [[] for _ in range(n + 1)]
+    for u, v in edges:
+        adj[u].append(v)
+        adj[v].append(u)
+    visited = [False] * (n + 1)
+
+    def dfs(node, time, prob):
+        if time == t:
+            return prob if node == target else 0.0
+        visited[node] = True
+        unvisited = [nbr for nbr in adj[node] if not visited[nbr]]
+        if not unvisited:
+            visited[node] = False
+            return prob if node == target else 0.0
+        total = 0.0
+        split = prob / len(unvisited)
+        for nb in unvisited:
+            total += dfs(nb, time + 1, split)
+        visited[node] = False
+        return total
+    return dfs(1, 0, 1.0)
+================================================================================
+================================================================================
+def solve(n, edges, t, target):
+    adj = [[] for _ in range(n + 1)]
+    for u, v in edges:
+        adj[u].append(v)
+        adj[v].append(u)
+    cur = [0.0] * (n + 1)
+    cur[1] = 1.0
+    for _ in range(t):
+        nxt = [0.0] * (n + 1)
+        for node in range(1, n + 1):
+            prob = cur[node]
+            if prob == 0.0:
+                continue
+            deg = len(adj[node])
+            if deg == 0:
+                continue
+            split = prob / deg
+            for nb in adj[node]:
+                nxt[nb] += split
+        cur = nxt
+    return cur[target]
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 0.16666666666666666
+TYPE     : <class 'float'>
+RESULT   : 0.1111111111111111
+TYPE     : <class 'float'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(rods):
+    dp = {0: 0}
+    for r in rods:
+        ndp = dp.copy()
+        for diff, taller in dp.items():
+            nd = diff + r
+            nt = taller + r
+            if nt > ndp.get(nd, -1):
+                ndp[nd] = nt
+            nd = abs(diff - r)
+            nt = taller + max(0, r - diff)
+            if nt > ndp.get(nd, -1):
+                ndp[nd] = nt
+        dp = ndp
+    return dp.get(0, 0)
+================================================================================
+================================================================================
+def solve(n, k):
+    max_inv = n * (n - 1) // 2
+    if k > max_inv:
+        return 0
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        new = [0] * (k + 1)
+        window = 0
+        for j in range(k + 1):
+            window += dp[j]
+            if j >= i:
+                window -= dp[j - i]
+            new[j] = window
+        dp = new
+    return dp[k]
+================================================================================
+================================================================================
+def solve(routes, source, target):
+    if source == target:
+        return 0
+    stop_to_routes = {}
+    for i, route in enumerate(routes):
+        for stop in route:
+            stop_to_routes.setdefault(stop, []).append(i)
+    if source not in stop_to_routes or target not in stop_to_routes:
+        return -1
+    visited_routes = set()
+    visited_stops = set([source])
+    q = deque()
+    for r in stop_to_routes[source]:
+        q.append((r, 1))
+        visited_routes.add(r)
+    while q:
+        route_idx, buses = q.popleft()
+        if target in routes[route_idx]:
+            return buses
+        for stop in routes[route_idx]:
+            if stop in visited_stops:
+                continue
+            visited_stops.add(stop)
+            for nxt_route in stop_to_routes.get(stop, []):
+                if nxt_route not in visited_routes:
+                    visited_routes.add(nxt_route)
+                    q.append((nxt_route, buses + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(nums, target):
+    total = sum(nums)
+    if (target + total) % 2 != 0:
+        return 0
+    subset_sum = (target + total) // 2
+    if subset_sum < 0:
+        return 0
+    dp = [0] * (subset_sum + 1)
+    dp[0] = 1
+    for num in nums:
+        for s in range(subset_sum, num - 1, -1):
+            dp[s] += dp[s - num]
+    return dp[subset_sum]
+================================================================================
+================================================================================
+def solve(nums, k):
+    last_index = {}
+    for i, num in enumerate(nums):
+        if num in last_index and i - last_index[num] <= k:
+            return True
+        last_index[num] = i
+    return False
+================================================================================
+================================================================================
+def solve(s):
+    if not s:
+        return 0
+    compressed = [s[0]]
+    for ch in s[1:]:
+        if ch != compressed[-1]:
+            compressed.append(ch)
+    n = len(compressed)
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for l in range(n - length + 1):
+            r = l + length - 1
+            dp[l][r] = dp[l][r - 1] + 1
+            for k in range(l, r):
+                if compressed[k] == compressed[r]:
+                    middle = dp[k + 1][r - 1] if k + 1 <= r - 1 else 0
+                    dp[l][r] = min(dp[l][r], dp[l][k] + middle)
+    return dp[0][n - 1]
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    m = min(nums)
+    return sum(nums) - m * len(nums)
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    first_idx = {}
+    last_idx = {}
+    counts = {}
+    for i, num in enumerate(nums):
+        if num not in first_idx:
+            first_idx[num] = i
+        last_idx[num] = i
+        counts[num] = counts.get(num, 0) + 1
+    degree = max(counts.values())
+    min_len = len(nums)
+    for num, cnt in counts.items():
+        if cnt == degree:
+            length = last_idx[num] - first_idx[num] + 1
+            if length < min_len:
+                min_len = length
+    return min_len
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    dp0 = 1
+    dp1 = 0
+    if s[0] != '0':
+        dp1 = 1
+    else:
+        dp1 = 0
+    for i in range(2, n + 1):
+        cur = 0
+        if s[i - 1] != '0':
+            cur += dp1
+        two = int(s[i - 2:i])
+        if 10 <= two <= 26:
+            cur += dp0
+        dp0, dp1 = (dp1, cur)
+    return dp1 if n > 1 else dp1
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    freq = Counter(nums)
+    return len(nums) - max(freq.values())
+================================================================================
+================================================================================
+def solve(arr):
+    n = len(arr)
+    if n == 0:
+        return 0
+    suffix_min = [0] * n
+    suffix_min[-1] = arr[-1]
+    for i in range(n - 2, -1, -1):
+        suffix_min[i] = arr[i] if arr[i] < suffix_min[i + 1] else suffix_min[i + 1]
+    count = 0
+    prefix_max = arr[0]
+    for i in range(n - 1):
+        if arr[i] > prefix_max:
+            prefix_max = arr[i]
+        if prefix_max <= suffix_min[i + 1]:
+            count += 1
+    return count + 1
+================================================================================
+================================================================================
+def solve(intervals):
+    if not intervals:
+        return 0
+    starts = sorted((i[0] for i in intervals))
+    ends = sorted((i[1] for i in intervals))
+    rooms = 0
+    end_ptr = 0
+    for s in starts:
+        if s < ends[end_ptr]:
+            rooms += 1
+        else:
+            end_ptr += 1
+    return rooms
+================================================================================
+================================================================================
+def solve(jobs, k):
+    if not jobs:
+        return 0
+    n = len(jobs)
+    if k >= n:
+        return max(jobs)
+    jobs.sort(reverse=True)
+    low = max(jobs)
+    high = sum(jobs)
+
+    def can_assign(limit):
+        loads = [0] * k
+
+        def dfs(idx):
+            if idx == n:
+                return True
+            cur = jobs[idx]
+            seen = set()
+            for i in range(k):
+                if loads[i] + cur <= limit and loads[i] not in seen:
+                    seen.add(loads[i])
+                    loads[i] += cur
+                    if dfs(idx + 1):
+                        return True
+                    loads[i] -= cur
+                    if loads[i] == 0 or loads[i] + cur == limit:
+                        break
+            return False
+        return dfs(0)
+    while low < high:
+        mid = (low + high) // 2
+        if can_assign(mid):
+            high = mid
+        else:
+            low = mid + 1
+    return low
+================================================================================
+================================================================================
+def solve(temps):
+    n = len(temps)
+    result = [0] * n
+    stack = []
+    for i, t in enumerate(temps):
+        while stack and temps[stack[-1]] < t:
+            idx = stack.pop()
+            result[idx] = i - idx
+        stack.append(i)
+    return result
+================================================================================
+================================================================================
+def solve(grid):
+    n = len(grid)
+    if n == 0:
+        return 0
+    INF = 10 ** 9
+    dist = [[INF] * n for _ in range(n)]
+    dist[0][0] = grid[0][0]
+    heap = [(grid[0][0], 0, 0)]
+    dirs = [(1, 0), (-1, 0), (0, 1), (0, -1)]
+    while heap:
+        t, x, y = heapq.heappop(heap)
+        if (x, y) == (n - 1, n - 1):
+            return t
+        if t != dist[x][y]:
+            continue
+        for dx, dy in dirs:
+            nx, ny = (x + dx, y + dy)
+            if 0 <= nx < n and 0 <= ny < n:
+                nt = max(t, grid[nx][ny])
+                if nt < dist[nx][ny]:
+                    dist[nx][ny] = nt
+                    heapq.heappush(heap, (nt, nx, ny))
+    return -1
+================================================================================
+================================================================================
+def solve(rods):
+    dp = {0: 0}
+    for rod in rods:
+        cur = dict(dp)
+        for diff, tall in cur.items():
+            ndiff = diff + rod
+            ntall = tall + rod
+            if ntall > dp.get(ndiff, -1):
+                dp[ndiff] = ntall
+            ndiff = abs(diff - rod)
+            ntall = tall + min(rod, diff)
+            if ntall > dp.get(ndiff, -1):
+                dp[ndiff] = ntall
+    return dp.get(0, 0)
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 6
+TYPE     : <class 'int'>
+RESULT   : 12
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(rods):
+    dp = {0: 0}
+    for rod in rods:
+        cur_items = list(dp.items())
+        for diff, tall in cur_items:
+            ndiff = diff + rod
+            ntall = tall + rod
+            if ntall > dp.get(ndiff, -1):
+                dp[ndiff] = ntall
+            ndiff2 = abs(diff - rod)
+            if rod > diff:
+                ntall2 = tall + (rod - diff)
+            else:
+                ntall2 = tall
+            if ntall2 > dp.get(ndiff2, -1):
+                dp[ndiff2] = ntall2
+    return dp.get(0, 0)
+================================================================================
+          dynamic_programming: 0.660 -> 0.782
+          math: 0.367 -> 0.606
+================================================================================
+def solve(nums, k):
+    if k < 0:
+        return False
+    last_index = {}
+    for i, v in enumerate(nums):
+        if v in last_index and i - last_index[v] <= k:
+            return True
+        last_index[v] = i
+    return False
+================================================================================
+================================================================================
+def solve(n, edges, prob, start, end):
+    adj = [[] for _ in range(n)]
+    for (u, v), p in zip(edges, prob):
+        adj[u].append((v, p))
+        adj[v].append((u, p))
+    if start == end:
+        return 1.0
+    max_prob = [0.0] * n
+    max_prob[start] = 1.0
+    heap = [(-1.0, start)]
+    while heap:
+        cur_neg, node = heapq.heappop(heap)
+        cur = -cur_neg
+        if cur < max_prob[node]:
+            continue
+        if node == end:
+            return cur
+        for nb, w in adj[node]:
+            new_prob = cur * w
+            if new_prob > max_prob[nb]:
+                max_prob[nb] = new_prob
+                heapq.heappush(heap, (-new_prob, nb))
+    return max_prob[end]
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return None
+    low, high = (0, n - 1)
+    while low < high:
+        mid = (low + high) // 2
+        if nums[mid] > nums[high]:
+            low = mid + 1
+        else:
+            high = mid
+    return nums[low]
+================================================================================
+================================================================================
+def solve(equations, values, queries):
+    graph = defaultdict(list)
+    for (a, b), v in zip(equations, values):
+        graph[a].append((b, v))
+        graph[b].append((a, 1.0 / v))
+
+    def bfs(src, dst):
+        if src not in graph or dst not in graph:
+            return -1.0
+        if src == dst:
+            return 1.0
+        visited = set([src])
+        q = deque([(src, 1.0)])
+        while q:
+            node, prod = q.popleft()
+            for neigh, w in graph[node]:
+                if neigh in visited:
+                    continue
+                if neigh == dst:
+                    return prod * w
+                visited.add(neigh)
+                q.append((neigh, prod * w))
+        return -1.0
+    return [bfs(a, b) for a, b in queries]
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    dp = [dict() for _ in range(n)]
+    total = 0
+    for i in range(n):
+        for j in range(i):
+            diff = nums[i] - nums[j]
+            cnt = dp[j].get(diff, 0)
+            total += cnt
+            dp[i][diff] = dp[i].get(diff, 0) + cnt + 1
+    return total
+================================================================================
+================================================================================
+def solve(triangle):
+    if not triangle:
+        return 0
+    dp = triangle[-1][:]
+    for i in range(len(triangle) - 2, -1, -1):
+        row = triangle[i]
+        for j in range(i + 1):
+            dp[j] = row[j] + (dp[j] if dp[j] < dp[j + 1] else dp[j + 1])
+    return dp[0]
+================================================================================
+================================================================================
+def solve(nums):
+    total = sum(nums)
+    left = 0
+    for i, val in enumerate(nums):
+        if left == total - left - val:
+            return i
+        left += val
+    return -1
+================================================================================
+================================================================================
+def solve(target):
+    if target == 0:
+        return 0
+    visited = set()
+    q = deque()
+    q.append((0, 1, 0))
+    visited.add((0, 1))
+    limit = target * 2
+    while q:
+        pos, speed, steps = q.popleft()
+        if pos == target:
+            return steps
+        np = pos + speed
+        ns = speed * 2
+        if 0 <= np <= limit and (np, ns) not in visited:
+            visited.add((np, ns))
+            q.append((np, ns, steps + 1))
+        rs = -1 if speed > 0 else 1
+        if (pos, rs) not in visited:
+            visited.add((pos, rs))
+            q.append((pos, rs, steps + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(words):
+    if not words:
+        return []
+    n = len(words[0])
+    prefix_map = {}
+    for w in words:
+        for i in range(n + 1):
+            pref = w[:i]
+            prefix_map.setdefault(pref, []).append(w)
+    results = []
+
+    def backtrack(step, square):
+        if step == n:
+            results.append(square[:])
+            return
+        prefix = ''.join((square[i][step] for i in range(step)))
+        for candidate in prefix_map.get(prefix, []):
+            square.append(candidate)
+            backtrack(step + 1, square)
+            square.pop()
+    for w in words:
+        backtrack(1, [w])
+    return results
+================================================================================
+================================================================================
+def solve(stones):
+    if not stones:
+        return False
+    positions = []
+    for s in stones:
+        if isinstance(s, (list, tuple)) and len(s) >= 1:
+            positions.append(s[0])
+        else:
+            positions.append(s)
+    positions.sort()
+    if positions[0] != 0:
+        return False
+    stone_set = set(positions)
+    dp = {positions[0]: {0}}
+    for pos in positions:
+        if pos not in dp:
+            continue
+        jumps = dp[pos]
+        for k in jumps:
+            for step in (k - 1, k, k + 1):
+                if step <= 0:
+                    continue
+                nxt = pos + step
+                if nxt in stone_set:
+                    if nxt not in dp:
+                        dp[nxt] = set()
+                    dp[nxt].add(step)
+    return bool(dp.get(positions[-1], set()))
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    max_ending = max_sofar = nums[0]
+    min_ending = min_sofar = nums[0]
+    total = nums[0]
+    for x in nums[1:]:
+        total += x
+        max_ending = x if max_ending < 0 else max_ending + x
+        max_sofar = max(max_sofar, max_ending)
+        min_ending = x if min_ending > 0 else min_ending + x
+        min_sofar = min(min_sofar, min_ending)
+    if max_sofar < 0:
+        return max_sofar
+    return max(max_sofar, total - min_sofar)
+================================================================================
+================================================================================
+def solve(words):
+
+    def can_form(word, word_set):
+        n = len(word)
+        if not word_set:
+            return False
+        dp = [False] * (n + 1)
+        dp[0] = True
+        for i in range(1, n + 1):
+            for j in range(0, i):
+                if dp[j] and word[j:i] in word_set:
+                    dp[i] = True
+                    break
+        return dp[n]
+    sorted_words = sorted(words, key=len)
+    word_set = set()
+    result = []
+    for w in sorted_words:
+        if w and can_form(w, word_set):
+            result.append(w)
+        word_set.add(w)
+    return result
+================================================================================
+================================================================================
+def solve(n, k):
+    max_inv = n * (n - 1) // 2
+    if k > max_inv:
+        return 0
+    dp = [0] * (k + 1)
+    dp[0] = 1
+    for i in range(1, n + 1):
+        new = [0] * (k + 1)
+        window = 0
+        for j in range(k + 1):
+            window += dp[j]
+            if j >= i:
+                window -= dp[j - i]
+            new[j] = window
+        dp = new
+    return dp[k]
+================================================================================
+================================================================================
+def solve(s):
+    if not s:
+        return 0
+    max_len = 0
+    path_len = {-1: 0}
+    for line in s.split('\n'):
+        depth = 0
+        while depth < len(line) and line[depth] == '\t':
+            depth += 1
+        name = line[depth:]
+        cur_len = path_len[depth - 1] + (0 if depth == 0 else 1) + len(name)
+        path_len[depth] = cur_len
+        if '.' in name:
+            if cur_len > max_len:
+                max_len = cur_len
+    return max_len
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n <= 1:
+        return 0
+    jumps = 0
+    current_end = 0
+    farthest = 0
+    for i in range(n - 1):
+        farthest = max(farthest, i + nums[i])
+        if i == current_end:
+            jumps += 1
+            current_end = farthest
+            if current_end >= n - 1:
+                break
+    return jumps
+================================================================================
+================================================================================
+def solve(nums):
+    first = float('inf')
+    second = float('inf')
+    for x in nums:
+        if x <= first:
+            first = x
+        elif x <= second:
+            second = x
+        else:
+            return True
+    return False
+================================================================================
+================================================================================
+def solve(grid):
+    if not grid or not grid[0]:
+        return 0
+    rows, cols = (len(grid), len(grid[0]))
+    visited = [[False] * cols for _ in range(rows)]
+    shapes = set()
+
+    def dfs(r, c, cells):
+        stack = [(r, c)]
+        visited[r][c] = True
+        while stack:
+            cr, cc = stack.pop()
+            cells.append((cr, cc))
+            for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                nr, nc = (cr + dr, cc + dc)
+                if 0 <= nr < rows and 0 <= nc < cols and (not visited[nr][nc]) and (grid[nr][nc] == '1'):
+                    visited[nr][nc] = True
+                    stack.append((nr, nc))
+    for i in range(rows):
+        for j in range(cols):
+            if not visited[i][j] and grid[i][j] == '1':
+                cells = []
+                dfs(i, j, cells)
+                min_r = min((r for r, _ in cells))
+                min_c = min((c for _, c in cells))
+                normalized = tuple(sorted(((r - min_r, c - min_c) for r, c in cells)))
+                shapes.add(normalized)
+    return len(shapes)
+================================================================================
+================================================================================
+def solve(n):
+    if n < 1:
+        return []
+    res = []
+
+    def dfs(num):
+        if num > n:
+            return
+        res.append(num)
+        for d in range(10):
+            nxt = num * 10 + d
+            if nxt > n:
+                continue
+            dfs(nxt)
+    for start in range(1, 10):
+        if start > n:
+            break
+        dfs(start)
+    return res
+================================================================================
+================================================================================
+def solve(arr):
+    n = len(arr)
+    if n < 3:
+        return 0
+    max_len = 0
+    i = 1
+    while i < n - 1:
+        if arr[i - 1] < arr[i] > arr[i + 1]:
+            left = i - 1
+            while left > 0 and arr[left - 1] < arr[left]:
+                left -= 1
+            right = i + 1
+            while right < n - 1 and arr[right] > arr[right + 1]:
+                right += 1
+            max_len = max(max_len, right - left + 1)
+            i = right
+        else:
+            i += 1
+    return max_len
+================================================================================
+================================================================================
+def solve(equations):
+    parent = {}
+    rank = {}
+
+    def find(x):
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(x, y):
+        rx, ry = (find(x), find(y))
+        if rx == ry:
+            return
+        if rank[rx] < rank[ry]:
+            parent[rx] = ry
+        elif rank[rx] > rank[ry]:
+            parent[ry] = rx
+        else:
+            parent[ry] = rx
+            rank[rx] += 1
+    for eq in equations:
+        var1 = eq[0]
+        var2 = eq[3]
+        for v in (var1, var2):
+            if v not in parent:
+                parent[v] = v
+                rank[v] = 0
+    for eq in equations:
+        if eq[1:3] == '==':
+            union(eq[0], eq[3])
+    for eq in equations:
+        if eq[1:3] == '!=':
+            if find(eq[0]) == find(eq[3]):
+                return False
+    return True
+================================================================================
+================================================================================
+def solve(n, edges):
+    adj = [[] for _ in range(n)]
+    for u, v in edges:
+        if 0 <= u < n and 0 <= v < n:
+            adj[u].append(v)
+            adj[v].append(u)
+    visited = set()
+
+    def dfs(u):
+        visited.add(u)
+        for w in adj[u]:
+            if w not in visited:
+                dfs(w)
+    components = 0
+    for i in range(n):
+        if i not in visited:
+            dfs(i)
+            components += 1
+    return components
+================================================================================
+================================================================================
+def solve(n, flights, src, dst, k):
+    INF = 10 ** 15
+    dp = [INF] * n
+    dp[src] = 0
+    for _ in range(k + 1):
+        ndp = dp[:]
+        for u, v, w in flights:
+            if dp[u] != INF and dp[u] + w < ndp[v]:
+                ndp[v] = dp[u] + w
+        dp = ndp
+    return -1 if dp[dst] == INF else dp[dst]
+================================================================================
+================================================================================
+def solve(colors, edges):
+    n = len(colors)
+    adj = [[] for _ in range(n)]
+    indeg = [0] * n
+    for u, v in edges:
+        adj[u].append(v)
+        indeg[v] += 1
+    dp = [[0] * 26 for _ in range(n)]
+    q = deque()
+    for i in range(n):
+        if indeg[i] == 0:
+            q.append(i)
+            idx = ord(colors[i]) - 97
+            dp[i][idx] = 1
+    processed = 0
+    max_val = 0
+    while q:
+        u = q.popleft()
+        processed += 1
+        max_val = max(max_val, max(dp[u]))
+        cu = ord(colors[u]) - 97
+        for v in adj[u]:
+            cv = ord(colors[v]) - 97
+            for c in range(26):
+                val = dp[u][c] + (1 if c == cv else 0)
+                if val > dp[v][c]:
+                    dp[v][c] = val
+            indeg[v] -= 1
+            if indeg[v] == 0:
+                if dp[v][cv] < 1:
+                    dp[v][cv] = 1
+                q.append(v)
+    return -1 if processed != n else max_val
+================================================================================
+================================================================================
+def solve(pattern, s):
+    words = s.split()
+    if len(pattern) != len(words):
+        return False
+    char_to_word = {}
+    word_to_char = {}
+    for c, w in zip(pattern, words):
+        if c in char_to_word:
+            if char_to_word[c] != w:
+                return False
+        else:
+            char_to_word[c] = w
+        if w in word_to_char:
+            if word_to_char[w] != c:
+                return False
+        else:
+            word_to_char[w] = c
+    return True
+================================================================================
+================================================================================
+def solve(words):
+    if not isinstance(words, list):
+        raise TypeError('Input must be a list')
+    n = len(words)
+    if n < 2:
+        return 0
+    masks = []
+    lengths = []
+    for w in words:
+        if not isinstance(w, str):
+            raise TypeError('All elements of the list must be strings')
+        mask = 0
+        for ch in set(w):
+            idx = ord(ch) - 97
+            if 0 <= idx < 26:
+                mask |= 1 << idx
+        masks.append(mask)
+        lengths.append(len(w))
+    max_product = 0
+    for i in range(n):
+        li = lengths[i]
+        mi = masks[i]
+        for j in range(i + 1, n):
+            if mi & masks[j] == 0:
+                prod = li * lengths[j]
+                if prod > max_product:
+                    max_product = prod
+    return max_product
+================================================================================
+================================================================================
+def solve(stones, k):
+    n = len(stones)
+    if (n - 1) % (k - 1) != 0:
+        return -1
+    prefix = [0] * (n + 1)
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + stones[i]
+    INF = 10 ** 18
+    dp = [[INF] * n for _ in range(n)]
+    best = [[INF] * n for _ in range(n)]
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 20
+TYPE     : <class 'int'>
+RESULT   : None
+TYPE     : <class 'NoneType'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(stones, k):
+    n = len(stones)
+    if (n - 1) % (k - 1) != 0:
+        return -1
+    prefix = [0] * (n + 1)
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + stones[i]
+    INF = 10 ** 18
+    dp = [[INF] * n for _ in range(n)]
+    best = [[INF] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 0
+        best[i][i] = 0
+    for length in range(2, n + 1):
+        for i in range(0, n - length + 1):
+            j = i + length - 1
+            best[i][j] = INF
+            for m in range(i, j, k - 1):
+                cost = best[i][m] + best[m + 1][j]
+                if cost < best[i][j]:
+                    best[i][j] = cost
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 20
+TYPE     : <class 'int'>
+RESULT   : None
+TYPE     : <class 'NoneType'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(n, k):
+
+    def backtrack(start, path):
+        if len(path) == k:
+            res.append(path[:])
+            return
+        for i in range(start, n + 1):
+            path.append(i)
+            backtrack(i + 1, path)
+            path.pop()
+    res = []
+    if k <= n and k >= 0:
+        backtrack(1, [])
+    return res
+================================================================================
+================================================================================
+def solve(nums):
+
+    def quickselect(arr, k):
+        left, right = (0, len(arr) - 1)
+        while True:
+            if left == right:
+                return arr[left]
+            pivot_index = random.randint(left, right)
+            pivot = arr[pivot_index]
+            arr[pivot_index], arr[right] = (arr[right], arr[pivot_index])
+            store_index = left
+            for i in range(left, right):
+                if arr[i] < pivot:
+                    arr[store_index], arr[i] = (arr[i], arr[store_index])
+                    store_index += 1
+            arr[right], arr[store_index] = (arr[store_index], arr[right])
+            if k == store_index:
+                return arr[store_index]
+            elif k < store_index:
+                right = store_index - 1
+            else:
+                left = store_index + 1
+    n = len(nums)
+    if n == 0:
+        return None
+    arr = nums[:]
+    if n % 2 == 1:
+        return quickselect(arr, n // 2)
+    else:
+        lower = quickselect(arr, n // 2 - 1)
+        upper = quickselect(arr, n // 2)
+        return (lower + upper) / 2.0
+================================================================================
+================================================================================
+def solve(nums):
+
+    def quickselect(arr, k):
+        left, right = (0, len(arr) - 1)
+        while True:
+            if left == right:
+                return arr[left]
+            pivot_index = random.randint(left, right)
+            pivot = arr[pivot_index]
+            arr[pivot_index], arr[right] = (arr[right], arr[pivot_index])
+            store_index = left
+            for i in range(left, right):
+                if arr[i] < pivot:
+                    arr[store_index], arr[i] = (arr[i], arr[store_index])
+                    store_index += 1
+            arr[right], arr[store_index] = (arr[store_index], arr[right])
+            if k == store_index:
+                return arr[store_index]
+            elif k < store_index:
+                right = store_index - 1
+            else:
+                left = store_index + 1
+    n = len(nums)
+    if n == 0:
+        return None
+    if n % 2 == 1:
+        return quickselect(nums[:], n // 2)
+    else:
+        lower = quickselect(nums[:], n // 2 - 1)
+        upper = quickselect(nums[:], n // 2)
+        return (lower + upper) / 2.0
+================================================================================
+================================================================================
+def solve(n):
+    if n < 0:
+        return 0
+    a, b = (1, 1)
+    for _ in range(2, n + 1):
+        a, b = (b, a + b)
+    return b if n >= 1 else a
+================================================================================
+================================================================================
+def solve(nums, k):
+    total = sum(nums)
+    if k <= 0 or k > len(nums):
+        return False
+    if total % k != 0:
+        return False
+    target = total // k
+    nums.sort(reverse=True)
+    if nums[0] > target:
+        return False
+    n = len(nums)
+    visited = [False] * n
+
+    def backtrack(k_remain, start, cur_sum):
+        if k_remain == 1:
+            return True
+        if cur_sum == target:
+            return backtrack(k_remain - 1, 0, 0)
+        i = start
+        while i < n:
+            if not visited[i] and cur_sum + nums[i] <= target:
+                visited[i] = True
+                if backtrack(k_remain, i + 1, cur_sum + nums[i]):
+                    return True
+                visited[i] = False
+                if cur_sum == 0:
+                    break
+                if cur_sum + nums[i] == target:
+                    break
+                j = i
+                while j + 1 < n and nums[j + 1] == nums[i]:
+                    j += 1
+                i = j
+            i += 1
+        return False
+    return backtrack(k, 0, 0)
+================================================================================
+================================================================================
+def solve(n):
+    if n <= 0:
+        return 0
+    a = e = i = o = u = 1
+    for _ in range(2, n + 1):
+        a_new = e + i + u
+        e_new = a + i
+        i_new = e + o
+        o_new = i
+        u_new = i + o
+        a, e, i, o, u = (a_new, e_new, i_new, o_new, u_new)
+    return a + e + i + o + u
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 227130014
+TYPE     : <class 'int'>
+RESULT   : 332692229458858
+TYPE     : <class 'int'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(n):
+    MOD = 10 ** 9 + 7
+    if n <= 0:
+        return 0
+    a = e = i = o = u = 1
+    for _ in range(2, n + 1):
+        a_new = (e + i + u) % MOD
+        e_new = (a + i) % MOD
+        i_new = (e + o) % MOD
+        o_new = i % MOD
+        u_new = (i + o) % MOD
+        a, e, i, o, u = (a_new, e_new, i_new, o_new, u_new)
+    return (a + e + i + o + u) % MOD
+================================================================================
+          dynamic_programming: 0.843 -> 0.891
+          math: 0.779 -> 0.853
+================================================================================
+def solve(arr):
+    n = len(arr)
+    if n < 2:
+        return n
+    inc = dec = ans = 1
+    for i in range(1, n):
+        if arr[i] > arr[i - 1]:
+            inc = dec + 1
+            dec = 1
+        elif arr[i] < arr[i - 1]:
+            dec = inc + 1
+            inc = 1
+        else:
+            inc = dec = 1
+        if inc > ans:
+            ans = inc
+        if dec > ans:
+            ans = dec
+    return ans
+================================================================================
+================================================================================
+def solve(tasks, n):
+    if not tasks:
+        return 0
+    freq = Counter(tasks)
+    max_freq = max(freq.values())
+    max_count = sum((1 for v in freq.values() if v == max_freq))
+    part_count = max_freq - 1
+    part_length = n + 1
+    empty_slots = part_count * part_length + max_count - part_count * part_length
+    idle_slots = max(0, part_count * part_length + max_count - len(tasks))
+    return len(tasks) + idle_slots
+================================================================================
+================================================================================
+def solve(words):
+    if not isinstance(words, str):
+        return ''
+    word_list = words.split()
+    if not word_list:
+        return ''
+    prefix = word_list[0]
+    for w in word_list[1:]:
+        while not w.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ''
+    return prefix
+================================================================================
+======================================================================
+DEBUG OUTPUT COMPARISON
+EXPECTED : 'fl'
+TYPE     : <class 'str'>
+RESULT   : ''
+TYPE     : <class 'str'>
+ORDER ONLY MISMATCH: False
+======================================================================
+================================================================================
+def solve(words):
+    if isinstance(words, list):
+        word_list = words
+        if not word_list:
+            return ''
+        for w in word_list:
+            if not isinstance(w, str):
+                return ''
+    elif isinstance(words, str):
+        word_list = words.split()
+        if not word_list:
+            return ''
+    else:
+        return ''
+    prefix = word_list[0]
+    for w in word_list[1:]:
+        while not w.startswith(prefix):
+            prefix = prefix[:-1]
+            if not prefix:
+                return ''
+    return prefix
+================================================================================
+          strings: 0.528 -> 0.703
+================================================================================
+def solve(words):
+    if not words:
+        return []
+    n = len(words[0])
+    prefix_dict = {}
+    for w in words:
+        for i in range(n + 1):
+            pref = w[:i]
+            prefix_dict.setdefault(pref, []).append(w)
+    result = []
+
+    def backtrack(step, square):
+        if step == n:
+            result.append(square[:])
+            return
+        prefix = ''.join((row[step] for row in square))
+        for candidate in prefix_dict.get(prefix, []):
+            square.append(candidate)
+            backtrack(step + 1, square)
+            square.pop()
+    for w in words:
+        backtrack(1, [w])
+    return result
+================================================================================
+================================================================================
+def solve(nums):
+    if not nums:
+        return 0
+    m = min(nums)
+    return sum(nums) - m * len(nums)
+================================================================================
+================================================================================
+def solve(pattern, s):
+    words = s.split()
+    if len(pattern) != len(words):
+        return False
+    char_to_word = {}
+    word_to_char = {}
+    for c, w in zip(pattern, words):
+        if c in char_to_word:
+            if char_to_word[c] != w:
+                return False
+        else:
+            char_to_word[c] = w
+        if w in word_to_char:
+            if word_to_char[w] != c:
+                return False
+        else:
+            word_to_char[w] = c
+    return True
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    return n * (n + 1) // 2 - sum(nums)
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n < 2:
+        return 0
+    stack = []
+    for i in range(n):
+        if not stack or nums[i] < nums[stack[-1]]:
+            stack.append(i)
+    ans = 0
+    for j in range(n - 1, -1, -1):
+        while stack and nums[stack[-1]] <= nums[j]:
+            ans = max(ans, j - stack[-1])
+            stack.pop()
+        if not stack:
+            break
+    return ans
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n == 0:
+        return 0
+    prev2 = 0
+    prev1 = max(0, nums[0])
+    for i in range(1, n):
+        incl = nums[i] + prev2
+        excl = prev1
+        cur = incl if incl > excl else excl
+        if cur < 0:
+            cur = 0
+        prev2, prev1 = (prev1, cur)
+    return prev1
+================================================================================
+================================================================================
+def solve(equations):
+    parent = {}
+    rank = {}
+
+    def find(x):
+        if parent[x] != x:
+            parent[x] = find(parent[x])
+        return parent[x]
+
+    def union(x, y):
+        rx, ry = (find(x), find(y))
+        if rx == ry:
+            return
+        if rank[rx] < rank[ry]:
+            parent[rx] = ry
+        elif rank[rx] > rank[ry]:
+            parent[ry] = rx
+        else:
+            parent[ry] = rx
+            rank[rx] += 1
+    for eq in equations:
+        var1 = eq[0]
+        var2 = eq[3]
+        if var1 not in parent:
+            parent[var1] = var1
+            rank[var1] = 0
+        if var2 not in parent:
+            parent[var2] = var2
+            rank[var2] = 0
+    for eq in equations:
+        if eq[1:3] == '==':
+            union(eq[0], eq[3])
+    for eq in equations:
+        if eq[1:3] == '!=':
+            if find(eq[0]) == find(eq[3]):
+                return False
+    return True
+================================================================================
+================================================================================
+def solve(n):
+    if n < 2:
+        return 0
+    is_prime = bytearray(b'\x01') * (n + 1)
+    is_prime[0] = is_prime[1] = 0
+    limit = int(n ** 0.5) + 1
+    for i in range(2, limit):
+        if is_prime[i]:
+            step = i
+            start = i * i
+            is_prime[start:n + 1:step] = b'\x00' * ((n - start) // step + 1)
+    total = 0
+    for i in range(2, n + 1):
+        if is_prime[i]:
+            total += i
+    return total
+================================================================================
+================================================================================
+def solve(matrix, target):
+    for row in matrix:
+        lo, hi = (0, len(row) - 1)
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            val = row[mid]
+            if val == target:
+                return True
+            elif val < target:
+                lo = mid + 1
+            else:
+                hi = mid - 1
+    return False
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    result = []
+
+    def backtrack(path, used):
+        if len(path) == n:
+            result.append(path[:])
+            return
+        for i in range(n):
+            if not used[i]:
+                used[i] = True
+                path.append(nums[i])
+                backtrack(path, used)
+                path.pop()
+                used[i] = False
+    backtrack([], [False] * n)
+    return result
+================================================================================
+================================================================================
+def solve(n, edges):
+    sys.setrecursionlimit(10 ** 7)
+    if n <= 1:
+        return 0
+    adj = [[] for _ in range(n)]
+    for u, v, w in edges:
+        adj[u].append((v, w))
+        adj[v].append((u, w))
+
+    def dfs(start):
+        stack = [(start, -1, 0)]
+        far_node = start
+        far_dist = 0
+        while stack:
+            node, parent, dist = stack.pop()
+            if dist > far_dist:
+                far_dist = dist
+                far_node = node
+            for nb, w in adj[node]:
+                if nb != parent:
+                    stack.append((nb, node, dist + w))
+        return (far_node, far_dist)
+    far1, _ = dfs(0)
+    _, diameter = dfs(far1)
+    return diameter
+================================================================================
+================================================================================
+def solve(n, edges):
+    if n <= 1:
+        return 0
+    max_node = max((max(u, v) for u, v, _ in edges), default=0)
+    offset = -1 if max_node == n else 0
+    adj = [[] for _ in range(n)]
+    for u, v, w in edges:
+        u += offset
+        v += offset
+        adj[u].append((v, w))
+        adj[v].append((u, w))
+
+    def dfs(start):
+        stack = [(start, -1, 0)]
+        far_node = start
+        far_dist = 0
+        while stack:
+            node, parent, dist = stack.pop()
+            if dist > far_dist:
+                far_dist = dist
+                far_node = node
+            for nb, w in adj[node]:
+                if nb != parent:
+                    stack.append((nb, node, dist + w))
+        return (far_node, far_dist)
+    far1, _ = dfs(0)
+    _, diameter = dfs(far1)
+    return diameter
+================================================================================
+          trees: 0.295 -> 0.563
+          recursion: 0.484 -> 0.676
+================================================================================
+def solve(nums, k):
+    last_index = {}
+    for i, num in enumerate(nums):
+        if num in last_index and i - last_index[num] <= k:
+            return True
+        last_index[num] = i
+    return False
+================================================================================
+================================================================================
+def solve(words):
+    groups = {}
+    for w in words:
+        key = ''.join(sorted(w))
+        groups.setdefault(key, []).append(w)
+    return list(groups.values())
+================================================================================
+================================================================================
+def solve(arr, k):
+    n = len(arr)
+    dp = [0] * (n + 1)
+    for i in range(1, n + 1):
+        cur_max = 0
+        best = 0
+        for j in range(1, min(k, i) + 1):
+            cur_max = cur_max if cur_max > arr[i - j] else arr[i - j]
+            val = dp[i - j] + cur_max * j
+            if val > best:
+                best = val
+        dp[i] = best
+    return dp[n]
+================================================================================
+================================================================================
+def solve(s, dictionary):
+    if not isinstance(s, str) or not isinstance(dictionary, list):
+        return ''
+
+    def is_subseq(word, source):
+        it = iter(source)
+        return all((c in it for c in word))
+    best = ''
+    for word in dictionary:
+        if not isinstance(word, str):
+            continue
+        if len(word) < len(best):
+            continue
+        if len(word) == len(best) and word >= best:
+            continue
+        if is_subseq(word, s):
+            if len(word) > len(best) or (len(word) == len(best) and word < best):
+                best = word
+    return best
+================================================================================
+================================================================================
+def solve(intervals):
+    if not intervals:
+        return 0
+    sorted_intervals = sorted(intervals, key=lambda x: x[1])
+    count = 0
+    last_end = -float('inf')
+    for s, e in sorted_intervals:
+        if s >= last_end:
+            count += 1
+            last_end = e
+    return len(intervals) - count
+================================================================================
+================================================================================
+def solve(num_courses, prerequisites):
+    indegree = [0] * num_courses
+    graph = [[] for _ in range(num_courses)]
+    for course, pre in prerequisites:
+        graph[pre].append(course)
+        indegree[course] += 1
+    q = deque([i for i in range(num_courses) if indegree[i] == 0])
+    taken = 0
+    while q:
+        u = q.popleft()
+        taken += 1
+        for v in graph[u]:
+            indegree[v] -= 1
+            if indegree[v] == 0:
+                q.append(v)
+    return taken == num_courses
+================================================================================
+================================================================================
+def solve(piles):
+    n = len(piles)
+    if n == 0:
+        return 0
+    suffix = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        suffix[i] = suffix[i + 1] + piles[i]
+
+    @lru_cache(None)
+    def dp(i, m):
+        if i >= n:
+            return 0
+        max_take = min(2 * m, n - i)
+        if max_take == n - i:
+            return suffix[i]
+        best = 0
+        for x in range(1, max_take + 1):
+            opponent = dp(i + x, max(m, x))
+            current = suffix[i] - opponent
+            if current > best:
+                best = current
+        return best
+    return dp(0, 1)
+================================================================================
+================================================================================
+def solve(piles):
+    sys.setrecursionlimit(10000)
+    n = len(piles)
+    if n == 0:
+        return 0
+    suffix = [0] * (n + 1)
+    for i in range(n - 1, -1, -1):
+        suffix[i] = suffix[i + 1] + piles[i]
+
+    @lru_cache(None)
+    def dp(i, m):
+        if i >= n:
+            return 0
+        max_take = min(2 * m, n - i)
+        if max_take == n - i:
+            return suffix[i]
+        best = 0
+        for x in range(1, max_take + 1):
+            opponent = dp(i + x, max(m, x))
+            current = suffix[i] - opponent
+            if current > best:
+                best = current
+        return best
+    return dp(0, 1)
+================================================================================
+================================================================================
+def solve(board, word):
+    if not word:
+        return True
+    if not board or not board[0]:
+        return False
+    rows, cols = (len(board), len(board[0]))
+
+    def dfs(r, c, idx):
+        if idx == len(word):
+            return True
+        if r < 0 or r >= rows or c < 0 or (c >= cols) or (board[r][c] != word[idx]):
+            return False
+        temp = board[r][c]
+        board[r][c] = None
+        found = dfs(r + 1, c, idx + 1) or dfs(r - 1, c, idx + 1) or dfs(r, c + 1, idx + 1) or dfs(r, c - 1, idx + 1)
+        board[r][c] = temp
+        return found
+    for i in range(rows):
+        for j in range(cols):
+            if board[i][j] == word[0]:
+                if dfs(i, j, 0):
+                    return True
+    return False
+================================================================================
+================================================================================
+def solve(words, word1, word2):
+    if not words:
+        return -1
+    if word1 == word2:
+        prev = -1
+        min_dist = float('inf')
+        for i, w in enumerate(words):
+            if w == word1:
+                if prev != -1:
+                    dist = i - prev
+                    if dist < min_dist:
+                        min_dist = dist
+                prev = i
+        return min_dist if min_dist != float('inf') else -1
+    last1 = last2 = -1
+    min_dist = float('inf')
+    for i, w in enumerate(words):
+        if w == word1:
+            last1 = i
+            if last2 != -1:
+                dist = abs(last1 - last2)
+                if dist < min_dist:
+                    min_dist = dist
+        elif w == word2:
+            last2 = i
+            if last1 != -1:
+                dist = abs(last1 - last2)
+                if dist < min_dist:
+                    min_dist = dist
+    return min_dist if min_dist != float('inf') else -1
+================================================================================
+================================================================================
+def solve(routes, source, target):
+    if source == target:
+        return 0
+    stop_to_routes = {}
+    for i, route in enumerate(routes):
+        for stop in route:
+            stop_to_routes.setdefault(stop, []).append(i)
+    if source not in stop_to_routes or target not in stop_to_routes:
+        return -1
+    visited_routes = set()
+    visited_stops = set([source])
+    q = deque()
+    for r in stop_to_routes[source]:
+        q.append((r, 1))
+        visited_routes.add(r)
+    while q:
+        route_idx, buses = q.popleft()
+        if target in routes[route_idx]:
+            return buses
+        for stop in routes[route_idx]:
+            if stop in visited_stops:
+                continue
+            visited_stops.add(stop)
+            for nxt_route in stop_to_routes.get(stop, []):
+                if nxt_route not in visited_routes:
+                    visited_routes.add(nxt_route)
+                    q.append((nxt_route, buses + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(nums, k):
+    return [item for item, _ in Counter(nums).most_common(k)]
+================================================================================
+================================================================================
+def solve(nums):
+    if not isinstance(nums, list):
+        raise TypeError('Input must be a list')
+    for x in nums:
+        if not isinstance(x, int):
+            raise TypeError('All elements must be integers')
+    n = len(nums)
+    if n == 0:
+        return None
+
+    def partition(a, left, right, pivot_index):
+        pivot_value = a[pivot_index]
+        a[pivot_index], a[right] = (a[right], a[pivot_index])
+        store_index = left
+        for i in range(left, right):
+            if a[i] < pivot_value:
+                a[store_index], a[i] = (a[i], a[store_index])
+                store_index += 1
+        a[right], a[store_index] = (a[store_index], a[right])
+        return store_index
+
+    def select(a, left, right, k):
+        while True:
+            if left == right:
+                return a[left]
+            pivot_index = random.randint(left, right)
+            pivot_index = partition(a, left, right, pivot_index)
+            if k == pivot_index:
+                return a[k]
+            elif k < pivot_index:
+                right = pivot_index - 1
+            else:
+                left = pivot_index + 1
+    arr = nums[:]
+    if n % 2 == 1:
+        median = select(arr, 0, n - 1, n // 2)
+        return median
+    else:
+        lower = select(arr, 0, n - 1, n // 2 - 1)
+        upper = select(arr, 0, n - 1, n // 2)
+        return (lower + upper) / 2.0
+================================================================================
+================================================================================
+def solve(nums):
+    if not isinstance(nums, list):
+        raise TypeError('Input must be a list')
+    for x in nums:
+        if not isinstance(x, int):
+            raise TypeError('All elements must be integers')
+    n = len(nums)
+    if n == 0:
+        return None
+
+    def partition(a, left, right, pivot_index):
+        pivot_value = a[pivot_index]
+        a[pivot_index], a[right] = (a[right], a[pivot_index])
+        store_index = left
+        for i in range(left, right):
+            if a[i] < pivot_value:
+                a[store_index], a[i] = (a[i], a[store_index])
+                store_index += 1
+        a[right], a[store_index] = (a[store_index], a[right])
+        return store_index
+
+    def select(a, left, right, k):
+        while True:
+            if left == right:
+                return a[left]
+            pivot_index = random.randint(left, right)
+            pivot_index = partition(a, left, right, pivot_index)
+            if k == pivot_index:
+                return a[k]
+            elif k < pivot_index:
+                right = pivot_index - 1
+            else:
+                left = pivot_index + 1
+    if n % 2 == 1:
+        arr = nums[:]
+        return select(arr, 0, n - 1, n // 2)
+    else:
+        lower_arr = nums[:]
+        lower = select(lower_arr, 0, n - 1, n // 2 - 1)
+        upper_arr = nums[:]
+        upper = select(upper_arr, 0, n - 1, n // 2)
+        return (lower + upper) / 2.0
+================================================================================
+================================================================================
+def solve(s, word_dict):
+    word_set = set(word_dict)
+    n = len(s)
+    dp = [False] * (n + 1)
+    dp[0] = True
+    for i in range(1, n + 1):
+        for j in range(i):
+            if dp[j] and s[j:i] in word_set:
+                dp[i] = True
+                break
+    return dp[n]
+================================================================================
+================================================================================
+def solve(s):
+    n = len(s)
+    if n == 0:
+        return 0
+    next_idx = [[n] * 26 for _ in range(n + 1)]
+    for i in range(n - 1, -1, -1):
+        for c in range(26):
+            next_idx[i][c] = next_idx[i + 1][c]
+        next_idx[i][ord(s[i]) - 97] = i
+    prev_idx = [[-1] * 26 for _ in range(n)]
+    for i in range(n):
+        if i > 0:
+            for c in range(26):
+                prev_idx[i][c] = prev_idx[i - 1][c]
+        prev_idx[i][ord(s[i]) - 97] = i
+    dp = [[0] * n for _ in range(n)]
+    for i in range(n):
+        dp[i][i] = 1
+    for length in range(2, n + 1):
+        for i in range(n - length + 1):
+            j = i + length - 1
+            if s[i] == s[j]:
+                c = ord(s[i]) - 97
+                i_next = next_idx[i + 1][c]
+                j_prev = prev_idx[j - 1][c]
+                if i_next > j_prev:
+                    dp[i][j] = dp[i + 1][j - 1] * 2 + 2
+                elif i_next == j_prev:
+                    dp[i][j] = dp[i + 1][j - 1] * 2 + 1
+                else:
+                    dp[i][j] = dp[i + 1][j - 1] * 2 - dp[i_next + 1][j_prev - 1]
+            else:
+                dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1]
+    return dp[0][n - 1]
+================================================================================
+          dynamic_programming: 0.248 -> 0.534
+          strings: 0.403 -> 0.627
+================================================================================
+def solve(nums, k):
+    total = sum(nums)
+    if k <= 0 or total % k != 0:
+        return False
+    target = total // k
+    nums.sort(reverse=True)
+    if nums and nums[0] > target:
+        return False
+    n = len(nums)
+    if k == 1:
+        return True
+    memo = {}
+
+    def dfs(k_remaining, start, cur_sum, used):
+        if k_remaining == 1:
+            return True
+        if cur_sum == target:
+            res = dfs(k_remaining - 1, 0, 0, used)
+            memo[used] = res
+            return res
+        if used in memo:
+            return memo[used]
+        for i in range(start, n):
+            if not used >> i & 1 and cur_sum + nums[i] <= target:
+                used2 = used | 1 << i
+                if dfs(k_remaining, i + 1, cur_sum + nums[i], used2):
+                    memo[used2] = True
+                    return True
+        memo[used] = False
+        return False
+    return dfs(k, 0, 0, 0)
+================================================================================
+================================================================================
+def solve(points):
+    if not points:
+        return 0
+    intervals = sorted(points, key=lambda x: x[1])
+    arrows = 1
+    current_end = intervals[0][1]
+    for start, end in intervals[1:]:
+        if start > current_end:
+            arrows += 1
+            current_end = end
+    return arrows
+================================================================================
+================================================================================
+def solve(cuboids):
+    if not cuboids:
+        return 0
+    normalized = [sorted(c) for c in cuboids]
+    normalized.append([0, 0, 0])
+    normalized.sort()
+    n = len(normalized)
+    dp = [0] * n
+    max_height = 0
+    for i in range(n):
+        h = normalized[i][2]
+        best = 0
+        for j in range(i):
+            if normalized[j][0] <= normalized[i][0] and normalized[j][1] <= normalized[i][1] and (normalized[j][2] <= normalized[i][2]):
+                if dp[j] > best:
+                    best = dp[j]
+        dp[i] = best + h
+        if dp[i] > max_height:
+            max_height = dp[i]
+    return max_height
+================================================================================
+================================================================================
+def solve(arr):
+    even = 1
+    odd = 0
+    parity = 0
+    for x in arr:
+        parity ^= x & 1
+        if parity == 0:
+            even += 1
+        else:
+            odd += 1
+    return even * odd
+================================================================================
+================================================================================
+def solve(n):
+    MOD = 10 ** 9 + 7
+    if n <= 0:
+        return 0
+    a = e = i = o = u = 1
+    for _ in range(2, n + 1):
+        na = e % MOD
+        ne = (a + i) % MOD
+        ni = (a + e + o + u) % MOD
+        no = (i + u) % MOD
+        nu = a % MOD
+        a, e, i, o, u = (na, ne, ni, no, nu)
+    return (a + e + i + o + u) % MOD
+================================================================================
+================================================================================
+def solve(n):
+
+    def is_square(x):
+        r = math.isqrt(x)
+        return r * r == x
+    if n == 0:
+        return 0
+    if is_square(n):
+        return 1
+    limit = math.isqrt(n)
+    for i in range(1, limit + 1):
+        if is_square(n - i * i):
+            return 2
+    m = n
+    while m % 4 == 0:
+        m //= 4
+    if m % 8 == 7:
+        return 4
+    return 3
+================================================================================
+================================================================================
+def solve(matrix, target):
+    for row in matrix:
+        lo, hi = (0, len(row) - 1)
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            val = row[mid]
+            if val == target:
+                return True
+            elif val < target:
+                lo = mid + 1
+            else:
+                hi = mid - 1
+    return False
+================================================================================
+================================================================================
+def solve(n):
+    count = 0
+    divisor = 5
+    while divisor <= n:
+        count += n // divisor
+        divisor *= 5
+    return count
+================================================================================
+================================================================================
+def solve(n):
+    if n < 1:
+        return []
+    res = []
+
+    def dfs(num):
+        if num > n:
+            return
+        res.append(num)
+        for d in range(10):
+            nxt = num * 10 + d
+            if nxt > n:
+                continue
+            dfs(nxt)
+    for start in range(1, 10):
+        if start > n:
+            break
+        dfs(start)
+    return res
+================================================================================
+================================================================================
+def solve(nums):
+    n = len(nums)
+    if n < 3:
+        return 0
+    pref = [0] * (n + 1)
+    for i, v in enumerate(nums):
+        pref[i + 1] = pref[i] + v
+    total = pref[n]
+    ans = 0
+    for i in range(1, n - 1):
+        sum1 = pref[i]
+        L = bisect.bisect_left(pref, 2 * sum1, i + 1, n)
+        max_allowed = (total + sum1) // 2
+        R = bisect.bisect_right(pref, max_allowed, i + 1, n) - 1
+        if L <= R:
+            ans += R - L + 1
+    return ans
+================================================================================
+================================================================================
+def solve(routes, source, target):
+    if source == target:
+        return 0
+    stop_to_routes = {}
+    for i, route in enumerate(routes):
+        for stop in route:
+            stop_to_routes.setdefault(stop, []).append(i)
+    if source not in stop_to_routes or target not in stop_to_routes:
+        return -1
+    visited_routes = set()
+    visited_stops = set([source])
+    q = deque()
+    for r in stop_to_routes[source]:
+        visited_routes.add(r)
+        q.append((r, 1))
+    while q:
+        route_idx, buses = q.popleft()
+        if target in routes[route_idx]:
+            return buses
+        for stop in routes[route_idx]:
+            if stop in visited_stops:
+                continue
+            visited_stops.add(stop)
+            for nxt_route in stop_to_routes.get(stop, []):
+                if nxt_route not in visited_routes:
+                    visited_routes.add(nxt_route)
+                    q.append((nxt_route, buses + 1))
+    return -1
+================================================================================
+================================================================================
+def solve(n):
+    return n.bit_count()
+================================================================================
+================================================================================
+def solve(n):
+    return math.comb(2 * n, n) // (n + 1)
+================================================================================
+================================================================================
+def solve(s, t):
+    if len(s) != len(t):
+        return False
+    freq = {}
+    for ch in s:
+        freq[ch] = freq.get(ch, 0) + 1
+    for ch in t:
+        if ch not in freq:
+            return False
+        freq[ch] -= 1
+        if freq[ch] == 0:
+            del freq[ch]
+    return not freq
+================================================================================
+================================================================================
+def solve(triangle):
+    if not triangle:
+        return 0
+    dp = triangle[-1][:]
+    for i in range(len(triangle) - 2, -1, -1):
+        row = triangle[i]
+        for j in range(i + 1):
+            dp[j] = row[j] + (dp[j] if dp[j] < dp[j + 1] else dp[j + 1])
+    return dp[0]
+================================================================================
+================================================================================
+def solve(equations, values, queries):
+    graph = defaultdict(list)
+    for (a, b), v in zip(equations, values):
+        graph[a].append((b, v))
+        graph[b].append((a, 1.0 / v))
+
+    def bfs(src, dst):
+        if src == dst:
+            return 1.0
+        visited = set([src])
+        q = deque([(src, 1.0)])
+        while q:
+            node, prod = q.popleft()
+            for neigh, w in graph[node]:
+                if neigh in visited:
+                    continue
+                if neigh == dst:
+                    return prod * w
+                visited.add(neigh)
+                q.append((neigh, prod * w))
+        return -1.0
+    results = []
+    for a, b in queries:
+        if a not in graph or b not in graph:
+            results.append(-1.0)
+        else:
+            results.append(bfs(a, b))
+    return results
+================================================================================
+================================================================================
+def solve(n):
+    return math.comb(2 * n, n) // (n + 1)
+================================================================================
+================================================================================
+def solve(arr):
+    n = len(arr)
+    if n < 3:
+        return 0
+    max_len = 0
+    i = 1
+    while i < n - 1:
+        if arr[i - 1] < arr[i] > arr[i + 1]:
+            left = i - 1
+            while left > 0 and arr[left - 1] < arr[left]:
+                left -= 1
+            right = i + 1
+            while right + 1 < n and arr[right] > arr[right + 1]:
+                right += 1
+            cur_len = right - left + 1
+            if cur_len > max_len:
+                max_len = cur_len
+            i = right + 1
+        else:
+            i += 1
+    return max_len
+================================================================================
+[+] Dashboard written to runs/run_20260722_141640_groq/dashboard_groq.html

@@ -1,0 +1,43 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 50,
+            "required_tags": [
+                "graphs",
+                "recursion"
+            ],
+            "failure_type": "name_error",
+            "lesson": "Import modules at the top level"
+        },
+        "L2": {
+            "task_id": 213,
+            "required_tags": [
+                "lists",
+                "searching"
+            ],
+            "failure_type": "syntax_error",
+            "lesson": "Ensure proper syntax and indentation"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [
+            "L1"
+        ],
+        "hashmaps": [],
+        "lists": [
+            "L2"
+        ],
+        "math": [],
+        "recursion": [
+            "L1"
+        ],
+        "searching": [
+            "L2"
+        ],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

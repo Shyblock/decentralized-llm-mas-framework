@@ -1,0 +1,55 @@
+{
+    "next_lesson_id": 4,
+    "lessons": {
+        "L1": {
+            "task_id": 133,
+            "required_tags": [
+                "dynamic_programming",
+                "strings"
+            ],
+            "failure_type": "index_error",
+            "lesson": "Validate index bounds before accessing arrays"
+        },
+        "L2": {
+            "task_id": 218,
+            "required_tags": [
+                "graphs",
+                "searching"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Initialize max value to negative infinity for correct comparison"
+        },
+        "L3": {
+            "task_id": 213,
+            "required_tags": [
+                "lists",
+                "searching"
+            ],
+            "failure_type": "syntax_error",
+            "lesson": "Ensure proper syntax and indentation"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1"
+        ],
+        "graphs": [
+            "L2"
+        ],
+        "hashmaps": [],
+        "lists": [
+            "L3"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [
+            "L2",
+            "L3"
+        ],
+        "sorting": [],
+        "strings": [
+            "L1"
+        ],
+        "trees": []
+    }
+}

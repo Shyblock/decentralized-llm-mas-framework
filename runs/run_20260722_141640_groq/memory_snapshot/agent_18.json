@@ -1,0 +1,40 @@
+{
+    "next_lesson_id": 3,
+    "lessons": {
+        "L1": {
+            "task_id": 192,
+            "required_tags": [
+                "dynamic_programming",
+                "lists"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Use 2D arrays for dynamic programming with 2D inputs"
+        },
+        "L2": {
+            "task_id": 45,
+            "required_tags": [
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Validate input type before processing"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L1"
+        ],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [
+            "L1"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [
+            "L2"
+        ],
+        "trees": []
+    }
+}

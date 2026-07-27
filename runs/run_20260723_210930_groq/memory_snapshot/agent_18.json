@@ -1,0 +1,27 @@
+{
+    "next_lesson_id": 2,
+    "lessons": {
+        "L1": {
+            "task_id": 208,
+            "required_tags": [
+                "math"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Handle edge cases explicitly"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [],
+        "graphs": [],
+        "hashmaps": [],
+        "lists": [],
+        "math": [
+            "L1"
+        ],
+        "recursion": [],
+        "searching": [],
+        "sorting": [],
+        "strings": [],
+        "trees": []
+    }
+}

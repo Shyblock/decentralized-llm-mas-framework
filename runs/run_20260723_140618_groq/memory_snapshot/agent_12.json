@@ -1,0 +1,60 @@
+{
+    "next_lesson_id": 4,
+    "lessons": {
+        "L1": {
+            "task_id": 25,
+            "required_tags": [
+                "hashmaps",
+                "lists",
+                "sorting"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Preserve original order when not explicitly required"
+        },
+        "L2": {
+            "task_id": 114,
+            "required_tags": [
+                "dynamic_programming",
+                "lists"
+            ],
+            "failure_type": "type_error",
+            "lesson": "Validate input types before processing"
+        },
+        "L3": {
+            "task_id": 236,
+            "required_tags": [
+                "graphs",
+                "hashmaps",
+                "strings"
+            ],
+            "failure_type": "wrong_answer",
+            "lesson": "Ensure output format matches problem requirements"
+        }
+    },
+    "memory_index": {
+        "dynamic_programming": [
+            "L2"
+        ],
+        "graphs": [
+            "L3"
+        ],
+        "hashmaps": [
+            "L1",
+            "L3"
+        ],
+        "lists": [
+            "L1",
+            "L2"
+        ],
+        "math": [],
+        "recursion": [],
+        "searching": [],
+        "sorting": [
+            "L1"
+        ],
+        "strings": [
+            "L3"
+        ],
+        "trees": []
+    }
+}
